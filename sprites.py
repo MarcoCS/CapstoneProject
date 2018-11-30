@@ -35,7 +35,7 @@ class Player(pg.sprite.Sprite):
             
     def collide_with_walls(self, dir):
         if dir == 'x':
-            hits = pg.sprite.spritecollide(self. self.game.walls, False)
+            hits = pg.sprite.spritecollide(self, self.game.walls, False)
             if hits:
                 if self.vel.x > 0:
                     self.pos.x = hits[0].rect.left - self.rect.width

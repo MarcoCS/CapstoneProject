@@ -21,7 +21,7 @@ class Game:
         self.loadData()
         
     def loadData(self):
-        gameFolder = path.dirname(__file__)
+        gameFolder = path.dirname("__file__")
         self.map = Map(path.join(gameFolder, 'map.txt'))
                 
     def new(self):

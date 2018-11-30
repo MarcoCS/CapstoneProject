@@ -6,8 +6,8 @@
 ##-------------------------------------------------------------------
 
 import pygame as pg
-from settings import *
-from player import *
+from spritesettings import *
+from sprites import *
 from tilemap import *
 from os import path
 

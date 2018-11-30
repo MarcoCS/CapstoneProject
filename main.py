@@ -27,7 +27,7 @@ class Game:
     def new(self):
         # Start a new game
         self.allSprites = pg.sprite.Group()
-        self.game.walls = pg.sprite.Group()
+        self.walls = pg.sprite.Group()
         for row, tiles in enumerate(self.map.data):
             for col, tile, in enumerate(tiles):
                 if tile == 'P':

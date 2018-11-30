@@ -25,7 +25,7 @@ class Player(pg.sprite.Sprite):
         if keys[pg.K_LEFT] or keys[pg.K_a]:
             self.vel.x = -PLAYER_SPEED
         if keys[pg.K_RIGHT] or keys[pg.K_d]:
-            self.vel.c = PLAYER_SPEED
+            self.vel.x = PLAYER_SPEED
         if keys[pg.K_UP] or keys[pg.K_w]:
             self.vel.y = -PLAYER_SPEED
         if keys[pg.K_DOWN] or keys [pg.K_s]:

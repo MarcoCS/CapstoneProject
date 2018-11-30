@@ -6,7 +6,7 @@
 ##-------------------------------------------------------------------
 
 import pygame as pg
-from ettings import *
+from settings import *
 from sprites import *
 from tilemap import *
 from os import path
@@ -29,8 +29,10 @@ class Game:
         self.allSprites = pg.sprite.Group()
         for row, tiles in enumerate(self.map.data):
             for col, tile, in enumerate(tiles):
-                if tile =='P':
-                    self.player = Player(self, col, row)            
+                if tile == 'P':
+                    self.player = Player(self, col, row)     
+                if tile == '1':
+                    Wall(self, col, row)
         self.camera = Camera(self.map.width, self.map.height)
                     
 

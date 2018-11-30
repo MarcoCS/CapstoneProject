@@ -69,9 +69,9 @@ class Game:
         
     def drawGrid(self):
         for x in range(0, WIDTH, TILESIZE):
-            pg.draw.line(self.screen, LIGHT_GREY, (x, 0), (x, HEIGHT))
+            pg.draw.line(self.screen, LIGHTGREY, (x, 0), (x, HEIGHT))
         for y in range(0, HEIGHT, TILESIZE):
-            pg.draw.line(self.screen, LIGHT_GREY, (0, y), (WIDTH, y))
+            pg.draw.line(self.screen, LIGHTGREY, (0, y), (WIDTH, y))
             
         
         

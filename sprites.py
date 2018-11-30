@@ -5,7 +5,7 @@
 #Player and hostile sprites
 #################################################
 import pygame as pg
-from spritesettings import *
+from settings import *
 vec = pg.math.Vector2
 
 class Player(pg.sprite.Sprite):

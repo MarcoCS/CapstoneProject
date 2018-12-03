@@ -20,6 +20,13 @@ class Camera:
     def update(self, target):
         x = -target.rect.x + int(WIDTH / 2)
         y = -target.rect.y + int(HEIGHT / 2)
+        
+        ## Limit scrolling to map
+        x = min(0, x) ## Left
+        y = min(0, y) ## Top
+        x = max(-(self.width - WIDTH), x)   ## Right
+        y = max(-(self.height - HEIGHT), y) ## Bottom
+        
         self.camera = pg.Rect(x, y, self.width, self.height)
         
 class Map:

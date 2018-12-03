@@ -36,7 +36,7 @@ class Map:
             for line in f:
                 self.data.append(line)
     
-        self.tileWidth = len(self.data)
+        self.tileWidth = len(self.data[0])
         self.tileHeight = len(self.data)
         self.width = self.tileWidth * TILESIZE
         self.height = self.tileHeight * TILESIZE

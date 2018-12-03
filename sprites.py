@@ -47,7 +47,7 @@ class Player(pg.sprite.Sprite):
             hits = pg.sprite.spritecollide(self, self.game.walls, False)
             if hits:
                 if self.vel.y > 0:
-                    self.pos.x = hits[0].rect.top - self.rect.height
+                    self.pos.y = hits[0].rect.top - self.rect.height
                 if self.vel.y < 0:
                     self.pos.y = hits[0].rect.bottom
                 self.vel.y = 0

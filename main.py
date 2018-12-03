@@ -22,7 +22,7 @@ class Game:
         
     def loadData(self):
         gameFolder = path.dirname("__file__")
-        img_folder = path.join(game_folder, 'img')
+        img_folder = path.join(gameFolder, 'img')
         self.map = Map(path.join(gameFolder, 'map.txt'))
         self.player_img = pg.image.load(path.join(img_folder, PLAYER_IMG)).convert_alpha()
                 

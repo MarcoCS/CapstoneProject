@@ -26,4 +26,4 @@ GRIDHEIGHT = HEIGHT / TILESIZE
 
 # Player settings
 PLAYER_SPEED = 300.0
-PLAYER_IMG = 'topdownplayer.jfif'
+PLAYER_IMG = 'hitman1_gun.png'

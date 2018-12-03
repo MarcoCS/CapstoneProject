@@ -26,4 +26,5 @@ GRIDHEIGHT = HEIGHT / TILESIZE
 
 # Player settings
 PLAYER_SPEED = 300.0
+PLAYER_ROT_SPEED = 250
 PLAYER_IMG = 'hitman1_gun.png'

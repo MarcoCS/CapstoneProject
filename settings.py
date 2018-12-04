@@ -4,6 +4,7 @@
 #
 #Settings
 #################################################
+import pygame as pg
 #colors
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
@@ -28,3 +29,4 @@ GRIDHEIGHT = HEIGHT / TILESIZE
 PLAYER_SPEED = 300.0
 PLAYER_ROT_SPEED = 250
 PLAYER_IMG = 'hitman1_gun.png'
+PLATER_HIT_RECT = pg.Rect(0, 0, 35, 35)

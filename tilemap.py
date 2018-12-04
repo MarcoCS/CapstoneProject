@@ -8,6 +8,9 @@
 import pygame as pg
 from settings import *
 
+def collide_hit_rect(one, two):
+    return one.hit_rect.colliderect(two.rect)
+
 class Camera:
     def __init__(self, width, height):
         self.camera = pg.Rect(0, 0, width, height)

@@ -15,6 +15,8 @@ class Player(pg.sprite.Sprite):
         self.game = game
         self.image = game.player_img
         self.rect = self.image.get_rect()
+        self.hit_rect = PLAYER_HIT_RECT
+        self.hit_rect.recter = self.rect.center
         self.vel = vec(0, 0)
         self.pos = vec(x, y) * TILESIZE
         self.rot = 0
@@ -37,20 +39,20 @@ class Player(pg.sprite.Sprite):
             hits = pg.sprite.spritecollide(self, self.game.walls, False)
             if hits:
                 if self.vel.x > 0:
-                    self.pos.x = hits[0].rect.left - self.rect.width / 2
+                    self.pos.x = hits[0].rect.left - self.hit_rect.width / 2
                 if self.vel.x < 0:
-                    self.pos.x = hits[0].rect.right + self.rect.width / 2
+                    self.pos.x = hits[0].rect.right + self.hit_rect.width / 2
                 self.vel.x = 0
-                self.rect.centerx = self.pos.x
+                self.hit_rect.centerx = self.pos.x
         if dir == 'y':
             hits = pg.sprite.spritecollide(self, self.game.walls, False)
             if hits:
                 if self.vel.y > 0:
-                    self.pos.y = hits[0].rect.top - self.rect.height / 2
+                    self.pos.y = hits[0].rect.top - self.hit_rect.height / 2
                 if self.vel.y < 0:
-                    self.pos.y = hits[0].rect.bottom + self.rect.height / 2
+                    self.pos.y = hits[0].rect.bottom + self.hit_rect.height / 2
                 self.vel.y = 0
-                self.rect.centery =  self.pos.y
+                self.hit_rect.centery =  self.pos.y
                 
     def update(self):
         self.get_keys()
@@ -59,10 +61,11 @@ class Player(pg.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.center = self.pos
         self.pos += self.vel * self.game.dt
-        self.rect.centerx = self.pos.x
+        self.hit_rect.centerx = self.pos.x
         self.collide_with_walls('x')
-        self.rect.centery = self.pos.y
+        self.hit_rect.centery = self.pos.y
         self.collide_with_walls('y')
+        self.rect.center = self.hit_rect.center
         
 
 class Wall(pg.sprite.Sprite):

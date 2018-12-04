@@ -66,6 +66,7 @@ class Player(pg.sprite.Sprite):
         self.collide_with_walls('x')
         self.hit_rect.centery = self.pos.y
         self.collide_with_walls('y')
+        #uses the new rectangle instead of the rectangle of the sprite
         self.rect.center = self.hit_rect.center
         
 

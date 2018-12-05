@@ -30,3 +30,8 @@ PLAYER_SPEED = 300.0
 PLAYER_ROT_SPEED = 5
 PLAYER_IMG = 'hitman1_gun.png'
 PLAYER_HIT_RECT = pg.Rect(0, 0, 35, 35)
+
+# Mob settings
+MOB_IMG = 'zombie1_hold.png'
+MOB_SPEED = 150
+MOB_HIT_RECT = pg.Rect(0, 0, 30, 30)

@@ -69,7 +69,13 @@ class Player(pg.sprite.Sprite):
         #uses the new rectangle instead of the rectangle of the sprite
         self.rect.center = self.hit_rect.center
         
-
+class bullet(pg.sprite.Sprite):
+    def __init__(self, game, pos, dir):
+        self.groups = game.all_sprites
+        pg.sprite.Sprite.__init__(self, self.groups)
+        self.image = game.bullet_img
+        self.rect = self.image.get_rect()
+        
 class Wall(pg.sprite.Sprite):
     def __init__(self, game, x, y):
         self.groups = game.allSprites, game.walls

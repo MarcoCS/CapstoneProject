@@ -35,7 +35,7 @@ class Player(pg.sprite.Sprite):
             self.vel = vec(PLAYER_SPEED, 0).rotate(-self.rot)
         if keys[pg.K_DOWN] or keys [pg.K_s]:
             self.vel = vec(-PLAYER_SPEED / 2, 0).rotate(-self.rot)
-        if keys[pg.K_SPACE]:\
+        if keys[pg.K_SPACE]:
             now = pg.time.get_ticks()
             if now - self.last_shot > BULLET_RATE:
                 self.last_shot = now

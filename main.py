@@ -25,17 +25,21 @@ class Game:
         img_folder = path.join(gameFolder, 'img')
         self.map = Map(path.join(gameFolder, 'map.txt'))
         self.player_img = pg.image.load(path.join(img_folder, PLAYER_IMG)).convert_alpha()
+        self.mobImage = pg.image.load(path.join(img_folder, MOB_IMG)).convert_alpha()
                 
     def new(self):
         # Start a new game
         self.allSprites = pg.sprite.Group()
         self.walls = pg.sprite.Group()
+        self.mobs = pg.sprite.Group()
         for row, tiles in enumerate(self.map.data):
             for col, tile, in enumerate(tiles):
                 if tile == 'P':
                     self.player = Player(self, col, row)     
                 if tile == '1':
                     Wall(self, col, row)
+                if tile =='M':
+                    Mob(self, col, row)
         self.camera = Camera(self.map.width, self.map.height)
                     
 
@@ -63,6 +67,8 @@ class Game:
     
     def draw(self):
         # Draw the loop
+        # This displays frame rate.
+        pg.display.set_caption("{:.2f}".format(self.clock.get_fps()))
         self.screen.fill(BLACK)
         self.drawGrid()
         for sprite in self.allSprites:

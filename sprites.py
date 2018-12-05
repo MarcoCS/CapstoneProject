@@ -77,7 +77,7 @@ class Player(pg.sprite.Sprite):
         #uses the new rectangle instead of the rectangle of the sprite
         self.rect.center = self.hit_rect.center
         
-class bullet(pg.sprite.Sprite):
+class Bullet(pg.sprite.Sprite):
     def __init__(self, game, pos, dir):
         self.groups = game.all_sprites, game.bullets
         pg.sprite.Sprite.__init__(self, self.groups)

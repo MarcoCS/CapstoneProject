@@ -26,18 +26,22 @@ class Game:
         self.map = Map(path.join(gameFolder, 'map.txt'))
         self.player_img = pg.image.load(path.join(img_folder, PLAYER_IMG)).convert_alpha()
         self.bullet_img = pg.image.load(path.join(img_folder, BULLET_IMG)).convert_alpha()
+        self.mobImage = pg.image.load(path.join(img_folder, MOB_IMG)).convert_alpha()
                 
     def new(self):
         # Start a new game
         self.allSprites = pg.sprite.Group()
         self.walls = pg.sprite.Group()
         self.bullets = pg.sprite.Group()
+        self.mobs = pg.sprite.Group()
         for row, tiles in enumerate(self.map.data):
             for col, tile, in enumerate(tiles):
                 if tile == 'P':
                     self.player = Player(self, col, row)     
                 if tile == '1':
                     Wall(self, col, row)
+                if tile == 'M':
+                    Mob(self, col, row)
         self.camera = Camera(self.map.width, self.map.height)
                     
 
@@ -58,6 +62,10 @@ class Game:
         hits = pg.sprite.groupcollide(self.mobs, self.bullets, False, True)
         for hit in hits:
             hit.kill()
+        # Player/mob collsions. 
+        hits = pg.sprite.spritecollide(self.player, self.mobs, False, collide_hit_rect)
+        if hits:
+            self.playing = False
     
     def events(self):
         # Process events
@@ -69,6 +77,8 @@ class Game:
     
     def draw(self):
         # Draw the loop
+        # This displays frame rate.
+        pg.display.set_caption("{:.2f}".format(self.clock.get_fps()))
         self.screen.fill(BLACK)
         self.drawGrid()
         for sprite in self.allSprites:
@@ -78,11 +88,11 @@ class Game:
         pg.display.flip()
         
     def drawGrid(self):
+        ## Draws a grid with size equal to TILESIZE
         for x in range(0, WIDTH, TILESIZE):
             pg.draw.line(self.screen, LIGHTGREY, (x, 0), (x, HEIGHT))
         for y in range(0, HEIGHT, TILESIZE):
-            pg.draw.line(self.screen, LIGHTGREY, (0, y), (WIDTH, y))
-            
+            pg.draw.line(self.screen, LIGHTGREY, (0, y), (WIDTH, y))           
         
         
     def showStartScreen(self):

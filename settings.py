@@ -39,7 +39,7 @@ GUN_SPREAD = 8
 # Player settings
 PLAYER_SPEED = 300.0
 PLAYER_ROT_SPEED = 5
-PLAYER_IMG = 'hitman1_gun.png'
+PLAYER_IMG = 'soldier1_gun.png'
 PLAYER_HIT_RECT = pg.Rect(0, 0, 35, 35)
 
 # Mob settings

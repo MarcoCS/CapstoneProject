@@ -5,6 +5,8 @@
 #Settings
 #################################################
 import pygame as pg
+vec = pg.math.Vector2
+
 #colors
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
@@ -30,6 +32,7 @@ BULLET_IMG = 'tile_187.png'
 BULLET_SPEED = 500
 BULLET_LIFETIME = 1000
 BULLET_RATE = 150
+BARREL_OFFSET = vec(20, 20)
 
 # Player settings
 PLAYER_SPEED = 300.0

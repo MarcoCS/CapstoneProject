@@ -21,6 +21,7 @@ class Game:
         self.loadData()
         
     def loadData(self):
+        # This loads the game folders and images.
         gameFolder = path.dirname("__file__")
         img_folder = path.join(gameFolder, 'img')
         self.map = Map(path.join(gameFolder, 'map.txt'))
@@ -28,10 +29,10 @@ class Game:
         self.mobImage = pg.image.load(path.join(img_folder, MOB_IMG)).convert_alpha()
                 
     def new(self):
-        # Start a new game
         self.allSprites = pg.sprite.Group()
         self.walls = pg.sprite.Group()
         self.mobs = pg.sprite.Group()
+        # Reads characters in a text file to determine where to put things.
         for row, tiles in enumerate(self.map.data):
             for col, tile, in enumerate(tiles):
                 if tile == 'P':
@@ -40,6 +41,7 @@ class Game:
                     Wall(self, col, row)
                 if tile == 'M':
                     Mob(self, col, row)
+        # Create the camera object
         self.camera = Camera(self.map.width, self.map.height)
                     
 
@@ -57,6 +59,7 @@ class Game:
         self.allSprites.update()
         self.camera.update(self.player)
         
+        # Player/mob collsions. 
         hits = pg.sprite.spritecollide(self.player, self.mobs, False, collide_hit_rect)
         if hits:
             self.playing = False
@@ -75,6 +78,7 @@ class Game:
         pg.display.set_caption("{:.2f}".format(self.clock.get_fps()))
         self.screen.fill(BLACK)
         self.drawGrid()
+        # Instead of allSprites.update(), we must iterate.  
         for sprite in self.allSprites:
             self.screen.blit(sprite.image, self.camera.apply(sprite))
         #testing rectangle for collisions
@@ -82,6 +86,7 @@ class Game:
         pg.display.flip()
         
     def drawGrid(self):
+        ## Draws a grid with size equal to TILESIZE
         for x in range(0, WIDTH, TILESIZE):
             pg.draw.line(self.screen, LIGHTGREY, (x, 0), (x, HEIGHT))
         for y in range(0, HEIGHT, TILESIZE):

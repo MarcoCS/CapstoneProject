@@ -79,7 +79,7 @@ class Player(pg.sprite.Sprite):
         
 class Bullet(pg.sprite.Sprite):
     def __init__(self, game, pos, dir):
-        self.groups = game.all_sprites, game.bullets
+        self.groups = game.allSprites, game.bullets
         pg.sprite.Sprite.__init__(self, self.groups)
         self.game = game
         self.image = game.bullet_img

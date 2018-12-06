@@ -11,6 +11,8 @@ vec = pg.math.Vector2
 from random import choice
 
 def collide_with_walls(sprite, group, dir):
+    # Handles each direction separately. This function is used for both
+    # the player and mobs. 
     if dir == 'x':
         hits = pg.sprite.spritecollide(sprite, group, False, collide_hit_rect)
         if hits:
@@ -100,6 +102,7 @@ class Mob(pg.sprite.Sprite):
         self.speed = choice(MOB_SPEEDS)
         
     def avoidMobs(self):
+        # This function keeps mobs spread out
         for mob in self.game.mobs:
             if mob != self:
                 distance = self.pos - mob.pos
@@ -107,6 +110,7 @@ class Mob(pg.sprite.Sprite):
                     self.acc += distance.normalize()
     
     def update(self):
+        # Rotate mobs and update the images. They track the player.
         self.rot = (self.game.player.pos - self.pos).angle_to(vec(1,0))
         self.image = pg.transform.rotate(self.game.mobImage, self.rot)
         self.rect = self.image.get_rect()

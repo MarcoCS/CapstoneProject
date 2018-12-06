@@ -1,7 +1,7 @@
 ##-------------------------------------------------------------------
 ## Top Down Shooter - Main program
 ## Dallas Spendelow
-## November 28, 2018
+## December 5, 2018
 ## This program contains the game class, that runs the game.
 ##-------------------------------------------------------------------
 
@@ -38,7 +38,7 @@ class Game:
                     self.player = Player(self, col, row)     
                 if tile == '1':
                     Wall(self, col, row)
-                if tile =='M':
+                if tile == 'M':
                     Mob(self, col, row)
         self.camera = Camera(self.map.width, self.map.height)
                     
@@ -56,6 +56,10 @@ class Game:
         # Update the game 
         self.allSprites.update()
         self.camera.update(self.player)
+        
+        hits = pg.sprite.spritecollide(self.player, self.mobs, False, collide_hit_rect)
+        if hits:
+            self.playing = False
     
     def events(self):
         # Process events

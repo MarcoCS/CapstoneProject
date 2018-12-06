@@ -8,6 +8,7 @@ import pygame as pg
 from settings import *
 from tilemap import collide_hit_rect
 vec = pg.math.Vector2
+from random import choice
 
 def collide_with_walls(sprite, group, dir):
     if dir == 'x':
@@ -96,13 +97,23 @@ class Mob(pg.sprite.Sprite):
         self.vel = vec(0, 0)
         self.rect.center = self.pos
         self.rot = 0
+        self.speed = choice(MOB_SPEEDS)
         
+    def avoidMobs(self):
+        for mob in self.game.mobs:
+            if mob != self:
+                distance = self.pos - mob.pos
+                if 0 < distance.length() < AVOID_RADIUS:
+                    self.acc += distance.normalize()
+    
     def update(self):
         self.rot = (self.game.player.pos - self.pos).angle_to(vec(1,0))
         self.image = pg.transform.rotate(self.game.mobImage, self.rot)
         self.rect = self.image.get_rect()
         self.rect.center = self.pos
-        self.acc = vec(MOB_SPEED, 0).rotate(-self.rot)
+        self.acc = vec(1, 0).rotate(-self.rot)
+        self.avoidMobs()
+        self.acc.scale_to_length(self.speed)
         self.acc += self.vel * -1
         self.vel += self.acc * self.game.dt
         self.pos += self.vel * self.game.dt + 0.5 * self.acc * self.game.dt ** 2

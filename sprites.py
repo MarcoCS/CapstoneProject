@@ -5,6 +5,7 @@
 #Player and hostile sprites
 #################################################
 import pygame as pg
+from random import uniform
 from settings import *
 from tilemap import collide_hit_rect
 vec = pg.math.Vector2
@@ -88,7 +89,8 @@ class Bullet(pg.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.pos = vec(pos)
         self.rect.center = pos
-        self.vel = dir * BULLET_SPEED
+        spread = uniform(-GUN_SPREAD, GUN_SPREAD)
+        self.vel = dir.rotate(spread) * BULLET_SPEED
         self.spawn_time = pg.time.get_ticks()
         
     def update(self):

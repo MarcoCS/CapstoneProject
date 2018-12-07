@@ -163,3 +163,19 @@ class Mob(pg.sprite.Sprite):
         self.rect.center = self.hit_rect.center
         if self.health <= 0:
             self.kill()
+    def drawHealth(self):
+        if self.health > 60:
+            col = GREEN
+        elif self.health > 30:
+            col = YELLOW
+        else:
+            col = RED
+        width = int(self.rect.width * self.health / 100)
+        self.health_bar = pg.Rect(0, 0, width, 7)
+        if self.health < 100:
+           pg.draw.rect(self.image, col, self.health_bar)
+        
+            
+            
+            
+        

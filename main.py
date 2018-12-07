@@ -58,6 +58,10 @@ class Game:
         # Update the game 
         self.allSprites.update()
         self.camera.update(self.player)
+        #mobs hit player
+        hits = pg.sprite.spritecollide(self.player, self.mobs, False, collide_hit_rect)
+        for hit in hits:
+            self.player.health -= MOB_DAMAGE
         #bullets hit mobs
         hits = pg.sprite.groupcollide(self.mobs, self.bullets, False, True)
         for hit in hits:

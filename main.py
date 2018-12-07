@@ -61,7 +61,8 @@ class Game:
         #bullets hit mobs
         hits = pg.sprite.groupcollide(self.mobs, self.bullets, False, True)
         for hit in hits:
-            hit.kill()
+            hit.health -= BULLET_DAMAGE
+            hit.vel = vec(0, 0)
         # Player/mob collsions. 
         hits = pg.sprite.spritecollide(self.player, self.mobs, False, collide_hit_rect)
         if hits:

@@ -83,6 +83,8 @@ class Game:
         self.screen.fill(BLACK)
         self.drawGrid()
         for sprite in self.allSprites:
+            if isinstance(sprite, Mob):
+                sprite.draw_health()
             self.screen.blit(sprite.image, self.camera.apply(sprite))
         #testing rectangle for collisions
         #pg.draw.rect(self.screen, WHITE, self.player.hit_rect, 2)

@@ -46,6 +46,7 @@ class Player(pg.sprite.Sprite):
         self.pos = vec(x, y) * TILESIZE
         self.rot = 0
         self.last_shot = 0
+        self.health = PLAYER_HEALTH
         
     def get_keys(self):
         self.rot_speed = 0
@@ -134,7 +135,7 @@ class Mob(pg.sprite.Sprite):
         self.rect.center = self.pos
         self.rot = 0
         self.speed = choice(MOB_SPEEDS)
-        self.health = 100
+        self.health = MOB_HEALTH
 
     def avoidMobs(self):
         # This function keeps mobs spread out
@@ -170,9 +171,9 @@ class Mob(pg.sprite.Sprite):
             col = YELLOW
         else:
             col = RED
-        width = int(self.rect.width * self.health / 100)
+        width = int(self.rect.width * self.health / MOB_HEALTH)
         self.health_bar = pg.Rect(0, 0, width, 7)
-        if self.health < 100:
+        if self.health < MOB_HEALTH:
            pg.draw.rect(self.image, col, self.health_bar)
         
             

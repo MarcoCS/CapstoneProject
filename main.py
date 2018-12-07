@@ -11,6 +11,20 @@ from sprites import *
 from tilemap import *
 from os import path
 
+# HUD functions
+def drawPlayerHealth(surf, x, y, pct):
+    if pct < 0:
+        pct = 0
+    BAR_LENGTH = 100
+    BAR_HEIGHT = 20
+    fill = pct * BAR_LENGTH
+    outline_rect = pg.Rect(x, y, BAR_LENGTH, BAR_HEIGHT)
+    fill_rect = pg.Rect(x, y, fill, BAR_HEIGHT)
+    if pct > 0.6:
+        col = GREEN #17:15 part 10
+    
+    
+
 class Game:
     def __init__(self):
         # Initialize pygame

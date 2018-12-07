@@ -49,4 +49,4 @@ MOB_IMG = 'zombie1_hold.png'
 MOB_SPEEDS = [100, 125, 150]
 MOB_HIT_RECT = pg.Rect(0, 0, 30, 30)
 AVOID_RADIUS = 50
-MOB_HEALTH
+MOB_HEALTH = 100

@@ -1,3 +1,4 @@
+
 #################################################
 #CS30 Final Capstone Project
 #Developers: Kale, Dallas, Marco
@@ -52,3 +53,6 @@ AVOID_RADIUS = 50
 MOB_HEALTH = 100
 MOB_DAMAGE = 10
 MOB_KNOCKBACK = 20
+
+SHOOTER_IMG = 'robot1_gun.png'
+SHOOTER_ROT_SPEED = 5

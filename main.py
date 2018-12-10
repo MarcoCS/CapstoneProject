@@ -45,6 +45,7 @@ class Game:
         self.player_img = pg.image.load(path.join(img_folder, PLAYER_IMG)).convert_alpha()
         self.bullet_img = pg.image.load(path.join(img_folder, BULLET_IMG)).convert_alpha()
         self.mobImage = pg.image.load(path.join(img_folder, MOB_IMG)).convert_alpha()
+        self.shooterImage = pg.image.load(path.join(img_folder, SHOOTER_IMG)).convert_alpha()
                 
     def new(self):
         # Start a new game
@@ -52,6 +53,8 @@ class Game:
         self.walls = pg.sprite.Group()
         self.bullets = pg.sprite.Group()
         self.mobs = pg.sprite.Group()
+        self.shooters = pg.sprite.Group()
+        self.shooterBullets = pg.sprite.Group()
         for row, tiles in enumerate(self.map.data):
             for col, tile, in enumerate(tiles):
                 if tile == 'P':
@@ -60,6 +63,8 @@ class Game:
                     Wall(self, col, row)
                 if tile == 'M':
                     Mob(self, col, row)
+                if tile == 'S':
+                    StationaryMob(self, col, row)
         self.camera = Camera(self.map.width, self.map.height)
                     
 
@@ -90,7 +95,16 @@ class Game:
         hits = pg.sprite.groupcollide(self.mobs, self.bullets, False, True)
         for hit in hits:
             hit.health -= BULLET_DAMAGE
-            hit.vel = vec(0, 0)
+            hit.vel = vec(0, 0)         
+            
+        # Player/shooter collisions
+        hits = pg.sprite.spritecollide(self.player, self.shooterBullets, False, collide_hit_rect)
+        if hits:
+            self.playing = False
+        
+        # Bullet/shooter collision
+        hits = pg.sprite.groupcollide(self.bullets, self.shooters, True, True)
+        
     
     def events(self):
         # Process events

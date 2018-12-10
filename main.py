@@ -98,14 +98,16 @@ class Game:
             hit.vel = vec(0, 0)         
             
         # Player/shooter collisions
-        hits = pg.sprite.spritecollide(self.player, self.shooterBullets, False, collide_hit_rect)
-        if hits:
-            self.playing = False
-        
+        hits = pg.sprite.spritecollide(self.player, self.shooterBullets, False, True)
+        if hit in hits:
+            self.player.health -= BULLET_DAMAGE
+            hit.vel = vec(0, 0)
+          
         # Bullet/shooter collision
-        hits = pg.sprite.groupcollide(self.bullets, self.shooters, True, True)
-        
-    
+        hits = pg.sprite.groupcollide(self.bullets, self.shooters, False, True)
+        for hit in hits:
+            hit.health -= BULLET_DAMAGE
+            
     def events(self):
         # Process events
         for event in pg.event.get():

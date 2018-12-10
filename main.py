@@ -117,7 +117,7 @@ class Game:
         #testing rectangle for collisions
             #pg.draw.rect(self.screen, WHITE, self.player.hit_rect, 2)
         #Drawing the player's health bar
-        draw_playe_health(self.screen, 10, 10, self.player.health / PLAYER_HEALTH)
+        drawPlayerHealth(self.screen, 10, 10, self.player.health / PLAYER_HEALTH)
         pg.display.flip()
         
     def drawGrid(self):

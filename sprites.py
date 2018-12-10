@@ -191,6 +191,7 @@ class StationaryMob(pg.sprite.Sprite):
         self.rect.center = self.pos
         self.rot = 0
         self.last_shot = 0
+        self.health = SHOOTER_HEALTH
         
     def update(self):
         self.rot = (self.game.player.pos - self.pos).angle_to(vec(1,0))
@@ -207,6 +208,19 @@ class StationaryMob(pg.sprite.Sprite):
             dir = vec(1, 0).rotate(-self.rot)
             pos = self.pos + BARREL_OFFSET.rotate(-self.rot)
             ShooterBullet(self.game, pos, dir)
+            
+     def drawHealth(self):
+        if self.health > 60:
+            col = GREEN
+        elif self.health > 30:
+            col = YELLOW
+        else:
+            col = RED
+        width = int(self.rect.width * self.health / SHOOTER_HEALTH)
+        self.health_bar = pg.Rect(0, 0, width, 7)
+        if self.health < SHOOTER_HEALTH:
+           pg.draw.rect(self.image, col, self.health_bar) 
+        
             
 class ShooterBullet(pg.sprite.Sprite):
     def __init__(self, game, pos, dir):

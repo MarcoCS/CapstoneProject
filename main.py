@@ -21,10 +21,14 @@ def drawPlayerHealth(surf, x, y, pct):
     outline_rect = pg.Rect(x, y, BAR_LENGTH, BAR_HEIGHT)
     fill_rect = pg.Rect(x, y, fill, BAR_HEIGHT)
     if pct > 0.6:
-        col = GREEN #17:15 part 10
+        col = GREEN
+    elif pct > 0.3:
+        col = YELLOW
+    else:
+        col = RED
+    pg.draw.rect(surf, col, fill_rect)
+    pg.draw.rect(surf, WHITE, outline_rect, 2)
     
-    
-
 class Game:
     def __init__(self):
         # Initialize pygame
@@ -111,7 +115,9 @@ class Game:
                 sprite.drawHealth()
             self.screen.blit(sprite.image, self.camera.apply(sprite))
         #testing rectangle for collisions
-        #pg.draw.rect(self.screen, WHITE, self.player.hit_rect, 2)
+            #pg.draw.rect(self.screen, WHITE, self.player.hit_rect, 2)
+        #Drawing the player's health bar
+        draw_playerHealth(self.screen, 10, 10, self.player.health / PLAYER_HEALTH)
         pg.display.flip()
         
     def drawGrid(self):

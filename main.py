@@ -11,6 +11,24 @@ from sprites import *
 from tilemap import *
 from os import path
 
+# HUD functions
+def drawPlayerHealth(surf, x, y, pct):
+    if pct < 0:
+        pct = 0
+    BAR_LENGTH = 100
+    BAR_HEIGHT = 20
+    fill = pct * BAR_LENGTH
+    outline_rect = pg.Rect(x, y, BAR_LENGTH, BAR_HEIGHT)
+    fill_rect = pg.Rect(x, y, fill, BAR_HEIGHT)
+    if pct > 0.6:
+        col = GREEN
+    elif pct > 0.3:
+        col = YELLOW
+    else:
+        col = RED
+    pg.draw.rect(surf, col, fill_rect)
+    pg.draw.rect(surf, WHITE, outline_rect, 2)
+    
 class Game:
     def __init__(self):
         # Initialize pygame
@@ -58,14 +76,21 @@ class Game:
         # Update the game 
         self.allSprites.update()
         self.camera.update(self.player)
+        #mobs hit player
+        hits = pg.sprite.spritecollide(self.player, self.mobs, False, collide_hit_rect)
+        for hit in hits:
+            self.player.health -= MOB_DAMAGE
+            hit.vel = vec(0, 0)
+            if self.player.health <= 0:
+                self.playing = False
+            if hits:
+                self.player.pos += vec(MOB_KNOCKBACK, 0).rotate(-hits[0].rot)
+                
         #bullets hit mobs
         hits = pg.sprite.groupcollide(self.mobs, self.bullets, False, True)
         for hit in hits:
-            hit.kill()
-        # Player/mob collsions. 
-        hits = pg.sprite.spritecollide(self.player, self.mobs, False, collide_hit_rect)
-        if hits:
-            self.playing = False
+            hit.health -= BULLET_DAMAGE
+            hit.vel = vec(0, 0)
     
     def events(self):
         # Process events
@@ -82,9 +107,13 @@ class Game:
         self.screen.fill(BLACK)
         self.drawGrid()
         for sprite in self.allSprites:
+            if isinstance(sprite, Mob):
+                sprite.drawHealth()
             self.screen.blit(sprite.image, self.camera.apply(sprite))
         #testing rectangle for collisions
-        #pg.draw.rect(self.screen, WHITE, self.player.hit_rect, 2)
+            #pg.draw.rect(self.screen, WHITE, self.player.hit_rect, 2)
+        #Drawing the player's health bar
+        drawPlayerHealth(self.screen, 10, 10, self.player.health / PLAYER_HEALTH)
         pg.display.flip()
         
     def drawGrid(self):

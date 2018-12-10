@@ -84,7 +84,7 @@ class Game:
             if self.player.health <= 0:
                 self.playing = False
             if hits:
-                self.player.pos += vec(MOB_KNCKBACK, 0).rotate(-hits[0].rot)
+                self.player.pos += vec(MOB_KNOCKBACK, 0).rotate(-hits[0].rot)
                 
         #bullets hit mobs
         hits = pg.sprite.groupcollide(self.mobs, self.bullets, False, True)

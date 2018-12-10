@@ -210,7 +210,7 @@ class StationaryMob(pg.sprite.Sprite):
             pos = self.pos + BARREL_OFFSET.rotate(-self.rot)
             ShooterBullet(self.game, pos, dir)
             
-     def drawHealth(self):
+    def drawHealth(self):
         if self.health > 60:
             col = GREEN
         elif self.health > 30:

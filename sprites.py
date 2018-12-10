@@ -102,9 +102,7 @@ class Bullet(pg.sprite.Sprite):
         if pg.sprite.spritecollideany(self, self.game.walls):
             self.kill()
         if pg.time.get_ticks() - self.spawn_time > BULLET_LIFETIME:
-            self.kill()
-        
-        
+            self.kill()       
         
 class Wall(pg.sprite.Sprite):
     def __init__(self, game, x, y):
@@ -161,6 +159,54 @@ class Mob(pg.sprite.Sprite):
         collide_with_walls(self, self.game.walls, 'y')
         self.rect.center = self.hit_rect.center                
 
-
-          
-     
+class StationaryMob(pg.sprite.Sprite):
+    def __init__(self, game, x, y):
+        self.groups = game.allSprites, game.shooters
+        pg.sprite.Sprite.__init__(self, self.groups)
+        self.game = game
+        self.image = game.shooterImage
+        self.rect = self.image.get_rect()
+        self.hit_rect = MOB_HIT_RECT.copy()
+        self.hit_rect.center = self.rect.center
+        self.pos = vec(x, y) * TILESIZE
+        self.vel = vec(0, 0)
+        self.rect.center = self.pos
+        self.rot = 0
+        self.last_shot = 0
+        
+    def update(self):
+        self.rot = (self.game.player.pos - self.pos).angle_to(vec(1,0))
+        self.image = pg.transform.rotate(self.game.mobImage, self.rot)
+        self.rect = self.image.get_rect()
+        self.rect.center = self.pos       
+        self.hit_rect.centerx = self.pos.x
+        self.hit_rect.centery = self.pos.y
+        #uses the new rectangle instead of the rectangle of the sprite
+        self.rect.center = self.hit_rect.center
+        now = pg.time.get_ticks()
+        if now - self.last_shot > 2500:
+            self.last_shot = now
+            dir = vec(1, 0).rotate(-self.rot)
+            pos = self.pos + BARREL_OFFSET.rotate(-self.rot)
+            ShooterBullet(self.game, pos, dir)
+            
+class ShooterBullet(pg.sprite.Sprite):
+    def __init__(self, game, pos, dir):
+        self.groups = game.allSprites, game.shooterBullets
+        pg.sprite.Sprite.__init__(self, self.groups)
+        self.game = game
+        self.image = game.bullet_img
+        self.rect = self.image.get_rect()
+        self.pos = vec(pos)
+        self.rect.center = pos
+        spread = uniform(-GUN_SPREAD, GUN_SPREAD)
+        self.vel = dir.rotate(spread) * BULLET_SPEED
+        self.spawn_time = pg.time.get_ticks()
+        
+    def update(self):
+        self.pos += self.vel * self.game.dt
+        self.rect.center = self.pos
+        if pg.sprite.spritecollideany(self, self.game.walls):
+            self.kill()
+        if pg.time.get_ticks() - self.spawn_time > BULLET_LIFETIME:
+            self.kill()            

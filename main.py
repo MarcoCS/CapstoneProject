@@ -91,10 +91,6 @@ class Game:
         for hit in hits:
             hit.health -= BULLET_DAMAGE
             hit.vel = vec(0, 0)
-        # Player/mob collsions. 
-        hits = pg.sprite.spritecollide(self.player, self.mobs, False, collide_hit_rect)
-        if hits:
-            self.playing = False
     
     def events(self):
         # Process events

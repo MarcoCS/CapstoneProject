@@ -204,7 +204,7 @@ class StationaryMob(pg.sprite.Sprite):
         #uses the new rectangle instead of the rectangle of the sprite
         self.rect.center = self.hit_rect.center
         now = pg.time.get_ticks()
-        if now - self.last_shot > 2000:
+        if now - self.last_shot > 4500:
             self.last_shot = now
             dir = vec(1, 0).rotate(-self.rot)
             pos = self.pos + BARREL_OFFSET.rotate(-self.rot)

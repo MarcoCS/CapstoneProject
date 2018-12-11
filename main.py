@@ -99,7 +99,7 @@ class Game:
             
         # Player/shooter collisions
         hits = pg.sprite.spritecollide(self.player, self.shooterBullets, False, True)
-        if hit in hits:
+        for hit in hits:
             self.player.health -= BULLET_DAMAGE
             hit.vel = vec(0, 0)
           

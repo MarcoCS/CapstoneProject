@@ -126,7 +126,7 @@ class Game:
         self.drawGrid()
         for sprite in self.allSprites:
             if isinstance(sprite, StationaryMob):
-                sprite.drawShooterHealth
+                sprite.drawShooterHealth()
             if isinstance(sprite, Mob):
                 sprite.drawHealth()
             self.screen.blit(sprite.image, self.camera.apply(sprite))

@@ -102,6 +102,8 @@ class Game:
         for hit in hits:
             self.player.health -= BULLET_DAMAGE
             hit.vel = vec(0, 0)
+            if self.player.health <= 0:
+                self.playing = False
           
         # Bullet/shooter collision
         hits = pg.sprite.groupcollide(self.shooters, self.bullets, False, True)

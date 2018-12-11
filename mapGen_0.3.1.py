@@ -32,8 +32,8 @@ base_room = [['1', '1', '1', '1', '1', '1', '1', '1', '1', '1'],  # This cuts do
             ['1', '.', '.', '.', '.', '.', '.', '.', '.', '1'],   # Before, a function was located in "Rooms_tools" which carved out an area
             ['1', '.', '.', '.', '.', '.', '.', '.', '.', '1'],   # We do this anyways, so it simply saves compute power to have a pre-made map.
             ['1', '.', '.', '.', '.', '.', '.', '.', '.', '1'],
-            ['1', '.', '.', '.', '.', '.', '.', '.', '.', '1'],
-            ['1', '.', '.', '.', '.', '.', '.', '.', '.', '1'],
+            ['.', '.', '.', '.', '.', '.', '.', '.', '.', '.'],
+            ['.', '.', '.', '.', '.', '.', '.', '.', '.', '.'],
             ['1', '.', '.', '.', '.', '.', '.', '.', '.', '1'],
             ['1', '.', '.', '.', '.', '.', '.', '.', '.', '1'],
             ['1', '.', '.', '.', '.', '.', '.', '.', '.', '1'],
@@ -67,8 +67,9 @@ class Spawn_room:
     def __init__(self):
         self.room = copy.deepcopy(base_room)
         self.room[5][5] = "P" # Due to limitations with how maps are structured (even number), it is not possible to place the player spawn
-                     # Exactly in the middle
-
+        self.room[0][5] = "1"             # Exactly in the middle
+        self.room[0][4] = "1"  
+   
 class Loot_room:
     def __init__(self):
         self.room = copy.deepcopy(base_room)
@@ -78,6 +79,8 @@ class Boss_room:
     def __init__(self):
         self.room = copy.deepcopy(base_room)
         self.room[5][5] = "B"
+        self.room[9][5] = "1"             # Exactly in the middle
+        self.room[9][4] = "1"
 
 def generate_walls(map): # Will create line segments for cover for the player, and unfortunately enemies
     temp = copy.deepcopy(map)

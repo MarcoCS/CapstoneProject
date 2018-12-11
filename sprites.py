@@ -212,7 +212,7 @@ class StationaryMob(pg.sprite.Sprite):
         if self.health <= 0:
             self.kill()
             
-    def drawHealth(self):
+    def drawShooterHealth(self):
         if self.health > 60:
             col = GREEN
         elif self.health > 30:

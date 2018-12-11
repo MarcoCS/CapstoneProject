@@ -209,6 +209,8 @@ class StationaryMob(pg.sprite.Sprite):
             dir = vec(1, 0).rotate(-self.rot)
             pos = self.pos + BARREL_OFFSET.rotate(-self.rot)
             ShooterBullet(self.game, pos, dir)
+        if self.health <= 0:
+            self.kill()
             
     def drawHealth(self):
         if self.health > 60:

@@ -196,7 +196,7 @@ class StationaryMob(pg.sprite.Sprite):
         
     def update(self):
         self.rot = (self.game.player.pos - self.pos).angle_to(vec(1,0))
-        self.image = pg.transform.rotate(self.game.mobImage, self.rot)
+        self.image = pg.transform.rotate(self.game.shooterImage, self.rot)
         self.rect = self.image.get_rect()
         self.rect.center = self.pos       
         self.hit_rect.centerx = self.pos.x

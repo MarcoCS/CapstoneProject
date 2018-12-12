@@ -157,7 +157,13 @@ class Game:
     
     def showGameOverScreen(self):
         #self.draw_text("Your Score: " + str(self.score), 22, WHITE, WIDTH / 2, 15)
-        #if self.score > self.highscore
+        #if self.score > self.highscore:
+        #   self.highscore = self.score
+        #   self.draw_text("New High Score!", 22, WHITE, WIDTH / 2, HEIGHT / 2 + 40)  
+        #   with open(path.join(gameFolder, SCORE_FILE), 'w') as f:
+        #       f.write(str(self.score))
+        #else:
+        #   self.draw_text("High Score: " + str(self.score), 22, WHITE, WIDTH / 2, HEIGHT / 2 + 40)
         pass
         
 g = Game()

@@ -38,7 +38,8 @@ class Game:
         self.clock = pg.time.Clock()
         self.loadData()
         
-    def loadData(self):
+    def loadData(self):    
+        #loading graphics
         gameFolder = path.dirname("__file__")
         img_folder = path.join(gameFolder, 'img')
         self.map = Map(path.join(gameFolder, 'map.txt'))
@@ -46,6 +47,12 @@ class Game:
         self.bullet_img = pg.image.load(path.join(img_folder, BULLET_IMG)).convert_alpha()
         self.mobImage = pg.image.load(path.join(img_folder, MOB_IMG)).convert_alpha()
         self.shooterImage = pg.image.load(path.join(img_folder, SHOOTER_IMG)).convert_alpha()
+        #load score file
+        with open(path.join(gameFolder, SCORE_FILE), 'w') as f:
+            try:
+                self.score = int(f.read())
+            except:
+                self.score = 0
                 
     def new(self):
         # Start a new game
@@ -145,9 +152,12 @@ class Game:
         
         
     def showStartScreen(self):
+        #self.draw_text("High Score: " + str(self.score), 22, WHITE, WIDTH / 2, 15)
         pass
     
     def showGameOverScreen(self):
+        #self.draw_text("Your Score: " + str(self.score), 22, WHITE, WIDTH / 2, 15)
+        #if self.score > self.highscore
         pass
         
 g = Game()

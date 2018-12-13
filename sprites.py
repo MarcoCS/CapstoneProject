@@ -165,7 +165,7 @@ class Mob(pg.sprite.Sprite):
         self.rect.center = self.hit_rect.center
         if self.health <= 0:
             self.kill()
-            self.score += 50
+            
             
     def drawHealth(self):
         if self.health > 60:
@@ -212,7 +212,7 @@ class StationaryMob(pg.sprite.Sprite):
             ShooterBullet(self.game, pos, dir)
         if self.health <= 0:
             self.kill()
-            self.score += 75
+            
             
     def drawShooterHealth(self):
         if self.health > 60:

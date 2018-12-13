@@ -28,6 +28,13 @@ def drawPlayerHealth(surf, x, y, pct):
         col = RED
     pg.draw.rect(surf, col, fill_rect)
     pg.draw.rect(surf, WHITE, outline_rect, 2)
+ 
+def draw_text(self, text, size, color, x, y):
+        font = pg.font.Font(self.font_name, size)
+        text_surface = font.render(text, True, color)
+        tex_rect = text_surface.get_rect()
+        text_rect.midtop = (x, y)
+        self.screen.blit(text_surface, text_rect)
     
 class Game:
     def __init__(self):
@@ -126,14 +133,7 @@ class Game:
                 if self.playing:
                     self.playing = False
                 self.running = False
-             
-    def draw_text(self, text, size, color, x, y):
-        font = pg.font.Font(self.font_name, size)
-        text_surface = font.render(text, True, color)
-        tex_rect = text_surface.get_rect()
-        text_rect.midtop = (x, y)
-        self.screen.blit(text_surface, text_rect)
-    
+  
     def draw(self):
         # Draw the loop
         # This displays frame rate.
@@ -159,8 +159,7 @@ class Game:
             pg.draw.line(self.screen, LIGHTGREY, (x, 0), (x, HEIGHT))
         for y in range(0, HEIGHT, TILESIZE):
             pg.draw.line(self.screen, LIGHTGREY, (0, y), (WIDTH, y))           
-        
-        
+          
     def showStartScreen(self):
         #self.draw_text("High Score: " + str(self.score), 22, WHITE, WIDTH / 2, 15)
         pass

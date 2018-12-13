@@ -28,13 +28,6 @@ def drawPlayerHealth(surf, x, y, pct):
         col = RED
     pg.draw.rect(surf, col, fill_rect)
     pg.draw.rect(surf, WHITE, outline_rect, 2)
- 
-def draw_text(self, text, size, color, x, y):
-        font = pg.font.Font(self.font_name, size)
-        text_surface = font.render(text, True, color)
-        text_rect = text_surface.get_rect()
-        text_rect.midtop = (x, y)
-        self.screen.blit(text_surface, text_rect)
     
 class Game:
     def __init__(self):
@@ -150,7 +143,7 @@ class Game:
             #pg.draw.rect(self.screen, WHITE, self.player.hit_rect, 2)
         #Drawing the player's health bar
         drawPlayerHealth(self.screen, 10, 10, self.player.health / PLAYER_HEALTH)
-        draw_text(str('score: '), 18, WIDTH / 2, 10)
+        self.draw_text(str(self.score), 18,, WHITE, WIDTH / 2, 15)
         pg.display.flip()
         
     def drawGrid(self):
@@ -175,7 +168,12 @@ class Game:
         #   self.draw_text("High Score: " + str(self.score), 22, WHITE, WIDTH / 2, HEIGHT / 2 + 40)
         pass
     
-   
+    def draw_text(self, text, size, color, x, y):
+        font = pg.font.Font(self.font_name, size)
+        text_surface = font.render(text, True, color)
+        text_rect = text_surface.get_rect()
+        text_rect.midtop = (x, y)
+        self.screen.blit(text_surface, text_rect)
         
         
 g = Game()

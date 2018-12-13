@@ -126,6 +126,13 @@ class Game:
                 if self.playing:
                     self.playing = False
                 self.running = False
+             
+     def drawText(self, text, size, color, x, y):
+        font = pg.font.Font(self.font_name, size)
+        textSurface = font.render(text, True, color)
+        textRect = textSurface.get_rect()
+        textRect.midtop = (x, y)
+        self.screen.blit(textSurface, textRect)
     
     def draw(self):
         # Draw the loop
@@ -169,12 +176,7 @@ class Game:
         #   self.draw_text("High Score: " + str(self.score), 22, WHITE, WIDTH / 2, HEIGHT / 2 + 40)
         pass
     
-    def drawText(self, text, size, color, x, y):
-        font = pg.font.Font(self.font_name, size)
-        textSurface = font.render(text, True, color)
-        textRect = textSurface.get_rect()
-        textRect.midtop = (x, y)
-        self.screen.blit(textSurface, textRect)
+   
         
         
 g = Game()

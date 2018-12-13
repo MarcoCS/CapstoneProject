@@ -32,7 +32,7 @@ def drawPlayerHealth(surf, x, y, pct):
 def draw_text(self, text, size, color, x, y):
         font = pg.font.Font(self.font_name, size)
         text_surface = font.render(text, True, color)
-        tex_rect = text_surface.get_rect()
+        text_rect = text_surface.get_rect()
         text_rect.midtop = (x, y)
         self.screen.blit(text_surface, text_rect)
     

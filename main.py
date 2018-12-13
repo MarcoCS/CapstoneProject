@@ -37,6 +37,7 @@ class Game:
         pg.display.set_caption(TITLE)
         self.clock = pg.time.Clock()
         self.loadData()
+        self.font_name = pg.font.match_font(FONT_NAME)
         
     def loadData(self):    
         #loading graphics
@@ -56,6 +57,7 @@ class Game:
                 
     def new(self):
         # Start a new game
+        self.score = 0
         self.allSprites = pg.sprite.Group()
         self.walls = pg.sprite.Group()
         self.bullets = pg.sprite.Group()
@@ -166,6 +168,14 @@ class Game:
         #else:
         #   self.draw_text("High Score: " + str(self.score), 22, WHITE, WIDTH / 2, HEIGHT / 2 + 40)
         pass
+    
+    def drawText(self, text, size, color, x, y):
+        font = pg.font.Font(self.font_name, size)
+        textSurface = font.render(text, True, color)
+        textRect = textSurface.get_rect()
+        textRect.midtop = (x, y)
+        self.screen.blit(textSurface, textRect)
+        
         
 g = Game()
 g.showStartScreen()

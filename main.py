@@ -127,12 +127,12 @@ class Game:
                     self.playing = False
                 self.running = False
              
-    def drawText(self, text, size, color, x, y):
+    def draw_text(self, text, size, color, x, y):
         font = pg.font.Font(self.font_name, size)
-        textSurface = font.render(text, True, color)
-        textRect = textSurface.get_rect()
-        textRect.midtop = (x, y)
-        self.screen.blit(textSurface, textRect)
+        text_surface = font.render(text, True, color)
+        tex_rect = text_surface.get_rect()
+        text_rect.midtop = (x, y)
+        self.screen.blit(text_surface, text_rect)
     
     def draw(self):
         # Draw the loop
@@ -150,7 +150,7 @@ class Game:
             #pg.draw.rect(self.screen, WHITE, self.player.hit_rect, 2)
         #Drawing the player's health bar
         drawPlayerHealth(self.screen, 10, 10, self.player.health / PLAYER_HEALTH)
-        drawText(screen, str(score), 18, WIDTH / 2, 10)
+        draw_text(screen, str(score), 18, WIDTH / 2, 10)
         pg.display.flip()
         
     def drawGrid(self):

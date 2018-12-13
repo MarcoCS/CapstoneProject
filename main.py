@@ -143,7 +143,7 @@ class Game:
             #pg.draw.rect(self.screen, WHITE, self.player.hit_rect, 2)
         #Drawing the player's health bar
         drawPlayerHealth(self.screen, 10, 10, self.player.health / PLAYER_HEALTH)
-        self.draw_text(str(self.score), 18,, WHITE, WIDTH / 2, 15)
+        self.draw_text(str(self.score), 18, WHITE, WIDTH / 2, 15)
         pg.display.flip()
         
     def drawGrid(self):

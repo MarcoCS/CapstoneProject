@@ -62,6 +62,7 @@ class Game:
         # Start a new game
         self.score = 0
         self.allSprites = pg.sprite.Group()
+        self.
         self.walls = pg.sprite.Group()
         self.bullets = pg.sprite.Group()
         self.mobs = pg.sprite.Group()

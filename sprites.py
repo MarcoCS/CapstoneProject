@@ -110,6 +110,15 @@ class Healthpower(pg.sprite.Sprite):
     def __init__(self, center):
         pg.sprite.Sprite.__init__(self)
         self.type = choice([normalheal, superheal])
+        self.image = healthupImages[self.type]
+        self.rect = self.image.get_rect()
+        self.rect.center = center
+        self.spawn_time = pg.time.get_ticks()
+        
+    def update(self):
+        #kill if on the map for too long
+        if pg.time.get_ticks() - self.spawntime > HEALTH_LIFETIME:
+            self.kill()
         
         
         

@@ -37,8 +37,10 @@ class Game:
         pg.display.set_caption(TITLE)
         self.clock = pg.time.Clock()
         self.loadData()
+        self.font_name = pg.font.match_font(FONT_NAME)
         
-    def loadData(self):
+    def loadData(self):    
+        #loading graphics
         gameFolder = path.dirname("__file__")
         img_folder = path.join(gameFolder, 'img')
         self.map = Map(path.join(gameFolder, 'map.txt'))
@@ -48,9 +50,18 @@ class Game:
         self.shooterImage = pg.image.load(path.join(img_folder, SHOOTER_IMG)).convert_alpha()
         self.font = pg.font.match_font(FONT)    
             
+
+                
     def new(self):
         # Start a new game
         self.paused = False
+        self.score = 0    
+        #load score file
+        with open(path.join(gameFolder, SCORE_FILE), 'w') as f:
+            try:
+                self.score = int(f.read())
+            except:
+                self.score = 0
         self.allSprites = pg.sprite.Group()
         self.walls = pg.sprite.Group()
         self.bullets = pg.sprite.Group()
@@ -99,6 +110,7 @@ class Game:
         for hit in hits:
             hit.health -= BULLET_DAMAGE
             hit.vel = vec(0, 0)         
+            self.score += 5
             
         # Player/shooter collisions
         hits = pg.sprite.spritecollide(self.player, self.shooterBullets, True, False)
@@ -112,6 +124,7 @@ class Game:
         hits = pg.sprite.groupcollide(self.shooters, self.bullets, False, True)
         for hit in hits:
             hit.health -= BULLET_DAMAGE
+            self.score += 5
             
     def events(self):
         # Process events
@@ -123,7 +136,7 @@ class Game:
             if event.type == pg.KEYDOWN:
                 if event.key == pg.K_p:
                     self.paused = not self.paused
-    
+   
     def draw(self):
         # Draw the loop
         # This displays frame rate.
@@ -138,11 +151,12 @@ class Game:
             self.screen.blit(sprite.image, self.camera.apply(sprite))
         #testing rectangle for collisions
             #pg.draw.rect(self.screen, WHITE, self.player.hit_rect, 2)
-        #Drawing the player's health bar
+        #Drawing the player's health bar. 
         drawPlayerHealth(self.screen, 10, 10, self.player.health / PLAYER_HEALTH)
         if self.paused:
             self.showPauseScreen()
         self.drawText(str(round(self.clock.get_fps(),2)), self.font, 20, WHITE, WIDTH - 50, 20)
+        self.draw_text(str(self.score), 18, WHITE, WIDTH / 2, 15)
         pg.display.flip()
         
     def drawText(self, text, fontName, size, color, x, y):
@@ -157,21 +171,21 @@ class Game:
         for x in range(0, WIDTH, TILESIZE):
             pg.draw.line(self.screen, LIGHTGREY, (x, 0), (x, HEIGHT))
         for y in range(0, HEIGHT, TILESIZE):
-            pg.draw.line(self.screen, LIGHTGREY, (0, y), (WIDTH, y))           
-        
+            pg.draw.line(self.screen, LIGHTGREY, (0, y), (WIDTH, y))                
+
+    def showPauseScreen(self):
+        self.drawText("Paused", self.font, 48, WHITE, WIDTH / 2, HEIGHT / 4)
+          
     def showStartScreen(self):
         self.screen.fill(BGCOLOR)
         self.drawText("Shooter Game", self.font, 72, WHITE, WIDTH / 2, HEIGHT / 2)
+        self.draw_text("High Score: " + str(self.score), 22, WHITE, WIDTH / 2, 15)
         self.drawText("Up/Down or W/S to move. Left/Right or A/D to rotate.", self.font, 20, WHITE, WIDTH / 2, HEIGHT / 2 + 100)
         self.drawText("Space to fire, p to pause", self.font, 20, WHITE, WIDTH / 2, HEIGHT / 2 + 150)
         self.drawText("Press any key to play", self.font, 20, WHITE, WIDTH / 2, HEIGHT / 2 + 200)
         pg.display.flip()
         self.waitForKey()
     
-    def showPauseScreen(self):
-        self.drawText("Paused", self.font, 48, WHITE, WIDTH / 2, HEIGHT / 4)
-        
-        
     def showGameOverScreen(self):
         if not self.running:
             return
@@ -180,6 +194,22 @@ class Game:
         self.drawText("Press any key to play again", self.font, 20, WHITE, WIDTH / 2, HEIGHT / 2 + 100)
         pg.display.flip()
         self.waitForKey()
+        self.draw_text("Your Score: " + str(self.score), 22, WHITE, WIDTH / 2, 15)
+        if self.score > self.highscore:
+           self.highscore = self.score
+           self.draw_text("New High Score!", 22, WHITE, WIDTH / 2, HEIGHT / 2 + 40)  
+           with open(path.join(gameFolder, SCORE_FILE), 'w') as f:
+               f.write(str(self.score))
+        else:
+           self.draw_text("High Score: " + str(self.score), 22, WHITE, WIDTH / 2, HEIGHT / 2 + 40)
+    
+    def draw_text(self, text, size, color, x, y):
+        font = pg.font.Font(self.font_name, size)
+        text_surface = font.render(text, True, color)
+        text_rect = text_surface.get_rect()
+        text_rect.midtop = (x, y)
+        self.screen.blit(text_surface, text_rect)
+
     
     def waitForKey(self):
         waiting = True

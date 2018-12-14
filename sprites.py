@@ -167,6 +167,7 @@ class Mob(pg.sprite.Sprite):
         if self.health <= 0:
             self.kill()
             
+            
     def drawHealth(self):
         if self.health > 60:
             col = GREEN
@@ -197,7 +198,7 @@ class StationaryMob(pg.sprite.Sprite):
         
     def update(self):
         self.rot = (self.game.player.pos - self.pos).angle_to(vec(1,0))
-        self.image = pg.transform.rotate(self.game.mobImage, self.rot)
+        self.image = pg.transform.rotate(self.game.shooterImage, self.rot)
         self.rect = self.image.get_rect()
         self.rect.center = self.pos       
         self.hit_rect.centerx = self.pos.x
@@ -205,13 +206,14 @@ class StationaryMob(pg.sprite.Sprite):
         #uses the new rectangle instead of the rectangle of the sprite
         self.rect.center = self.hit_rect.center
         now = pg.time.get_ticks()
-        if now - self.last_shot > 2000:
+        if now - self.last_shot > 4500:
             self.last_shot = now
             dir = vec(1, 0).rotate(-self.rot)
             pos = self.pos + BARREL_OFFSET.rotate(-self.rot)
             ShooterBullet(self.game, pos, dir)
         if self.health <= 0:
             self.kill()
+            
             
     def drawShooterHealth(self):
         if self.health > 60:

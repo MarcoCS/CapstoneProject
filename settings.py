@@ -40,6 +40,8 @@ KICKBACK = 200
 GUN_SPREAD = 8
 BULLET_DAMAGE = 10
 
+#powerup settings
+HEALTHUP_POWER = 'healthup.png'
 
 # Player settings
 PLAYER_HEALTH = 100

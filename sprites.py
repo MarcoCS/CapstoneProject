@@ -70,6 +70,7 @@ class Player(pg.sprite.Sprite):
                 Bullet(self.game, pos, dir)
                 self.vel = vec(-KICKBACK, 0).rotate(-self.rot)
     
+    
                 
     def update(self):
         self.get_keys()

@@ -48,6 +48,9 @@ class Game:
         self.bullet_img = pg.image.load(path.join(img_folder, BULLET_IMG)).convert_alpha()
         self.mobImage = pg.image.load(path.join(img_folder, MOB_IMG)).convert_alpha()
         self.shooterImage = pg.image.load(path.join(img_folder, SHOOTER_IMG)).convert_alpha()
+        healthupImages = {}
+        healthupImages['normal'] = pg.image.load(path.join(img_folder, HEALTHUP_POWER)).conver_alpha()
+        healthupImages['super'] = pg.image.load(path.join(img_folder, SUPERHEALTHUP_POWER)).convert_alpha()
         #load score file
         with open(path.join(gameFolder, SCORE_FILE), 'w') as f:
             try:

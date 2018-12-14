@@ -42,6 +42,7 @@ BULLET_DAMAGE = 10
 
 #powerup settings
 HEALTHUP_POWER = 'healthup.png'
+SUPERHEALTHUP_POWER = 'super_healthup.png'
 
 # Player settings
 PLAYER_HEALTH = 100

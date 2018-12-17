@@ -125,7 +125,7 @@ class Game:
             hit.vel = vec(0, 0)         
             self.score += 5
             if random.random() > 0.9:
-                healthpower = Healthpower(hit.rect.center)
+                healthpower = Healthpower(self, hit.rect.center)
                 allSprites.add(healthpower)
             
         # Player/shooter collisions

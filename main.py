@@ -96,7 +96,7 @@ class Game:
         self.allSprites.update()
         self.camera.update(self.player)
         #player hits health powerup
-        hits = pg.sprite.spitecollide(self.player, self.healthPower, True)
+        hits = pg.sprite.spritecollide(self.player, self.healthPower, True)
         for hit in hits:
             if hit.type == 'normalheal':
                 if self.player.health < 100:

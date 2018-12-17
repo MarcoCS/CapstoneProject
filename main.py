@@ -160,6 +160,8 @@ class Game:
             pg.draw.line(self.screen, LIGHTGREY, (0, y), (WIDTH, y))           
         
     def showStartScreen(self):
+        # Draws the start screen with a colour, and displays the controls.
+        # It will wait for the user to press a key, then start the game.
         self.screen.fill(BGCOLOR)
         self.drawText("Shooter Game", self.font, 72, WHITE, WIDTH / 2, HEIGHT / 2)
         self.drawText("Up/Down or W/S to move. Left/Right or A/D to rotate.", self.font, 20, WHITE, WIDTH / 2, HEIGHT / 2 + 100)
@@ -173,6 +175,7 @@ class Game:
         
         
     def showGameOverScreen(self):
+        # Draw the game over screen and wait for a key input to start new
         if not self.running:
             return
         self.screen.fill(BGCOLOR)
@@ -182,6 +185,7 @@ class Game:
         self.waitForKey()
     
     def waitForKey(self):
+        # Keeps time ticking until a key is pressed. Then returns. 
         waiting = True
         while waiting:
             self.clock.tick(FPS)

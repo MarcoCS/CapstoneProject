@@ -155,6 +155,7 @@ class Mob(pg.sprite.Sprite):
         self.rect.center = self.pos
         self.acc = vec(1, 0).rotate(-self.rot)
         self.avoidMobs()
+        # This self.acc.scale_to_length adjusting to speed simulates friction.
         self.acc.scale_to_length(self.speed)
         self.acc += self.vel * -1
         self.vel += self.acc * self.game.dt
@@ -196,6 +197,8 @@ class StationaryMob(pg.sprite.Sprite):
         self.health = SHOOTER_HEALTH
         
     def update(self):
+        # Stationary mobs don't move so they need no position updates
+        # They just rotate to get line-of-sight on the player
         self.rot = (self.game.player.pos - self.pos).angle_to(vec(1,0))
         self.image = pg.transform.rotate(self.game.mobImage, self.rot)
         self.rect = self.image.get_rect()

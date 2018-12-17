@@ -11,6 +11,7 @@ from settings import *
 from tilemap import collide_hit_rect
 vec = pg.math.Vector2
 from random import choice
+from main import healthupImages
 
 def collide_with_walls(sprite, group, dir):
     # Handles each direction separately. This function is used for both

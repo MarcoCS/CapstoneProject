@@ -10,6 +10,7 @@ from settings import *
 from sprites import *
 from tilemap import *
 from os import path
+import random
 
 # HUD functions
 def drawPlayerHealth(surf, x, y, pct):
@@ -62,7 +63,7 @@ class Game:
         # Start a new game
         self.score = 0
         self.allSprites = pg.sprite.Group()
-        self.
+        self.healthPower = pg.sprite.Group()
         self.walls = pg.sprite.Group()
         self.bullets = pg.sprite.Group()
         self.mobs = pg.sprite.Group()
@@ -94,6 +95,19 @@ class Game:
         # Update the game 
         self.allSprites.update()
         self.camera.update(self.player)
+        #player hits health powerup
+        hits = pg.sprite.spitecollide(self.player, self.healthPower, True)
+        for hit in hits:
+            if hit.type == 'normalheal':
+                if self.player.health < 100:
+                    self.player.health += 20
+                    if self.player.health > 100:
+                        self.player.health = 100
+            if hit type == 'superheal':
+                if self.player.health < 100:
+                    self.player.health += 50
+                    if self.player.health > 100:
+                        self.player.health = 100
         #mobs hit player
         hits = pg.sprite.spritecollide(self.player, self.mobs, False, collide_hit_rect)
         for hit in hits:
@@ -110,6 +124,9 @@ class Game:
             hit.health -= BULLET_DAMAGE
             hit.vel = vec(0, 0)         
             self.score += 5
+            if random.random() > 0.9:
+                healthpower = Healthpower(hit.rect.center)
+                allSprites.add(healthpower)
             
         # Player/shooter collisions
         hits = pg.sprite.spritecollide(self.player, self.shooterBullets, True, False)

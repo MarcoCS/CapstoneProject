@@ -7,7 +7,7 @@
 #################################################
 import pygame as pg
 from random import uniform
-from settings import *
+import settings
 from tilemap import collide_hit_rect
 vec = pg.math.Vector2
 from random import choice
@@ -34,42 +34,48 @@ def collide_with_walls(sprite, group, dir):
             sprite.vel.y = 0
             sprite.hit_rect.centery =  sprite.pos.y
 
+
 class Player(pg.sprite.Sprite):
     def __init__(self, game, x, y):
         self.groups = game.allSprites
         pg.sprite.Sprite.__init__(self, self.groups)
         self.game = game
+        self.weapon = "Pistol"
         self.image = game.player_img
         self.rect = self.image.get_rect()
-        self.hit_rect = PLAYER_HIT_RECT
+        self.hit_rect = settings.PLAYER_HIT_RECT
         self.hit_rect.center = self.rect.center
         self.vel = vec(0, 0)
-        self.pos = vec(x, y) * TILESIZE
+        self.pos = vec(x, y) * settings.TILESIZE
         self.rot = 0
         self.last_shot = 0
-        self.health = PLAYER_HEALTH
+        self.health = settings.PLAYER_HEALTH
         
     def get_keys(self):
         self.rot_speed = 0
         self.vel = vec(0, 0)
         keys = pg.key.get_pressed()
+        # Directional controls
         if keys[pg.K_LEFT] or keys[pg.K_a]:
-            self.rot_speed = PLAYER_ROT_SPEED
+            self.rot_speed = settings.PLAYER_ROT_SPEED
         if keys[pg.K_RIGHT] or keys[pg.K_d]:
-            self.rot_speed = -PLAYER_ROT_SPEED
+            self.rot_speed = -settings.PLAYER_ROT_SPEED
         if keys[pg.K_UP] or keys[pg.K_w]:
-            self.vel = vec(PLAYER_SPEED, 0).rotate(-self.rot)
+            self.vel = vec(settings.PLAYER_SPEED, 0).rotate(-self.rot)
         if keys[pg.K_DOWN] or keys [pg.K_s]:
-            self.vel = vec(-PLAYER_SPEED / 2, 0).rotate(-self.rot)
-        if keys[pg.K_SPACE]:
+            self.vel = vec(-settings.PLAYER_SPEED / 2, 0).rotate(-self.rot)
+        # ------------------------            
+        if keys[pg.K_SPACE]: # Shooting button
             now = pg.time.get_ticks()
-            if now - self.last_shot > BULLET_RATE:
+            if now - self.last_shot > settings.BULLET_RATE:
                 self.last_shot = now
-                dir = vec(1, 0).rotate(-self.rot)
-                pos = self.pos + BARREL_OFFSET.rotate(-self.rot)
-                Bullet(self.game, pos, dir)
-                self.vel = vec(-KICKBACK, 0).rotate(-self.rot)
-    
+                print(settings.PELLETS)
+                for x in range(settings.PELLETS): # This is for things like shotguns and stuff
+                    dir = vec(1, 0).rotate(-self.rot)
+                    pos = self.pos + settings.BARREL_OFFSET.rotate(-self.rot)
+                    Bullet(self.game, pos, dir)
+                    self.vel = vec(-settings.KICKBACK, 0).rotate(-self.rot)
+ 
                 
     def update(self):
         self.get_keys()
@@ -84,7 +90,88 @@ class Player(pg.sprite.Sprite):
         collide_with_walls(self, self.game.walls, 'y')
         #uses the new rectangle instead of the rectangle of the sprite
         self.rect.center = self.hit_rect.center
-        
+
+class Weapons:
+    class Shotgun(pg.sprite.Sprite):
+        def __init__(self, game, x, y):
+            self.groups = game.allSprites, game.shotgun
+            pg.sprite.Sprite.__init__(self, self.groups)
+            self.game = game
+            self.image = game.shotgun_img
+            self.rect = self.image.get_rect()
+            self.pos = vec(x, y) * settings.TILESIZE
+            self.rect.center = self.pos
+            
+
+        def change_var():# Gun Characteristics:
+            settings.BULLET_RATE = 500      # Rate of fire, delay between bullets
+            settings.BULLET_LIFETIME = 1250 # When the bullet kills itself in "milliseconds"
+            settings.BULLET_SPEED = 500     # How fast the bullet travels
+            settings.KICKBACK = 600         # Recoil; how much shooting sends the player back.  This may be changed
+            settings.GUN_SPREAD = 20         # How much the bullets deviates
+            settings.BULLET_DAMAGE = 45     # Self explanatory
+            settings.PELLETS = 5            # Controls how many bullets will spawn
+
+    class Starting_pistol(pg.sprite.Sprite):
+        def __init__(self,game, x, y):
+            self.groups = game.allSprites, game.pistol
+            pg.sprite.Sprite.__init__(self, self.groups)
+            self.game = game
+            self.image = game.pistol_img
+            self.rect = self.image.get_rect()
+            self.pos = vec(x, y) * settings.TILESIZE
+            self.rect.center = self.pos
+
+        def change_var():
+            # Gun Characteristics:
+            settings.BULLET_RATE = 250      # Rate of fire; delay between bullets
+            settings.BULLET_LIFETIME = 1000 # When the bullet kills itself in "milliseconds"
+            settings.BULLET_SPEED = 500     # How fast the bullet travels
+            settings.KICKBACK = 200         # Recoil; how much shooting sends the player back.  This may be changed
+            settings.GUN_SPREAD = 8         # How much the bullets deviates
+            settings.BULLET_DAMAGE = 10     # Self explanatory
+            PELLETS = 1            # Controlls How many bullets will spawn per trigger pull
+
+    class Sniper_rifle(pg.sprite.Sprite):
+        def __init__(self,game, x, y):
+            self.groups = game.allSprites, game.sniper
+            pg.sprite.Sprite.__init__(self, self.groups)
+            self.game = game
+            self.image = game.sniper_img
+            self.rect = self.image.get_rect()
+            self.pos = vec(x, y) * settings.TILESIZE
+            self.rect.center = self.pos
+
+        def change_var():
+            # Gun Characteristics:
+            settings.BULLET_RATE = 1000       # Rate of fire; delay between bullets
+            settings.BULLET_LIFETIME = 2000 # When the bullet kills itself in "milliseconds"
+            settings.BULLET_SPEED = 2000    # How fast the bullet travels
+            settings.KICKBACK = 350          # Recoil; how much shooting sends the player back.  This may be changed
+            settings.GUN_SPREAD = 1         # How much the bullets deviates
+            settings.BULLET_DAMAGE = 100     # Self explanatory
+            settings.PELLETS = 1            # Controlls How many bullets will spawn per trigger pull
+
+    class Assault_rifle(pg.sprite.Sprite):
+        def __init__(self,game, x, y):
+            self.groups = game.allSprites, game.ar
+            pg.sprite.Sprite.__init__(self, self.groups)
+            self.game = game
+            self.image = game.ar_img
+            self.rect = self.image.get_rect()
+            self.pos = vec(x, y) * settings.TILESIZE
+            self.rect.center = self.pos
+
+        def change_var():
+            # Gun Characteristics:
+            settings.BULLET_RATE = 20       # Rate of fire; delay between bullets
+            settings.BULLET_LIFETIME = 1250 # When the bullet kills itself in "milliseconds"
+            settings.BULLET_SPEED = 700    # How fast the bullet travels
+            settings.KICKBACK = 250          # Recoil; how much shooting sends the player back.  This may be changed
+            settings.GUN_SPREAD = 10         # How much the bullets deviates
+            settings.BULLET_DAMAGE = 15     # Self explanatory
+            settings.PELLETS = 1            # Controlls How many bullets will spawn per trigger pull
+
 class Bullet(pg.sprite.Sprite):
     def __init__(self, game, pos, dir):
         self.groups = game.allSprites, game.bullets
@@ -94,8 +181,8 @@ class Bullet(pg.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.pos = vec(pos)
         self.rect.center = pos
-        spread = uniform(-GUN_SPREAD, GUN_SPREAD)
-        self.vel = dir.rotate(spread) * BULLET_SPEED
+        spread = uniform(-settings.GUN_SPREAD, settings.GUN_SPREAD)
+        self.vel = dir.rotate(spread) * settings.BULLET_SPEED
         self.spawn_time = pg.time.get_ticks()
         
     def update(self):
@@ -103,23 +190,23 @@ class Bullet(pg.sprite.Sprite):
         self.rect.center = self.pos
         if pg.sprite.spritecollideany(self, self.game.walls):
             self.kill()
-        if pg.time.get_ticks() - self.spawn_time > BULLET_LIFETIME:
+        if pg.time.get_ticks() - self.spawn_time > settings.BULLET_LIFETIME:
             self.kill()
         
-        
+
         
 class Wall(pg.sprite.Sprite):
     def __init__(self, game, x, y):
         self.groups = game.allSprites, game.walls
         pg.sprite.Sprite.__init__(self, self.groups)
         self.game = game
-        self.image = pg.Surface((TILESIZE, TILESIZE))
-        self.image.fill(GREEN)
+        self.image = pg.Surface((settings.TILESIZE, settings.TILESIZE))
+        self.image.fill(settings.GREEN)
         self.rect = self.image.get_rect()
         self.x = x
         self.y = y
-        self.rect.x = x * TILESIZE
-        self.rect.y = y * TILESIZE
+        self.rect.x = x * settings.TILESIZE
+        self.rect.y = y * settings.TILESIZE
 
             
 class Mob(pg.sprite.Sprite):
@@ -129,21 +216,21 @@ class Mob(pg.sprite.Sprite):
         self.game = game
         self.image = game.mobImage
         self.rect = self.image.get_rect()
-        self.hit_rect = MOB_HIT_RECT.copy()
+        self.hit_rect = settings.MOB_HIT_RECT.copy()
         self.hit_rect.center = self.rect.center
-        self.pos = vec(x, y) * TILESIZE
+        self.pos = vec(x, y) * settings.TILESIZE
         self.vel = vec(0, 0)
         self.rect.center = self.pos
         self.rot = 0
-        self.speed = choice(MOB_SPEEDS)
-        self.health = MOB_HEALTH
+        self.speed = choice(settings.MOB_SPEEDS)
+        self.health = settings.MOB_HEALTH
 
     def avoidMobs(self):
         # This function keeps mobs spread out
         for mob in self.game.mobs:
             if mob != self:
                 distance = self.pos - mob.pos
-                if 0 < distance.length() < AVOID_RADIUS:
+                if 0 < distance.length() < settings.AVOID_RADIUS:
                     self.acc += distance.normalize()
 
     def update(self):
@@ -166,18 +253,17 @@ class Mob(pg.sprite.Sprite):
         if self.health <= 0:
             self.kill()
             
-            
     def drawHealth(self):
         if self.health > 60:
-            col = GREEN
+            col = settings.GREEN
         elif self.health > 30:
-            col = YELLOW
+            col = settings.YELLOW
         else:
-            col = RED
-        width = int(self.rect.width * self.health / MOB_HEALTH)
+            col = settings.RED
+        width = int(self.rect.width * self.health / settings.MOB_HEALTH)
         self.health_bar = pg.Rect(0, 0, width, 7)
-        if self.health < MOB_HEALTH:
-           pg.draw.rect(self.image, col, self.health_bar)
+        if self.health < settings.MOB_HEALTH:
+            pg.draw.rect(self.image, col, self.health_bar)
      
 class StationaryMob(pg.sprite.Sprite):
     def __init__(self, game, x, y):
@@ -186,14 +272,14 @@ class StationaryMob(pg.sprite.Sprite):
         self.game = game
         self.image = game.shooterImage
         self.rect = self.image.get_rect()
-        self.hit_rect = MOB_HIT_RECT.copy()
+        self.hit_rect = settings.MOB_HIT_RECT.copy()
         self.hit_rect.center = self.rect.center
-        self.pos = vec(x, y) * TILESIZE
+        self.pos = vec(x, y) * settings.TILESIZE
         self.vel = vec(0, 0)
         self.rect.center = self.pos
         self.rot = 0
         self.last_shot = 0
-        self.health = SHOOTER_HEALTH
+        self.health = settings.SHOOTER_HEALTH
         
     def update(self):
         self.rot = (self.game.player.pos - self.pos).angle_to(vec(1,0))
@@ -208,23 +294,22 @@ class StationaryMob(pg.sprite.Sprite):
         if now - self.last_shot > 4500:
             self.last_shot = now
             dir = vec(1, 0).rotate(-self.rot)
-            pos = self.pos + BARREL_OFFSET.rotate(-self.rot)
+            pos = self.pos + settings.BARREL_OFFSET.rotate(-self.rot)
             ShooterBullet(self.game, pos, dir)
         if self.health <= 0:
             self.kill()
             
-            
     def drawShooterHealth(self):
         if self.health > 60:
-            col = GREEN
+            col = settings.GREEN
         elif self.health > 30:
-            col = YELLOW
+            col = settings.YELLOW
         else:
-            col = RED
-        width = int(self.rect.width * self.health / SHOOTER_HEALTH)
+            col = settings.RED
+        width = int(self.rect.width * self.health / settings.SHOOTER_HEALTH)
         self.health_bar = pg.Rect(0, 0, width, 7)
-        if self.health < SHOOTER_HEALTH:
-           pg.draw.rect(self.image, col, self.health_bar) 
+        if self.health < settings.SHOOTER_HEALTH:
+            pg.draw.rect(self.image, col, self.health_bar) 
         
             
 class ShooterBullet(pg.sprite.Sprite):
@@ -236,8 +321,8 @@ class ShooterBullet(pg.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.pos = vec(pos)
         self.rect.center = pos
-        spread = uniform(-GUN_SPREAD, GUN_SPREAD)
-        self.vel = dir.rotate(spread) * BULLET_SPEED
+        spread = uniform(-settings.GUN_SPREAD, settings.GUN_SPREAD)
+        self.vel = dir.rotate(spread) * settings.BULLET_SPEED
         self.spawn_time = pg.time.get_ticks()
         
     def update(self):
@@ -245,5 +330,5 @@ class ShooterBullet(pg.sprite.Sprite):
         self.rect.center = self.pos
         if pg.sprite.spritecollideany(self, self.game.walls):
             self.kill()
-        if pg.time.get_ticks() - self.spawn_time > BULLET_LIFETIME:
+        if pg.time.get_ticks() - self.spawn_time > settings.BULLET_LIFETIME:
             self.kill()            

@@ -10,6 +10,7 @@ from settings import *
 from sprites import *
 from tilemap import *
 from os import path
+from random import *
 
 # HUD functions
 def drawPlayerHealth(surf, x, y, pct):
@@ -37,10 +38,8 @@ class Game:
         pg.display.set_caption(TITLE)
         self.clock = pg.time.Clock()
         self.loadData()
-        self.font_name = pg.font.match_font(FONT_NAME)
         
-    def loadData(self):    
-        #loading graphics
+    def loadData(self):
         gameFolder = path.dirname("__file__")
         img_folder = path.join(gameFolder, 'img')
         self.map = Map(path.join(gameFolder, 'map.txt'))
@@ -48,22 +47,28 @@ class Game:
         self.bullet_img = pg.image.load(path.join(img_folder, BULLET_IMG)).convert_alpha()
         self.mobImage = pg.image.load(path.join(img_folder, MOB_IMG)).convert_alpha()
         self.shooterImage = pg.image.load(path.join(img_folder, SHOOTER_IMG)).convert_alpha()
-        #load score file
-        with open(path.join(gameFolder, SCORE_FILE), 'w') as f:
-            try:
-                self.score = int(f.read())
-            except:
-                self.score = 0
-                
+        
+        # Weapon sprites:
+        self.shotgun_img = pg.image.load(path.join(img_folder, "Shotgun.png")).convert_alpha()
+        self.pistol_img = pg.image.load(path.join(img_folder, "ColtPixel.png")).convert_alpha()
+        self.ar_img = pg.image.load(path.join(img_folder, "M16.png")).convert_alpha()
+        self.sniper_img = pg.image.load(path.join(img_folder, "HuntingRifle.png")).convert_alpha()
     def new(self):
         # Start a new game
-        self.score = 0
         self.allSprites = pg.sprite.Group()
         self.walls = pg.sprite.Group()
         self.bullets = pg.sprite.Group()
         self.mobs = pg.sprite.Group()
         self.shooters = pg.sprite.Group()
         self.shooterBullets = pg.sprite.Group()
+        
+        # Weapon sprites
+        self.shotgun = pg.sprite.Group()
+        self.sniper = pg.sprite.Group()
+        self.pistol = pg.sprite.Group()
+        self.ar = pg.sprite.Group()
+        # -------
+        
         for row, tiles in enumerate(self.map.data):
             for col, tile, in enumerate(tiles):
                 if tile == 'P':
@@ -74,6 +79,19 @@ class Game:
                     Mob(self, col, row)
                 if tile == 'S':
                     StationaryMob(self, col, row)
+                if tile == 'W':
+                    roll = randint(1,4)
+                    print(roll)
+                    if roll == 1:
+                        Weapons.Shotgun(self, col, row)
+                        print(col, row)
+                    if roll == 3:
+                        Weapons.Starting_pistol(self, col, row)
+                    if roll == 2:
+                        Weapons.Sniper_rifle(self, col, row)
+                    if roll == 4:
+                        Weapons.Assault_rifle(self, col, row)
+                    
         self.camera = Camera(self.map.width, self.map.height)
                     
 
@@ -103,9 +121,8 @@ class Game:
         #bullets hit mobs
         hits = pg.sprite.groupcollide(self.mobs, self.bullets, False, True)
         for hit in hits:
-            hit.health -= BULLET_DAMAGE
+            hit.health -= settings.BULLET_DAMAGE
             hit.vel = vec(0, 0)         
-            self.score += 5
             
         # Player/shooter collisions
         hits = pg.sprite.spritecollide(self.player, self.shooterBullets, True, False)
@@ -114,12 +131,28 @@ class Game:
             hit.vel = vec(0, 0)
             if self.player.health <= 0:
                 self.playing = False
-          
+                
+        # Detection of weapon pickup
+        hits = pg.sprite.spritecollide(self.player, self.shotgun, True, False)
+        if hits:
+            Weapons.Shotgun.change_var()
+            
+        hits = pg.sprite.spritecollide(self.player, self.pistol, True, False)
+        if hits:
+            Weapons.Starting_pistol.change_var()
+            
+        hits = pg.sprite.spritecollide(self.player, self.sniper, True, False)
+        if hits:
+            Weapons.Sniper_rifle.change_var()
+        
+        hits = pg.sprite.spritecollide(self.player, self.ar, True, False)
+        if hits:
+            Weapons.Assault_rifle.change_var()
+    
         # Bullet/shooter collision
         hits = pg.sprite.groupcollide(self.shooters, self.bullets, False, True)
         for hit in hits:
-            hit.health -= BULLET_DAMAGE
-            self.score += 5
+            hit.health -= settings.BULLET_DAMAGE
             
     def events(self):
         # Process events
@@ -128,7 +161,7 @@ class Game:
                 if self.playing:
                     self.playing = False
                 self.running = False
-  
+    
     def draw(self):
         # Draw the loop
         # This displays frame rate.
@@ -145,7 +178,6 @@ class Game:
             #pg.draw.rect(self.screen, WHITE, self.player.hit_rect, 2)
         #Drawing the player's health bar
         drawPlayerHealth(self.screen, 10, 10, self.player.health / PLAYER_HEALTH)
-        self.draw_text(str(self.score), 18, WHITE, WIDTH / 2, 15)
         pg.display.flip()
         
     def drawGrid(self):
@@ -154,29 +186,13 @@ class Game:
             pg.draw.line(self.screen, LIGHTGREY, (x, 0), (x, HEIGHT))
         for y in range(0, HEIGHT, TILESIZE):
             pg.draw.line(self.screen, LIGHTGREY, (0, y), (WIDTH, y))           
-          
+        
+        
     def showStartScreen(self):
-        #self.draw_text("High Score: " + str(self.score), 22, WHITE, WIDTH / 2, 15)
         pass
     
     def showGameOverScreen(self):
-        #self.draw_text("Your Score: " + str(self.score), 22, WHITE, WIDTH / 2, 15)
-        #if self.score > self.highscore:
-        #   self.highscore = self.score
-        #   self.draw_text("New High Score!", 22, WHITE, WIDTH / 2, HEIGHT / 2 + 40)  
-        #   with open(path.join(gameFolder, SCORE_FILE), 'w') as f:
-        #       f.write(str(self.score))
-        #else:
-        #   self.draw_text("High Score: " + str(self.score), 22, WHITE, WIDTH / 2, HEIGHT / 2 + 40)
         pass
-    
-    def draw_text(self, text, size, color, x, y):
-        font = pg.font.Font(self.font_name, size)
-        text_surface = font.render(text, True, color)
-        text_rect = text_surface.get_rect()
-        text_rect.midtop = (x, y)
-        self.screen.blit(text_surface, text_rect)
-        
         
 g = Game()
 g.showStartScreen()

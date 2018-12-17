@@ -126,7 +126,7 @@ class Game:
             self.score += 5
             if random.random() > 0.9:
                 healthpower = Healthpower(self, hit.rect.center)
-                allSprites.add(healthpower)
+              
             
         # Player/shooter collisions
         hits = pg.sprite.spritecollide(self.player, self.shooterBullets, True, False)

@@ -112,7 +112,7 @@ class Healthpower(pg.sprite.Sprite):
         pg.sprite.Sprite.__init__(self)
         self.game = game
         self.type = choice(['normalheal', 'superheal'])
-        self.image = healthupImages[self.type]
+        self.image = game.healthupImages[self.type]
         self.rect = self.image.get_rect()
         self.rect.center = center
         self.spawn_time = pg.time.get_ticks()

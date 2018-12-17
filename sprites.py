@@ -109,7 +109,7 @@ class Bullet(pg.sprite.Sprite):
 class Healthpower(pg.sprite.Sprite):
     def __init__(self, center):
         pg.sprite.Sprite.__init__(self)
-        self.type = choice([normalheal, superheal])
+        self.type = choice(['normalheal', 'superheal'])
         self.image = healthupImages[self.type]
         self.rect = self.image.get_rect()
         self.rect.center = center

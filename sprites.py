@@ -11,7 +11,7 @@ from settings import *
 from tilemap import collide_hit_rect
 vec = pg.math.Vector2
 from random import choice
-from main import healthupImages
+
 
 def collide_with_walls(sprite, group, dir):
     # Handles each direction separately. This function is used for both
@@ -108,8 +108,9 @@ class Bullet(pg.sprite.Sprite):
             self.kill()
            
 class Healthpower(pg.sprite.Sprite):
-    def __init__(self, center):
+    def __init__(self, game, center):
         pg.sprite.Sprite.__init__(self)
+        self.game = game
         self.type = choice(['normalheal', 'superheal'])
         self.image = healthupImages[self.type]
         self.rect = self.image.get_rect()

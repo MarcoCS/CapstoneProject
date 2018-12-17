@@ -40,7 +40,6 @@ class Player(pg.sprite.Sprite):
         self.groups = game.allSprites
         pg.sprite.Sprite.__init__(self, self.groups)
         self.game = game
-        self.weapon = "Pistol"
         self.image = game.player_img
         self.rect = self.image.get_rect()
         self.hit_rect = settings.PLAYER_HIT_RECT
@@ -93,84 +92,57 @@ class Player(pg.sprite.Sprite):
 
 class Weapons:
     class Shotgun(pg.sprite.Sprite):
-        def __init__(self, game, x, y):
-            self.groups = game.allSprites, game.shotgun
+        def __init__(self,game, x, y):
+            self.groups = game.allSprites, game.weapons
             pg.sprite.Sprite.__init__(self, self.groups)
             self.game = game
             self.image = game.shotgun_img
             self.rect = self.image.get_rect()
             self.pos = vec(x, y) * settings.TILESIZE
-            self.rect.center = self.pos
-            
-
-        def change_var():# Gun Characteristics:
-            settings.BULLET_RATE = 500      # Rate of fire, delay between bullets
+        def change_var():
+            # Gun Characteristics:
+            settings.BULLET_RATE = 250      # Rate of fire, delay between bullets
             settings.BULLET_LIFETIME = 1250 # When the bullet kills itself in "milliseconds"
             settings.BULLET_SPEED = 500     # How fast the bullet travels
-            settings.KICKBACK = 600         # Recoil; how much shooting sends the player back.  This may be changed
-            settings.GUN_SPREAD = 20         # How much the bullets deviates
-            settings.BULLET_DAMAGE = 45     # Self explanatory
+            settings.KICKBACK = 200         # Recoil; how much shooting sends the player back.  This may be changed
+            settings.GUN_SPREAD = 8         # How much the bullets deviates
+            settings.BULLET_DAMAGE = 10     # Self explanatory
             settings.PELLETS = 5            # Controls how many bullets will spawn
 
     class Starting_pistol(pg.sprite.Sprite):
         def __init__(self,game, x, y):
-            self.groups = game.allSprites, game.pistol
+            self.groups = game.allSprites, game.weapons
             pg.sprite.Sprite.__init__(self, self.groups)
             self.game = game
             self.image = game.pistol_img
             self.rect = self.image.get_rect()
             self.pos = vec(x, y) * settings.TILESIZE
-            self.rect.center = self.pos
-
         def change_var():
             # Gun Characteristics:
-            settings.BULLET_RATE = 250      # Rate of fire; delay between bullets
-            settings.BULLET_LIFETIME = 1000 # When the bullet kills itself in "milliseconds"
+            BULLET_RATE = 250      # Rate of fire; delay between bullets
+            BULLET_LIFETIME = 1000 # When the bullet kills itself in "milliseconds"
             settings.BULLET_SPEED = 500     # How fast the bullet travels
             settings.KICKBACK = 200         # Recoil; how much shooting sends the player back.  This may be changed
             settings.GUN_SPREAD = 8         # How much the bullets deviates
-            settings.BULLET_DAMAGE = 10     # Self explanatory
+            BULLET_DAMAGE = 10     # Self explanatory
             PELLETS = 1            # Controlls How many bullets will spawn per trigger pull
-
-    class Sniper_rifle(pg.sprite.Sprite):
-        def __init__(self,game, x, y):
-            self.groups = game.allSprites, game.sniper
-            pg.sprite.Sprite.__init__(self, self.groups)
-            self.game = game
-            self.image = game.sniper_img
-            self.rect = self.image.get_rect()
-            self.pos = vec(x, y) * settings.TILESIZE
-            self.rect.center = self.pos
-
-        def change_var():
-            # Gun Characteristics:
-            settings.BULLET_RATE = 1000       # Rate of fire; delay between bullets
-            settings.BULLET_LIFETIME = 2000 # When the bullet kills itself in "milliseconds"
-            settings.BULLET_SPEED = 2000    # How fast the bullet travels
-            settings.KICKBACK = 350          # Recoil; how much shooting sends the player back.  This may be changed
-            settings.GUN_SPREAD = 1         # How much the bullets deviates
-            settings.BULLET_DAMAGE = 100     # Self explanatory
-            settings.PELLETS = 1            # Controlls How many bullets will spawn per trigger pull
 
     class Assault_rifle(pg.sprite.Sprite):
         def __init__(self,game, x, y):
-            self.groups = game.allSprites, game.ar
-            pg.sprite.Sprite.__init__(self, self.groups)
-            self.game = game
             self.image = game.ar_img
-            self.rect = self.image.get_rect()
+            self.rect = self.image_get_rect()
             self.pos = vec(x, y) * settings.TILESIZE
-            self.rect.center = self.pos
-
         def change_var():
             # Gun Characteristics:
-            settings.BULLET_RATE = 20       # Rate of fire; delay between bullets
-            settings.BULLET_LIFETIME = 1250 # When the bullet kills itself in "milliseconds"
-            settings.BULLET_SPEED = 700    # How fast the bullet travels
-            settings.KICKBACK = 250          # Recoil; how much shooting sends the player back.  This may be changed
-            settings.GUN_SPREAD = 10         # How much the bullets deviates
-            settings.BULLET_DAMAGE = 15     # Self explanatory
-            settings.PELLETS = 1            # Controlls How many bullets will spawn per trigger pull
+            BULLET_RATE = 50       # Rate of fire; delay between bullets
+            BULLET_LIFETIME = 2000 # When the bullet kills itself in "milliseconds"
+            settings.BULLET_SPEED = 1000    # How fast the bullet travels
+            settings.KICKBACK = 50          # Recoil; how much shooting sends the player back.  This may be changed
+            settings.GUN_SPREAD = 4         # How much the bullets deviates
+            BULLET_DAMAGE = 12     # Self explanatory
+            PELLETS = 1            # Controlls How many bullets will spawn per trigger pull
+
+
 
 class Bullet(pg.sprite.Sprite):
     def __init__(self, game, pos, dir):

@@ -52,7 +52,6 @@ class Game:
         self.shotgun_img = pg.image.load(path.join(img_folder, "Shotgun.png")).convert_alpha()
         self.pistol_img = pg.image.load(path.join(img_folder, "ColtPixel.png")).convert_alpha()
         self.ar_img = pg.image.load(path.join(img_folder, "M16.png")).convert_alpha()
-        self.sniper_img = pg.image.load(path.join(img_folder, "HuntingRifle.png")).convert_alpha()
     def new(self):
         # Start a new game
         self.allSprites = pg.sprite.Group()
@@ -61,13 +60,7 @@ class Game:
         self.mobs = pg.sprite.Group()
         self.shooters = pg.sprite.Group()
         self.shooterBullets = pg.sprite.Group()
-        
-        # Weapon sprites
-        self.shotgun = pg.sprite.Group()
-        self.sniper = pg.sprite.Group()
-        self.pistol = pg.sprite.Group()
-        self.ar = pg.sprite.Group()
-        # -------
+        self.weapons = pg.sprite.Group()
         
         for row, tiles in enumerate(self.map.data):
             for col, tile, in enumerate(tiles):
@@ -80,17 +73,11 @@ class Game:
                 if tile == 'S':
                     StationaryMob(self, col, row)
                 if tile == 'W':
-                    roll = randint(1,4)
-                    print(roll)
+                    roll = randint(1,2)
                     if roll == 1:
                         Weapons.Shotgun(self, col, row)
-                        print(col, row)
-                    if roll == 3:
-                        Weapons.Starting_pistol(self, col, row)
                     if roll == 2:
-                        Weapons.Sniper_rifle(self, col, row)
-                    if roll == 4:
-                        Weapons.Assault_rifle(self, col, row)
+                        Weapons.Starting_pistol(self, col, row)
                     
         self.camera = Camera(self.map.width, self.map.height)
                     
@@ -121,7 +108,7 @@ class Game:
         #bullets hit mobs
         hits = pg.sprite.groupcollide(self.mobs, self.bullets, False, True)
         for hit in hits:
-            hit.health -= settings.BULLET_DAMAGE
+            hit.health -= BULLET_DAMAGE
             hit.vel = vec(0, 0)         
             
         # Player/shooter collisions
@@ -131,28 +118,16 @@ class Game:
             hit.vel = vec(0, 0)
             if self.player.health <= 0:
                 self.playing = False
-                
         # Detection of weapon pickup
-        hits = pg.sprite.spritecollide(self.player, self.shotgun, True, False)
+        hits = pg.sprite.spritecollide(self.player, self.weapons, True, False)
         if hits:
+            # Debug: print("touched weapon {}" .format(hits))
             Weapons.Shotgun.change_var()
-            
-        hits = pg.sprite.spritecollide(self.player, self.pistol, True, False)
-        if hits:
-            Weapons.Starting_pistol.change_var()
-            
-        hits = pg.sprite.spritecollide(self.player, self.sniper, True, False)
-        if hits:
-            Weapons.Sniper_rifle.change_var()
         
-        hits = pg.sprite.spritecollide(self.player, self.ar, True, False)
-        if hits:
-            Weapons.Assault_rifle.change_var()
-    
         # Bullet/shooter collision
         hits = pg.sprite.groupcollide(self.shooters, self.bullets, False, True)
         for hit in hits:
-            hit.health -= settings.BULLET_DAMAGE
+            hit.health -= BULLET_DAMAGE
             
     def events(self):
         # Process events

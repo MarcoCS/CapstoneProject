@@ -103,7 +103,7 @@ class Game:
                     self.player.health += 20
                     if self.player.health > 100:
                         self.player.health = 100
-            if hit type == 'superheal':
+            if hit.type == 'superheal':
                 if self.player.health < 100:
                     self.player.health += 50
                     if self.player.health > 100:

@@ -110,7 +110,7 @@ class Bullet(pg.sprite.Sprite):
            
 class Healthpower(pg.sprite.Sprite):
     def __init__(self, game, center):
-        self.groups = game.allSprites, game.healthPower
+        self.groups = game.allSprites, game.normalhealthpower, game.superhealthpower
         pg.sprite.Sprite.__init__(self, self.groups)
         self.game = game
         self.type = choice(['normalheal', 'superheal'])

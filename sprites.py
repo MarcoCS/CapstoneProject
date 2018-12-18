@@ -11,6 +11,7 @@ from settings import *
 from tilemap import collide_hit_rect
 vec = pg.math.Vector2
 from random import choice
+from random import random
 
 
 def collide_with_walls(sprite, group, dir):
@@ -182,7 +183,7 @@ class Mob(pg.sprite.Sprite):
         self.rect.center = self.hit_rect.center
         if self.health <= 0:
             self.kill()
-            if random.random() > 0.1:
+            if random() > 0.1:
                 self.healthPower = Healthpower(self, hit.rect.center)
             
     def drawHealth(self):

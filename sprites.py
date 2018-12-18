@@ -109,7 +109,7 @@ class Bullet(pg.sprite.Sprite):
             self.kill()
            
 class Healthpower(pg.sprite.Sprite):
-    def __init__(self, game, center, x, y):
+    def __init__(self, game, center):
         self.groups = game.allSprites, game.healthPower
         pg.sprite.Sprite.__init__(self, self.groups)
         self.game = game

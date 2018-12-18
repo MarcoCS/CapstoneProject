@@ -1,4 +1,3 @@
-
 #################################################
 #CS30 Final Capstone Project
 #Developers: Kale, Dallas, Marco
@@ -23,21 +22,21 @@ HEIGHT = 768
 FPS = 60
 TITLE = "Top-Down Shooter"
 BGCOLOR = DARKGREY
-FONT = 'Arial'
 
 TILESIZE = 64
 GRIDWIDTH = WIDTH / TILESIZE
-GRIDHEIGHT = HEIGHT / TILESIZE
+GRIDHEIGHT = HEIGHT / TILESIZE 
 
 #Gun Settings
 BULLET_IMG = 'tile_187.png'
-BULLET_SPEED = 500
-BULLET_LIFETIME = 1000
-BULLET_RATE = 150
-BARREL_OFFSET = vec(30, 10)
-KICKBACK = 200
-GUN_SPREAD = 8
-BULLET_DAMAGE = 10
+BULLET_SPEED = 500     # How fast the bullet travels
+BULLET_LIFETIME = 1000 # When the bullet kills itself in "milliseconds"
+BULLET_RATE = 150      # Delay between shots
+BARREL_OFFSET = vec(30, 10) # Don't change this, this controls where the bullet spawn relative to player
+KICKBACK = 200         # Recoil; how much shooting sends the player back.  This may be changed
+GUN_SPREAD = 8         # How much the bullets deviates
+BULLET_DAMAGE = 10     # Self explanatory
+PELLETS = 1
 
 # Player settings
 PLAYER_HEALTH = 100
@@ -54,7 +53,9 @@ AVOID_RADIUS = 50
 MOB_HEALTH = 100
 MOB_DAMAGE = 10
 MOB_KNOCKBACK = 20
+MOB_SCORE = 10
 
 SHOOTER_IMG = 'robot1_gun.png'
 SHOOTER_ROT_SPEED = 5
 SHOOTER_HEALTH = 200
+SHOOTER_SCORE = 15

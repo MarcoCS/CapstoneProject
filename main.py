@@ -124,7 +124,7 @@ class Game:
             hit.health -= BULLET_DAMAGE
             hit.vel = vec(0, 0)         
             self.score += 5
-            if random.random() > 0.5:
+            if random.random() > 0.1:
                 healthpower = Healthpower(self, hit.rect.center)
               
             

@@ -184,7 +184,7 @@ class Mob(pg.sprite.Sprite):
         if self.health <= 0:
             self.kill()
             if random() > 0.1:
-                self.healthPower = Healthpower(self, hit.rect.center)
+                self.healthPower = Healthpower(self, self.hit_rect.center)
             
     def drawHealth(self):
         if self.health > 60:

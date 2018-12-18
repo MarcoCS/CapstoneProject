@@ -63,7 +63,8 @@ class Game:
         # Start a new game
         self.score = 0
         self.allSprites = pg.sprite.Group()
-        self.healthPower = pg.sprite.Group()
+        self.normalhealthpower = pg.sprite.Group()
+        self.superhealthpower = pg.sprite.Group()
         self.walls = pg.sprite.Group()
         self.bullets = pg.sprite.Group()
         self.mobs = pg.sprite.Group()
@@ -96,13 +97,16 @@ class Game:
         self.allSprites.update()
         self.camera.update(self.player)
         #player hits health powerup
-        hits = pg.sprite.spritecollide(self.player, self.healthPower, True)
+        hits = pg.sprite.spritecollide(self.player, self.normalhealthpower, True, False)
         for hit in hits:
             if hit.type == 'normalheal':
                 if self.player.health < 100:
                     self.player.health += 20
                     if self.player.health > 100:
                         self.player.health = 100
+                        
+        hits = pg.sprite.spritecollide(self.player, self.superhealthpower, True, False)
+        for hit in hits:
             if hit.type == 'superheal':
                 if self.player.health < 100:
                     self.player.health += 50

@@ -108,7 +108,7 @@ class Bullet(pg.sprite.Sprite):
             self.kill()
            
 class Healthpower(pg.sprite.Sprite):
-    def __init__(self, game, center):
+    def __init__(self, game, center, x, y):
         self.groups = game.allSprites, game.healthPower
         pg.sprite.Sprite.__init__(self, self.groups)
         self.game = game
@@ -182,7 +182,8 @@ class Mob(pg.sprite.Sprite):
         self.rect.center = self.hit_rect.center
         if self.health <= 0:
             self.kill()
-            
+            if random.random() > 0.1:
+                self.healthPower = Healthpower(self, hit.rect.center)
             
     def drawHealth(self):
         if self.health > 60:

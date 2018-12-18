@@ -128,9 +128,6 @@ class Game:
             hit.health -= BULLET_DAMAGE
             hit.vel = vec(0, 0)         
             self.score += 5
-            if random.random() > 0.1:
-                self.healthPower = Healthpower(self, hit.rect.center)
-              
             
         # Player/shooter collisions
         hits = pg.sprite.spritecollide(self.player, self.shooterBullets, True, False)

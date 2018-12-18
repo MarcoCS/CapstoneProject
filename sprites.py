@@ -7,6 +7,7 @@
 #################################################
 import pygame as pg
 from random import uniform
+from settings import *
 import settings
 from tilemap import collide_hit_rect
 vec = pg.math.Vector2
@@ -34,7 +35,6 @@ def collide_with_walls(sprite, group, dir):
             sprite.vel.y = 0
             sprite.hit_rect.centery =  sprite.pos.y
 
-
 class Player(pg.sprite.Sprite):
     def __init__(self, game, x, y):
         self.groups = game.allSprites
@@ -43,13 +43,13 @@ class Player(pg.sprite.Sprite):
         self.weapon = "Pistol"
         self.image = game.player_img
         self.rect = self.image.get_rect()
-        self.hit_rect = settings.PLAYER_HIT_RECT
+        self.hit_rect = PLAYER_HIT_RECT
         self.hit_rect.center = self.rect.center
         self.vel = vec(0, 0)
-        self.pos = vec(x, y) * settings.TILESIZE
+        self.pos = vec(x, y) * TILESIZE
         self.rot = 0
         self.last_shot = 0
-        self.health = settings.PLAYER_HEALTH
+        self.health = PLAYER_HEALTH
         
     def get_keys(self):
         self.rot_speed = 0
@@ -57,14 +57,14 @@ class Player(pg.sprite.Sprite):
         keys = pg.key.get_pressed()
         # Directional controls
         if keys[pg.K_LEFT] or keys[pg.K_a]:
-            self.rot_speed = settings.PLAYER_ROT_SPEED
+            self.rot_speed = PLAYER_ROT_SPEED
         if keys[pg.K_RIGHT] or keys[pg.K_d]:
-            self.rot_speed = -settings.PLAYER_ROT_SPEED
+            self.rot_speed = -PLAYER_ROT_SPEED
         if keys[pg.K_UP] or keys[pg.K_w]:
-            self.vel = vec(settings.PLAYER_SPEED, 0).rotate(-self.rot)
+            self.vel = vec(PLAYER_SPEED, 0).rotate(-self.rot)
         if keys[pg.K_DOWN] or keys [pg.K_s]:
-            self.vel = vec(-settings.PLAYER_SPEED / 2, 0).rotate(-self.rot)
-        # ------------------------            
+            self.vel = vec(-PLAYER_SPEED / 2, 0).rotate(-self.rot)  
+            
         if keys[pg.K_SPACE]: # Shooting button
             now = pg.time.get_ticks()
             if now - self.last_shot > settings.BULLET_RATE:
@@ -75,7 +75,7 @@ class Player(pg.sprite.Sprite):
                     pos = self.pos + settings.BARREL_OFFSET.rotate(-self.rot)
                     Bullet(self.game, pos, dir)
                     self.vel = vec(-settings.KICKBACK, 0).rotate(-self.rot)
- 
+
                 
     def update(self):
         self.get_keys()
@@ -172,6 +172,7 @@ class Weapons:
             settings.BULLET_DAMAGE = 15     # Self explanatory
             settings.PELLETS = 1            # Controlls How many bullets will spawn per trigger pull
 
+
 class Bullet(pg.sprite.Sprite):
     def __init__(self, game, pos, dir):
         self.groups = game.allSprites, game.bullets
@@ -181,6 +182,7 @@ class Bullet(pg.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.pos = vec(pos)
         self.rect.center = pos
+
         spread = uniform(-settings.GUN_SPREAD, settings.GUN_SPREAD)
         self.vel = dir.rotate(spread) * settings.BULLET_SPEED
         self.spawn_time = pg.time.get_ticks()
@@ -191,9 +193,7 @@ class Bullet(pg.sprite.Sprite):
         if pg.sprite.spritecollideany(self, self.game.walls):
             self.kill()
         if pg.time.get_ticks() - self.spawn_time > settings.BULLET_LIFETIME:
-            self.kill()
-        
-
+            self.kill()    
         
 class Wall(pg.sprite.Sprite):
     def __init__(self, game, x, y):
@@ -207,7 +207,6 @@ class Wall(pg.sprite.Sprite):
         self.y = y
         self.rect.x = x * settings.TILESIZE
         self.rect.y = y * settings.TILESIZE
-
             
 class Mob(pg.sprite.Sprite):
     def __init__(self, game, x, y):
@@ -241,6 +240,7 @@ class Mob(pg.sprite.Sprite):
         self.rect.center = self.pos
         self.acc = vec(1, 0).rotate(-self.rot)
         self.avoidMobs()
+        # This self.acc.scale_to_length adjusting to speed simulates friction.
         self.acc.scale_to_length(self.speed)
         self.acc += self.vel * -1
         self.vel += self.acc * self.game.dt
@@ -279,11 +279,15 @@ class StationaryMob(pg.sprite.Sprite):
         self.rect.center = self.pos
         self.rot = 0
         self.last_shot = 0
-        self.health = settings.SHOOTER_HEALTH
+        self.health = SHOOTER_HEALTH
         
     def update(self):
+        # Stationary mobs don't move so they need no position updates
+        # They just rotate to get line-of-sight on the player
         self.rot = (self.game.player.pos - self.pos).angle_to(vec(1,0))
-        self.image = pg.transform.rotate(self.game.shooterImage, self.rot)
+        self.image = pg.transform.rotate(self.game.mobImage, self.rot)
+        self.health = settings.SHOOTER_HEALTH
+       
         self.rect = self.image.get_rect()
         self.rect.center = self.pos       
         self.hit_rect.centerx = self.pos.x
@@ -310,7 +314,6 @@ class StationaryMob(pg.sprite.Sprite):
         self.health_bar = pg.Rect(0, 0, width, 7)
         if self.health < settings.SHOOTER_HEALTH:
             pg.draw.rect(self.image, col, self.health_bar) 
-        
             
 class ShooterBullet(pg.sprite.Sprite):
     def __init__(self, game, pos, dir):

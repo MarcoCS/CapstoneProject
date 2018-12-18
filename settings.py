@@ -1,4 +1,3 @@
-
 #################################################
 #CS30 Final Capstone Project
 #Developers: Kale, Dallas, Marco
@@ -60,4 +59,3 @@ SHOOTER_IMG = 'robot1_gun.png'
 SHOOTER_ROT_SPEED = 5
 SHOOTER_HEALTH = 200
 SHOOTER_SCORE = 15
-

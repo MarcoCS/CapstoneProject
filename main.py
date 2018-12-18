@@ -6,11 +6,12 @@
 ##-------------------------------------------------------------------
 
 import pygame as pg
-from settings import *
 from sprites import *
 from tilemap import *
 from os import path
+import settings 
 from random import *
+from settings import *
 
 # HUD functions
 def drawPlayerHealth(surf, x, y, pct):
@@ -47,28 +48,29 @@ class Game:
         self.bullet_img = pg.image.load(path.join(img_folder, BULLET_IMG)).convert_alpha()
         self.mobImage = pg.image.load(path.join(img_folder, MOB_IMG)).convert_alpha()
         self.shooterImage = pg.image.load(path.join(img_folder, SHOOTER_IMG)).convert_alpha()
-        
         # Weapon sprites:
         self.shotgun_img = pg.image.load(path.join(img_folder, "Shotgun.png")).convert_alpha()
         self.pistol_img = pg.image.load(path.join(img_folder, "ColtPixel.png")).convert_alpha()
         self.ar_img = pg.image.load(path.join(img_folder, "M16.png")).convert_alpha()
         self.sniper_img = pg.image.load(path.join(img_folder, "HuntingRifle.png")).convert_alpha()
+        self.font = pg.font.match_font(FONT)    
+            
     def new(self):
         # Start a new game
+        self.paused = False
         self.allSprites = pg.sprite.Group()
         self.walls = pg.sprite.Group()
         self.bullets = pg.sprite.Group()
         self.mobs = pg.sprite.Group()
         self.shooters = pg.sprite.Group()
-        self.shooterBullets = pg.sprite.Group()
-        
+        self.shooterBullets = pg.sprite.Group()      
         # Weapon sprites
         self.shotgun = pg.sprite.Group()
         self.sniper = pg.sprite.Group()
         self.pistol = pg.sprite.Group()
         self.ar = pg.sprite.Group()
         # -------
-        
+
         for row, tiles in enumerate(self.map.data):
             for col, tile, in enumerate(tiles):
                 if tile == 'P':
@@ -94,15 +96,16 @@ class Game:
                     
         self.camera = Camera(self.map.width, self.map.height)
                     
-
     def run(self):
         # Run the game loop
         self.playing = True
         while self.playing:
             self.dt = self.clock.tick(FPS) / 1000
             self.events()
-            self.update()
+            if not self.paused:
+                self.update()
             self.draw()
+
     
     def update(self):
         # Update the game 
@@ -161,11 +164,15 @@ class Game:
                 if self.playing:
                     self.playing = False
                 self.running = False
+
+            if event.type == pg.KEYDOWN:
+                if event.key == pg.K_p:
+                    self.paused = not self.paused
     
     def draw(self):
         # Draw the loop
         # This displays frame rate.
-        pg.display.set_caption("{:.2f}".format(self.clock.get_fps()))
+        pg.display.set_caption(TITLE)
         self.screen.fill(BLACK)
         self.drawGrid()
         for sprite in self.allSprites:
@@ -178,8 +185,20 @@ class Game:
             #pg.draw.rect(self.screen, WHITE, self.player.hit_rect, 2)
         #Drawing the player's health bar
         drawPlayerHealth(self.screen, 10, 10, self.player.health / PLAYER_HEALTH)
+        if self.paused:
+            self.showPauseScreen()
+        self.drawText(str(round(self.clock.get_fps(),2)), self.font, 20, WHITE, WIDTH - 50, 20)
         pg.display.flip()
         
+    def drawText(self, text, fontName, size, color, x, y):
+        font = pg.font.Font(fontName, size)
+        textSurface = font.render(text, True, color)
+        textRect = textSurface.get_rect()
+        textRect.center = (x, y)
+        self.screen.blit(textSurface, textRect)
+        pg.display.flip()
+        
+
     def drawGrid(self):
         ## Draws a grid with size equal to TILESIZE
         for x in range(0, WIDTH, TILESIZE):
@@ -187,17 +206,49 @@ class Game:
         for y in range(0, HEIGHT, TILESIZE):
             pg.draw.line(self.screen, LIGHTGREY, (0, y), (WIDTH, y))           
         
-        
     def showStartScreen(self):
-        pass
+        # Draws the start screen with a colour, and displays the controls.
+        # It will wait for the user to press a key, then start the game.
+        self.screen.fill(BGCOLOR)
+        self.drawText("Shooter Game", self.font, 72, WHITE, WIDTH / 2, HEIGHT / 2)
+        self.drawText("Up/Down or W/S to move. Left/Right or A/D to rotate.", self.font, 20, WHITE, WIDTH / 2, HEIGHT / 2 + 100)
+        self.drawText("Space to fire, p to pause", self.font, 20, WHITE, WIDTH / 2, HEIGHT / 2 + 150)
+        self.drawText("Press any key to play", self.font, 20, WHITE, WIDTH / 2, HEIGHT / 2 + 200)
+        pg.display.flip()
+        self.waitForKey()
     
+    def showPauseScreen(self):
+        self.drawText("Paused", self.font, 48, WHITE, WIDTH / 2, HEIGHT / 4)
+        
+        
     def showGameOverScreen(self):
-        pass
+        # Draw the game over screen and wait for a key input to start new
+        if not self.running:
+            return
+        self.screen.fill(BGCOLOR)
+        self.drawText("Game Over", self.font, 72, WHITE, WIDTH / 2, HEIGHT / 2)
+        self.drawText("Press any key to play again", self.font, 20, WHITE, WIDTH / 2, HEIGHT / 2 + 100)
+        pg.display.flip()
+        self.waitForKey()
+    
+    def waitForKey(self):
+        # Keeps time ticking until a key is pressed. Then returns. 
+        waiting = True
+        while waiting:
+            self.clock.tick(FPS)
+            for event in pg.event.get():
+                if event.type == pg.KEYDOWN:
+                    keyPressed = True
+                if event.type == pg.QUIT:
+                    waiting = False
+                    self.running = False
+                if event.type == pg.KEYUP:
+                    waiting = False              
         
 g = Game()
 g.showStartScreen()
 g.running = True 
- 
+
 while g.running:
     g.new()
     g.run()

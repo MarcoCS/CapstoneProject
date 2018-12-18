@@ -120,7 +120,7 @@ class Healthpower(pg.sprite.Sprite):
         
     def update(self):
         #kill if on the map for too long
-        if pg.time.get_ticks() - self.spawntime > HEALTH_LIFETIME:
+        if pg.time.get_ticks() - self.spawn_time > HEALTH_LIFETIME:
             self.kill()
         
         

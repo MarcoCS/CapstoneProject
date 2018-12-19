@@ -196,7 +196,6 @@ class Game:
             #pg.draw.rect(self.screen, WHITE, self.player.hit_rect, 2)
         #Drawing the player's health bar
         drawPlayerHealth(self.screen, 10, 10, self.player.health / PLAYER_HEALTH)
-        self.drawText(str(self.score), self.font, 18, WHITE, WIDTH / 2, 15)
         if self.paused:
             self.showPauseScreen()
         self.drawText(str(round(self.clock.get_fps(),2)), self.font, 20, WHITE, WIDTH - 50, 20)
@@ -242,14 +241,14 @@ class Game:
         self.screen.fill(BGCOLOR)
         self.drawText("Game Over", self.font, 72, WHITE, WIDTH / 2, HEIGHT / 2)
         self.drawText("Press any key to play again", self.font, 20, WHITE, WIDTH / 2, HEIGHT / 2 + 100)
-        self.draw_text("Your Score: " + str(self.score), 22, WHITE, WIDTH / 2, 15)
+        self.drawText("Your Score: " + str(self.score), 22, WHITE, WIDTH / 2, 15)
         if self.score > self.highscore:
            self.highscore = self.score
-           self.draw_text("New High Score!", 22, WHITE, WIDTH / 2, HEIGHT / 2 + 40)  
+           self.drawText("New High Score!", 22, WHITE, WIDTH / 2, HEIGHT / 2 + 40)  
            with open(path.join(gameFolder, SCORE_FILE), 'w') as f:
                f.write(str(self.score))
         else:
-           self.draw_text("High Score: " + str(self.score), self.font, 22, WHITE, WIDTH / 2, HEIGHT / 2 + 40)
+           self.drawText("High Score: " + str(self.score), self.font, 22, WHITE, WIDTH / 2, HEIGHT / 2 + 40)
         pg.display.flip()
         self.waitForKey()
     

@@ -22,6 +22,7 @@ HEIGHT = 768
 FPS = 60
 TITLE = "Top-Down Shooter"
 BGCOLOR = DARKGREY
+SCORE_FILE = 'score.txt"
 FONT = 'Arial'
 
 TILESIZE = 64

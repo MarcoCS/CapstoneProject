@@ -57,9 +57,9 @@ class Game:
          #load score file
         with open(path.join(gameFolder, SCORE_FILE), 'w') as f:
             try:
-                self.score = int(f.read())
+                self.highscore = int(f.read())
             except:
-                self.score = 0
+                self.highscore = 0
             
     def new(self):
         # Start a new game
@@ -223,13 +223,13 @@ class Game:
         self.drawText("Up/Down or W/S to move. Left/Right or A/D to rotate.", self.font, 20, WHITE, WIDTH / 2, HEIGHT / 2 + 100)
         self.drawText("Space to fire, p to pause", self.font, 20, WHITE, WIDTH / 2, HEIGHT / 2 + 150)
         self.drawText("Press any key to play", self.font, 20, WHITE, WIDTH / 2, HEIGHT / 2 + 200)
-        self.drawText("High Score: " + str(self.score), self.font, 22, WHITE, WIDTH / 2, 15)
+        self.drawText("High Score: " + str(self.highscore), self.font, 22, WHITE, WIDTH / 2, 15)
         pg.display.flip()
         self.waitForKey()
     
     def showPauseScreen(self):
         self.drawText("Paused", self.font, 48, WHITE, WIDTH / 2, HEIGHT / 4)
-        self.drawText("Current Score: " + str(self.score), self.font, 22, WHITE, WIDTH / 2, HEIGHT / 2 - 50) 
+        self.drawText("Current Score: " + str(self.highscore), self.font, 22, WHITE, WIDTH / 2, HEIGHT / 2 - 50) 
         
         
     def showGameOverScreen(self):
@@ -239,14 +239,14 @@ class Game:
         self.screen.fill(BGCOLOR)
         self.drawText("Game Over", self.font, 72, WHITE, WIDTH / 2, HEIGHT / 2)
         self.drawText("Press any key to play again", self.font, 20, WHITE, WIDTH / 2, HEIGHT / 2 + 100)
-        self.drawText("Your Score: " + str(self.score), self.font, 22, WHITE, WIDTH / 2, 15)
+        self.drawText("Your Score: " + str(self.highscore), self.font, 22, WHITE, WIDTH / 2, 15)
         if self.score > self.highscore:
            self.highscore = self.score
            self.drawText("New High Score!", self.font, 22, WHITE, WIDTH / 2, HEIGHT / 2 + 40)  
            with open(path.join(gameFolder, SCORE_FILE), 'w') as f:
-               f.write(str(self.score))
+               f.write(str(self.highscore))
         else:
-           self.drawText("High Score: " + str(self.score), self.font, 22, WHITE, WIDTH / 2, HEIGHT / 2 + 40)
+           self.drawText("High Score: " + str(self.highscore), self.font, 22, WHITE, WIDTH / 2, HEIGHT / 2 + 40)
         pg.display.flip()
         self.waitForKey()
     

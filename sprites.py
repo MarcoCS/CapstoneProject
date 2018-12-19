@@ -97,7 +97,9 @@ class Weapons:
             self.groups = game.allSprites, game.shotgun
             pg.sprite.Sprite.__init__(self, self.groups)
             self.game = game
-            self.image = game.shotgun_img
+            self.def_image = game.shotgun_img
+            self.size = self.def_image.get_size()
+            self.image = pg.transform.scale(self.def_image, (int(self.size[0]/2), int(self.size[1]/2)))
             self.rect = self.image.get_rect()
             self.pos = vec(x, y) * settings.TILESIZE
             self.rect.center = self.pos
@@ -117,7 +119,9 @@ class Weapons:
             self.groups = game.allSprites, game.pistol
             pg.sprite.Sprite.__init__(self, self.groups)
             self.game = game
-            self.image = game.pistol_img
+            self.def_image = game.pistol_img
+            self.size = self.def_image.get_size()
+            self.image = pg.transform.scale(self.def_image, (int(self.size[0]/2), int(self.size[1]/2)))
             self.rect = self.image.get_rect()
             self.pos = vec(x, y) * settings.TILESIZE
             self.rect.center = self.pos
@@ -137,7 +141,9 @@ class Weapons:
             self.groups = game.allSprites, game.sniper
             pg.sprite.Sprite.__init__(self, self.groups)
             self.game = game
-            self.image = game.sniper_img
+            self.def_image = game.sniper_img
+            self.size = self.def_image.get_size()
+            self.image = pg.transform.scale(self.def_image, (int(self.size[0]/2), int(self.size[1]/2)))
             self.rect = self.image.get_rect()
             self.pos = vec(x, y) * settings.TILESIZE
             self.rect.center = self.pos
@@ -157,7 +163,9 @@ class Weapons:
             self.groups = game.allSprites, game.ar
             pg.sprite.Sprite.__init__(self, self.groups)
             self.game = game
-            self.image = game.ar_img
+            self.def_image = game.ar_img
+            self.size = self.def_image.get_size()
+            self.image = pg.transform.scale(self.def_image, (int(self.size[0]/2), int(self.size[1]/2)))
             self.rect = self.image.get_rect()
             self.pos = vec(x, y) * settings.TILESIZE
             self.rect.center = self.pos

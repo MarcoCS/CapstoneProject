@@ -207,7 +207,6 @@ class Game:
         textRect = textSurface.get_rect()
         textRect.center = (x, y)
         self.screen.blit(textSurface, textRect)
-        pg.display.flip()
         
 
     def drawGrid(self):

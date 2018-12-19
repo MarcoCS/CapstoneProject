@@ -126,7 +126,12 @@ class Game:
         for hit in hits:
             hit.health -= settings.BULLET_DAMAGE
             hit.vel = vec(0, 0)         
-            
+        
+        # Bullet/shooter collision
+        hits = pg.sprite.groupcollide(self.shooters, self.bullets, False, True)
+        for hit in hits:
+            hit.health -= settings.BULLET_DAMAGE
+    
         # Player/shooter collisions
         hits = pg.sprite.spritecollide(self.player, self.shooterBullets, True, False)
         for hit in hits:
@@ -152,10 +157,7 @@ class Game:
         if hits:
             Weapons.Assault_rifle.change_var()
     
-        # Bullet/shooter collision
-        hits = pg.sprite.groupcollide(self.shooters, self.bullets, False, True)
-        for hit in hits:
-            hit.health -= settings.BULLET_DAMAGE
+
             
     def events(self):
         # Process events

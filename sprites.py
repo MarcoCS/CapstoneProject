@@ -100,7 +100,7 @@ class Weapons:
             self.def_image = game.shotgun_img
             self.size = self.def_image.get_size()
             self.image = pg.transform.scale(self.def_image, (int(self.size[0]/2), int(self.size[1]/2)))
-            self.rect = self.image.get_rect()
+            self.rect = pg.Rect(0, 0, 55, 35)
             self.pos = vec(x, y) * settings.TILESIZE
             self.rect.center = self.pos
             
@@ -121,8 +121,8 @@ class Weapons:
             self.game = game
             self.def_image = game.pistol_img
             self.size = self.def_image.get_size()
-            self.image = pg.transform.scale(self.def_image, (int(self.size[0]/2), int(self.size[1]/2)))
-            self.rect = self.image.get_rect()
+            self.image = pg.transform.scale(self.def_image, (int(self.size[0]/3), int(self.size[1]/3)))
+            self.rect = pg.Rect(0, 0, 35, 35)
             self.pos = vec(x, y) * settings.TILESIZE
             self.rect.center = self.pos
 
@@ -144,7 +144,7 @@ class Weapons:
             self.def_image = game.sniper_img
             self.size = self.def_image.get_size()
             self.image = pg.transform.scale(self.def_image, (int(self.size[0]/2), int(self.size[1]/2)))
-            self.rect = self.image.get_rect()
+            self.rect = pg.Rect(0, 0, 55, 35)
             self.pos = vec(x, y) * settings.TILESIZE
             self.rect.center = self.pos
 
@@ -166,7 +166,7 @@ class Weapons:
             self.def_image = game.ar_img
             self.size = self.def_image.get_size()
             self.image = pg.transform.scale(self.def_image, (int(self.size[0]/2), int(self.size[1]/2)))
-            self.rect = self.image.get_rect()
+            self.rect = pg.Rect(0, 0, 55, 35)
             self.pos = vec(x, y) * settings.TILESIZE
             self.rect.center = self.pos
 

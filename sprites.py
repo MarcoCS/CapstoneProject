@@ -109,14 +109,15 @@ class Bullet(pg.sprite.Sprite):
             self.kill()
            
 class Healthpower(pg.sprite.Sprite):
-    def __init__(self, game, center):
+    def __init__(self, game, pos):
         self.groups = game.allSprites, game.normalhealthpower, game.superhealthpower
         pg.sprite.Sprite.__init__(self, self.groups)
         self.game = game
         self.type = choice(['normalheal', 'superheal'])
         self.image = game.healthupImages[self.type]
         self.rect = self.image.get_rect()
-        self.rect.center = center
+        self.pos.vec(pos)
+        self.rect.center = pos
         self.spawn_time = pg.time.get_ticks()
         
     def update(self):

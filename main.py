@@ -226,13 +226,13 @@ class Game:
         self.drawText("Up/Down or W/S to move. Left/Right or A/D to rotate.", self.font, 20, WHITE, WIDTH / 2, HEIGHT / 2 + 100)
         self.drawText("Space to fire, p to pause", self.font, 20, WHITE, WIDTH / 2, HEIGHT / 2 + 150)
         self.drawText("Press any key to play", self.font, 20, WHITE, WIDTH / 2, HEIGHT / 2 + 200)
-        self.drawText("High Score: " + str(self.score), 22, WHITE, WIDTH / 2, 15)
+        self.drawText("High Score: " + str(self.score), self.font, 22, WHITE, WIDTH / 2, 15)
         pg.display.flip()
         self.waitForKey()
     
     def showPauseScreen(self):
         self.drawText("Paused", self.font, 48, WHITE, WIDTH / 2, HEIGHT / 4)
-        self.drawText("Current Score: " + str(self.score) self.font, 22, WIDTH / 2, 15) 
+        self.drawText("Current Score: " + str(self.score), self.font, 22, WIDTH / 2, 15) 
         
         
     def showGameOverScreen(self):
@@ -249,7 +249,7 @@ class Game:
            with open(path.join(gameFolder, SCORE_FILE), 'w') as f:
                f.write(str(self.score))
         else:
-           self.draw_text("High Score: " + str(self.score), 22, WHITE, WIDTH / 2, HEIGHT / 2 + 40)
+           self.draw_text("High Score: " + str(self.score), self.font, 22, WHITE, WIDTH / 2, HEIGHT / 2 + 40)
         pg.display.flip()
         self.waitForKey()
     

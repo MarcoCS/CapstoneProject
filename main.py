@@ -196,7 +196,7 @@ class Game:
             #pg.draw.rect(self.screen, WHITE, self.player.hit_rect, 2)
         #Drawing the player's health bar
         drawPlayerHealth(self.screen, 10, 10, self.player.health / PLAYER_HEALTH)
-        self.drawText(str(self.score), 18, WHITE, WIDTH / 2, 15)
+        self.drawText(str(self.score), self.font, 18, WHITE, WIDTH / 2, 15)
         if self.paused:
             self.showPauseScreen()
         self.drawText(str(round(self.clock.get_fps(),2)), self.font, 20, WHITE, WIDTH - 50, 20)

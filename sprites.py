@@ -286,7 +286,6 @@ class StationaryMob(pg.sprite.Sprite):
         # They just rotate to get line-of-sight on the player
         self.rot = (self.game.player.pos - self.pos).angle_to(vec(1,0))
         self.image = pg.transform.rotate(self.game.mobImage, self.rot)
-        self.health = settings.SHOOTER_HEALTH
        
         self.rect = self.image.get_rect()
         self.rect.center = self.pos       

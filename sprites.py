@@ -69,7 +69,6 @@ class Player(pg.sprite.Sprite):
             now = pg.time.get_ticks()
             if now - self.last_shot > settings.BULLET_RATE:
                 self.last_shot = now
-                print(settings.PELLETS)
                 for x in range(settings.PELLETS): # This is for things like shotguns and stuff
                     dir = vec(1, 0).rotate(-self.rot)
                     pos = self.pos + settings.BARREL_OFFSET.rotate(-self.rot)

@@ -90,7 +90,6 @@ class Game:
                     StationaryMob(self, col, row)
                 if tile == 'W':
                     roll = randint(1,4)
-                    print(roll)
                     if roll == 1:
                         Weapons.Shotgun(self, col, row)
                         print(col, row)

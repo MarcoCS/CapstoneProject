@@ -239,10 +239,10 @@ class Game:
         self.screen.fill(BGCOLOR)
         self.drawText("Game Over", self.font, 72, WHITE, WIDTH / 2, HEIGHT / 2)
         self.drawText("Press any key to play again", self.font, 20, WHITE, WIDTH / 2, HEIGHT / 2 + 100)
-        self.drawText("Your Score: " + str(self.score), 22, WHITE, WIDTH / 2, 15)
+        self.drawText("Your Score: " + str(self.score), self.font, 22, WHITE, WIDTH / 2, 15)
         if self.score > self.highscore:
            self.highscore = self.score
-           self.drawText("New High Score!", 22, WHITE, WIDTH / 2, HEIGHT / 2 + 40)  
+           self.drawText("New High Score!", self.font, 22, WHITE, WIDTH / 2, HEIGHT / 2 + 40)  
            with open(path.join(gameFolder, SCORE_FILE), 'w') as f:
                f.write(str(self.score))
         else:

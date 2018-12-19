@@ -232,7 +232,7 @@ class Game:
     
     def showPauseScreen(self):
         self.drawText("Paused", self.font, 48, WHITE, WIDTH / 2, HEIGHT / 4)
-        self.drawText("Current Score: " + str(self.score), self.font, 22, WHITE, WIDTH / 2, 15) 
+        self.drawText("Current Score: " + str(self.score), self.font, 22, WHITE, WIDTH / 2, HEIGHT / 2 - 50) 
         
         
     def showGameOverScreen(self):

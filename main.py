@@ -41,9 +41,9 @@ class Game:
         self.loadData()
         
     def loadData(self):
-        gameFolder = path.dirname("__file__")
-        img_folder = path.join(gameFolder, 'img')
-        self.map = Map(path.join(gameFolder, 'map.txt'))
+        self.gameFolder = path.dirname("__file__")
+        img_folder = path.join(self.gameFolder, 'img')
+        self.map = Map(path.join(self.gameFolder, 'map.txt'))
         self.player_img = pg.image.load(path.join(img_folder, PLAYER_IMG)).convert_alpha()
         self.bullet_img = pg.image.load(path.join(img_folder, BULLET_IMG)).convert_alpha()
         self.mobImage = pg.image.load(path.join(img_folder, MOB_IMG)).convert_alpha()
@@ -55,7 +55,7 @@ class Game:
         self.sniper_img = pg.image.load(path.join(img_folder, "HuntingRifle.png")).convert_alpha()
         self.font = pg.font.match_font(FONT)
          #load score file
-        with open(path.join(gameFolder, SCORE_FILE), 'w') as f:
+        with open(path.join(self.gameFolder, SCORE_FILE), 'r') as f:
             try:
                 self.highscore = int(f.read())
             except:
@@ -229,7 +229,7 @@ class Game:
     
     def showPauseScreen(self):
         self.drawText("Paused", self.font, 48, WHITE, WIDTH / 2, HEIGHT / 4)
-        self.drawText("Current Score: " + str(self.highscore), self.font, 22, WHITE, WIDTH / 2, HEIGHT / 2 - 50) 
+        self.drawText("Current Score: " + str(self.score), self.font, 22, WHITE, WIDTH / 2, HEIGHT / 2 - 50) 
         
         
     def showGameOverScreen(self):
@@ -239,12 +239,12 @@ class Game:
         self.screen.fill(BGCOLOR)
         self.drawText("Game Over", self.font, 72, WHITE, WIDTH / 2, HEIGHT / 2)
         self.drawText("Press any key to play again", self.font, 20, WHITE, WIDTH / 2, HEIGHT / 2 + 100)
-        self.drawText("Your Score: " + str(self.highscore), self.font, 22, WHITE, WIDTH / 2, 15)
         if self.score > self.highscore:
            self.highscore = self.score
-           self.drawText("New High Score!", self.font, 22, WHITE, WIDTH / 2, HEIGHT / 2 + 40)  
-           with open(path.join(gameFolder, SCORE_FILE), 'w') as f:
+           self.drawText("New High Score! " + str(self.highscore), self.font, 22, WHITE, WIDTH / 2, HEIGHT / 2 + 40)  
+           with open(path.join(self.gameFolder, SCORE_FILE), 'w') as f:
                f.write(str(self.highscore))
+               f.close()
         else:
            self.drawText("High Score: " + str(self.highscore), self.font, 22, WHITE, WIDTH / 2, HEIGHT / 2 + 40)
         pg.display.flip()

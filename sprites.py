@@ -106,7 +106,7 @@ class Weapons:
 
         def change_var():# Gun Characteristics:
             settings.BULLET_RATE = 500      # Rate of fire, delay between bullets
-            settings.BULLET_LIFETIME = 1250 # When the bullet kills itself in "milliseconds"
+            settings.BULLET_LIFETIME = 850 # When the bullet kills itself in "milliseconds"
             settings.BULLET_SPEED = 500     # How fast the bullet travels
             settings.KICKBACK = 600         # Recoil; how much shooting sends the player back.  This may be changed
             settings.GUN_SPREAD = 20         # How much the bullets deviates
@@ -171,12 +171,12 @@ class Weapons:
 
         def change_var():
             # Gun Characteristics:
-            settings.BULLET_RATE = 20       # Rate of fire; delay between bullets
-            settings.BULLET_LIFETIME = 1250 # When the bullet kills itself in "milliseconds"
-            settings.BULLET_SPEED = 700    # How fast the bullet travels
+            settings.BULLET_RATE = 150       # Rate of fire; delay between bullets
+            settings.BULLET_LIFETIME = 1500 # When the bullet kills itself in "milliseconds"
+            settings.BULLET_SPEED = 900    # How fast the bullet travels
             settings.KICKBACK = 250          # Recoil; how much shooting sends the player back.  This may be changed
             settings.GUN_SPREAD = 10         # How much the bullets deviates
-            settings.BULLET_DAMAGE = 15     # Self explanatory
+            settings.BULLET_DAMAGE = 25     # Self explanatory
             settings.PELLETS = 1            # Controlls How many bullets will spawn per trigger pull
 
 
@@ -258,6 +258,7 @@ class Mob(pg.sprite.Sprite):
         collide_with_walls(self, self.game.walls, 'y')
         self.rect.center = self.hit_rect.center
         if self.health <= 0:
+            HPUP(self.game, self.pos)
             self.kill()
             
     def drawHealth(self):
@@ -271,7 +272,21 @@ class Mob(pg.sprite.Sprite):
         self.health_bar = pg.Rect(0, 0, width, 7)
         if self.health < settings.MOB_HEALTH:
             pg.draw.rect(self.image, col, self.health_bar)
+
      
+class HPUP(pg.sprite.Sprite): # Health up
+    def __init__(self, game, pos):
+        self.groups = game.allSprites, game.hpups
+        pg.sprite.Sprite.__init__(self, self.groups)
+        self.game = game
+        self.pos = vec(pos)
+        self.image = game.hpupImage
+        self.rect = self.image.get_rect()
+        self.hit_rect = settings.MOB_HIT_RECT.copy()
+        self.hit_rect.center = self.rect.center
+        self.rect.center = self.pos
+        
+
 class StationaryMob(pg.sprite.Sprite):
     def __init__(self, game, x, y):
         self.groups = game.allSprites, game.shooters
@@ -292,7 +307,7 @@ class StationaryMob(pg.sprite.Sprite):
         # Stationary mobs don't move so they need no position updates
         # They just rotate to get line-of-sight on the player
         self.rot = (self.game.player.pos - self.pos).angle_to(vec(1,0))
-        self.image = pg.transform.rotate(self.game.mobImage, self.rot)
+        self.image = pg.transform.rotate(self.game.shooterImage, self.rot)
        
         self.rect = self.image.get_rect()
         self.rect.center = self.pos       

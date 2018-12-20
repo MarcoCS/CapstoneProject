@@ -48,6 +48,8 @@ class Game:
         self.bullet_img = pg.image.load(path.join(img_folder, BULLET_IMG)).convert_alpha()
         self.mobImage = pg.image.load(path.join(img_folder, MOB_IMG)).convert_alpha()
         self.shooterImage = pg.image.load(path.join(img_folder, SHOOTER_IMG)).convert_alpha()
+        self.hpupImage = pg.image.load(path.join(img_folder, "heart.png")).convert_alpha()
+
         # Weapon sprites:
         self.shotgun_img = pg.image.load(path.join(img_folder, "Shotgun.png")).convert_alpha()
         self.pistol_img = pg.image.load(path.join(img_folder, "ColtPixel.png")).convert_alpha()
@@ -70,7 +72,8 @@ class Game:
         self.bullets = pg.sprite.Group()
         self.mobs = pg.sprite.Group()
         self.shooters = pg.sprite.Group()
-        self.shooterBullets = pg.sprite.Group()      
+        self.shooterBullets = pg.sprite.Group()
+        self.hpups = pg.sprite.Group()
         # Weapon sprites
         self.shotgun = pg.sprite.Group()
         self.sniper = pg.sprite.Group()
@@ -149,6 +152,11 @@ class Game:
                 self.playing = False
                 
         # Detection of weapon pickup
+        
+        hits = pg.sprite.spritecollide(self.player, self.hpups, True, False)
+        if hits:
+            self.player.health += 10
+        
         hits = pg.sprite.spritecollide(self.player, self.shotgun, True, False)
         if hits:
             Weapons.Shotgun.change_var()

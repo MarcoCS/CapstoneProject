@@ -6,6 +6,7 @@
 #Player and hostile sprites
 #################################################
 import pygame as pg
+from math import atan2, degrees, pi
 from random import uniform
 from settings import *
 import settings
@@ -57,15 +58,16 @@ class Player(pg.sprite.Sprite):
         keys = pg.key.get_pressed()
         # Directional controls
         if keys[pg.K_LEFT] or keys[pg.K_a]:
-            self.rot_speed = PLAYER_ROT_SPEED
+            self.vel = vec(-PLAYER_SPEED, 0)
         if keys[pg.K_RIGHT] or keys[pg.K_d]:
-            self.rot_speed = -PLAYER_ROT_SPEED
+            self.vel = vec(PLAYER_SPEED, 0)
         if keys[pg.K_UP] or keys[pg.K_w]:
-            self.vel = vec(PLAYER_SPEED, 0).rotate(-self.rot)
+            self.vel = vec(0, -PLAYER_SPEED)
         if keys[pg.K_DOWN] or keys [pg.K_s]:
-            self.vel = vec(-PLAYER_SPEED / 2, 0).rotate(-self.rot)  
-            
-        if keys[pg.K_SPACE]: # Shooting button
+            self.vel = vec(0, PLAYER_SPEED) 
+        
+
+        if pg.mouse.get_pressed()[0] == 1: # Shooting button
             now = pg.time.get_ticks()
             if now - self.last_shot > settings.BULLET_RATE:
                 self.last_shot = now
@@ -77,8 +79,15 @@ class Player(pg.sprite.Sprite):
 
                 
     def update(self):
+        self.mouse_pos = pg.mouse.get_pos()
+        dx = self.mouse_pos[0] - 512
+        dy = self.mouse_pos[1] - 384
+        print(self.pos[0])
+        rads = atan2(-dy,dx)
+        rads %= 2*pi
+        degs = degrees(rads)
         self.get_keys()
-        self.rot = (self.rot + self.rot_speed + self.game.dt) % 360
+        self.rot = degs
         self.image = pg.transform.rotate(self.game.player_img, self.rot)
         self.rect = self.image.get_rect()
         self.rect.center = self.pos

@@ -14,21 +14,21 @@ from random import *
 from settings import *
 
 # HUD functions
-def drawPlayerHealth(surf, x, y, pct):
-    if pct < 0:
+def drawPlayerHealth(surf, x, y, pct): # Surf short for surface
+    if pct < 0: # Pct short for percentage of healthbar
         pct = 0
     BAR_LENGTH = 100
     BAR_HEIGHT = 20
     fill = pct * BAR_LENGTH
     outline_rect = pg.Rect(x, y, BAR_LENGTH, BAR_HEIGHT)
-    fill_rect = pg.Rect(x, y, fill, BAR_HEIGHT)
+    fill_rect = pg.Rect(x % 100, y, fill, BAR_HEIGHT)
     if pct > 0.6:
         col = GREEN
     elif pct > 0.3:
         col = YELLOW
     else:
         col = RED
-    pg.draw.rect(surf, col, fill_rect)
+    pg.draw.rect(surf, col, fill_rect) 
     pg.draw.rect(surf, WHITE, outline_rect, 2)
     
 class Game:

@@ -26,12 +26,12 @@ class Camera:
         print("Camera",self.x,self.y)
         
         ## Limit scrolling to map
-        x = min(0, x) ## Left
-        y = min(0, y) ## Top
-        x = max(-(self.width - WIDTH), x)   ## Right
-        y = max(-(self.height - HEIGHT), y) ## Bottom
+        self.x = min(0, x) ## Left
+        self.y = min(0, y) ## Top
+        self.x = max(-(self.width - WIDTH), x)   ## Right
+        self.y = max(-(self.height - HEIGHT), y) ## Bottom
         
-        self.camera = pg.Rect(x, y, self.width, self.height)
+        self.camera = pg.Rect(self.x, self.y, self.width, self.height)
         
 class Map:
     def __init__(self, filename):

@@ -121,7 +121,10 @@ class Game:
 
 
     def update(self):
-        # Update the g      ame
+        # Update the game
+        
+        print("Player",self.player.pos)
+        
         self.allSprites.update()
         self.camera.update(self.player)
         #mobs hit player

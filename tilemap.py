@@ -16,6 +16,8 @@ class Camera:
         self.camera = pg.Rect(0, 0, width, height)
         self.width = width
         self.height = height
+        self.x = 0
+        self.y = 0
         
     def apply(self, entity):
         return entity.rect.move(self.camera.topleft)
@@ -23,7 +25,6 @@ class Camera:
     def update(self, target):
         self.x = -target.rect.centerx + int(WIDTH / 2)
         self.y = -target.rect.centery + int(HEIGHT / 2)
-        print("Camera",self.x,self.y)
         
         ## Limit scrolling to map
         self.x = min(0, self.x) ## Left

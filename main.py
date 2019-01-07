@@ -53,7 +53,6 @@ class Game:
         self.mobImage = pg.image.load(path.join(img_folder, MOB_IMG)).convert_alpha()
         self.shooterImage = pg.image.load(path.join(img_folder, SHOOTER_IMG)).convert_alpha()
         self.hpupImage = pg.image.load(path.join(img_folder, "heart.png")).convert_alpha()
-        self.crosshairImage = pg.image.load(path.join(img_folder, "crosshair.png")).convert_alpha()
 
         # Weapon sprites:
         self.shotgun_img = pg.image.load(path.join(img_folder, "Shotgun.png")).convert_alpha()
@@ -123,7 +122,6 @@ class Game:
     def update(self):
         # Update the game
         
-        print("Player",self.player.pos)
         
         self.allSprites.update()
         self.camera.update(self.player)

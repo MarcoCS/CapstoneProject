@@ -84,8 +84,8 @@ class Player(pg.sprite.Sprite):
     def update(self):
         # Code which dictates where player is facing
         self.mouse_pos = pg.mouse.get_pos()        # Gets the point of the mouse
-        dx = self.mouse_pos[0] - 512               # Subtracts from center points
-        dy = self.mouse_pos[1] - 384
+        dx = self.mouse_pos[0] - (self.pos.x + self.game.camera.x)               # Subtracts from center points
+        dy = self.mouse_pos[1] - (self.pos.y + self.game.camera.y)
         rads = atan2(-dy,dx) # Basic trigonometry of the two points
         rads %= 2*pi # Converts to rads
         degs = degrees(rads) # Converts to degrees

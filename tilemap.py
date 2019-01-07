@@ -21,8 +21,9 @@ class Camera:
         return entity.rect.move(self.camera.topleft)
     
     def update(self, target):
-        x = -target.rect.centerx + int(WIDTH / 2)
-        y = -target.rect.centery + int(HEIGHT / 2)
+        self.x = -target.rect.centerx + int(WIDTH / 2)
+        self.y = -target.rect.centery + int(HEIGHT / 2)
+        print("Camera",self.x,self.y)
         
         ## Limit scrolling to map
         x = min(0, x) ## Left

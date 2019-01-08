@@ -116,6 +116,7 @@ class Game:
     def run(self):
         # Run the game loop
         self.playing = True
+        pg.mixer.music.play(loops=-1)
         while self.playing:
             self.dt = self.clock.tick(FPS) / 1000
             self.events()

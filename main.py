@@ -24,7 +24,7 @@ def drawPlayerHealth(surf, x, y, pct): # Surf short for surface
     fill_rect = pg.Rect(x % 100, y, fill, BAR_HEIGHT)
     if pct > 0.6:
         col = GREEN
-    elif pct > 0.3:
+    elif pct > 0.3:   
         col = YELLOW
     else:
         col = RED
@@ -36,7 +36,6 @@ class Game:
     def __init__(self):
         # Initialize pygame
         pg.init()
-        pg.mixer.init()
         self.screen = pg.display.set_mode((WIDTH,HEIGHT))
         pg.display.set_caption(TITLE)
         self.clock = pg.time.Clock()
@@ -48,9 +47,7 @@ class Game:
     def loadData(self):
         self.gameFolder = path.dirname("__file__")
         img_folder = path.join(self.gameFolder, 'img')
-        msc_folder = path.join(self.gameFolder, 'msc')
-        snd_folder = path.join(self.gameFolder, 'snd')
-        self.map = Map(path.join(self.gameFolder, 'map.txt'))
+        self.map = Map(path.join(self.gameFolder, 'map2.txt'))
         self.player_img = pg.image.load(path.join(img_folder, PLAYER_IMG)).convert_alpha()
         self.bullet_img = pg.image.load(path.join(img_folder, BULLET_IMG)).convert_alpha()
         self.mobImage = pg.image.load(path.join(img_folder, MOB_IMG)).convert_alpha()
@@ -69,8 +66,6 @@ class Game:
                 self.highscore = int(f.read())
             except:
                 self.highscore = 0
-         #sound loading
-        pg.mixer.music.load(path.join(msc_folder, 'espionage.ogg'))
 
     def new(self):
         # Start a new game
@@ -116,7 +111,6 @@ class Game:
     def run(self):
         # Run the game loop
         self.playing = True
-        pg.mixer.music.play(loops=-1)
         while self.playing:
             self.dt = self.clock.tick(FPS) / 1000
             self.events()
@@ -203,7 +197,7 @@ class Game:
         # This displays frame rate.
         pg.display.set_caption(TITLE)
         self.screen.fill(BLACK)
-        #self.drawGrid()      #Removed the grid
+#        self.drawGrid()
         for sprite in self.allSprites:
             if isinstance(sprite, StationaryMob):
                 sprite.drawShooterHealth()

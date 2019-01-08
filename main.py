@@ -36,6 +36,7 @@ class Game:
     def __init__(self):
         # Initialize pygame
         pg.init()
+        pg.mixer.init()
         self.screen = pg.display.set_mode((WIDTH,HEIGHT))
         pg.display.set_caption(TITLE)
         self.clock = pg.time.Clock()
@@ -66,6 +67,9 @@ class Game:
                 self.highscore = int(f.read())
             except:
                 self.highscore = 0
+         #sound loading
+        pg.mixer.music.load(path.join(music_folder, BG_MUSIC))
+        
 
     def new(self):
         # Start a new game
@@ -111,6 +115,7 @@ class Game:
     def run(self):
         # Run the game loop
         self.playing = True
+        pg.mixer.music.play(loops=-1)
         while self.playing:
             self.dt = self.clock.tick(FPS) / 1000
             self.events()

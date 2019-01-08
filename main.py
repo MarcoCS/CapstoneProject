@@ -53,7 +53,8 @@ class Game:
         self.mobImage = pg.image.load(path.join(img_folder, MOB_IMG)).convert_alpha()
         self.shooterImage = pg.image.load(path.join(img_folder, SHOOTER_IMG)).convert_alpha()
         self.hpupImage = pg.image.load(path.join(img_folder, "heart.png")).convert_alpha()
-
+        self.floorImage = pg.image.load(path.join(img_folder, "floor.png")).convert_alpha()
+        
         # Weapon sprites:
         self.shotgun_img = pg.image.load(path.join(img_folder, "Shotgun.png")).convert_alpha()
         self.pistol_img = pg.image.load(path.join(img_folder, "ColtPixel.png")).convert_alpha()
@@ -84,7 +85,13 @@ class Game:
         self.pistol = pg.sprite.Group()
         self.ar = pg.sprite.Group()
         # -------
-
+        
+        # Experimental
+        #for row, tiles in enumerate(self.map.data):
+         #   for col, tile, in enumerate(tiles):
+          #      if tile != '1':
+           #         Floor(self, col, row)
+        # Experimental
         for row, tiles in enumerate(self.map.data):
             for col, tile, in enumerate(tiles):
                 if tile == 'P':
@@ -105,6 +112,8 @@ class Game:
                         Weapons.Sniper_rifle(self, col, row)
                     if roll == 4:
                         Weapons.Assault_rifle(self, col, row)
+                    
+                    
 
         self.camera = Camera(self.map.width, self.map.height)
 
@@ -160,7 +169,10 @@ class Game:
 
         hits = pg.sprite.spritecollide(self.player, self.hpups, True, False)
         if hits:
-            self.player.health += 10
+            if self.player.health + 10 > 100:
+                self.player.health = 100
+            else:
+                self.player.health += 10
 
         hits = pg.sprite.spritecollide(self.player, self.shotgun, True, False)
         if hits:

@@ -300,6 +300,18 @@ class HPUP(pg.sprite.Sprite): # Health up
         self.hit_rect.center = self.rect.center
         self.rect.center = self.pos
 
+class Floor(pg.sprite.Sprite): # Floor
+    def __init__(self, game, x, y):
+        self.groups = game.allSprites
+        pg.sprite.Sprite.__init__(self, self.groups)
+        self.game = game
+        self.image = game.floorImage
+        self.rect = self.image.get_rect()
+        self.x = x
+        self.y = y
+        self.rect.x = x * settings.TILESIZE
+        self.rect.y = y * settings.TILESIZE
+
 
 class StationaryMob(pg.sprite.Sprite):
     def __init__(self, game, x, y):

@@ -1,4 +1,3 @@
-
 #################################################
 #CS30 Final Capstone Project
 #Developers: Kale, Dallas, Marco
@@ -60,14 +59,14 @@ class Player(pg.sprite.Sprite):
         self.vel = vec(0, 0)
         keys = pg.key.get_pressed()
         # Directional controls
-        if keys[pg.K_LEFT] or keys[pg.K_a]:
-            self.vel = vec(-PLAYER_SPEED, self.vel[1])
-        if keys[pg.K_RIGHT] or keys[pg.K_d]:
-            self.vel = vec(PLAYER_SPEED, self.vel[1])
+#        if keys[pg.K_LEFT] or keys[pg.K_a]:
+#            self.vel = vec(-PLAYER_SPEED, self.vel[1])
+#        if keys[pg.K_RIGHT] or keys[pg.K_d]:
+#            self.vel = vec(PLAYER_SPEED, self.vel[1])
         if keys[pg.K_UP] or keys[pg.K_w]:
-            self.vel = vec(self.vel[0], -PLAYER_SPEED)
+            self.vel = vec(PLAYER_SPEED, 0).rotate(-self.rot)
         if keys[pg.K_DOWN] or keys [pg.K_s]:
-            self.vel = vec(self.vel[0], PLAYER_SPEED)
+            self.vel = vec(-PLAYER_SPEED, 0).rotate(-self.rot)
 
 
         if pg.mouse.get_pressed()[0] == 1: # Shooting button
@@ -221,8 +220,8 @@ class Wall(pg.sprite.Sprite):
         self.groups = game.allSprites, game.walls
         pg.sprite.Sprite.__init__(self, self.groups)
         self.game = game
-        self.image = pg.Surface((settings.TILESIZE, settings.TILESIZE))
-        self.image.fill(settings.GREEN)
+        self.image = pg.Surface((TILESIZE, TILESIZE))
+        self.image.fill(GREEN)
         self.rect = self.image.get_rect()
         self.x = x
         self.y = y
@@ -299,18 +298,6 @@ class HPUP(pg.sprite.Sprite): # Health up
         self.hit_rect = settings.MOB_HIT_RECT.copy()
         self.hit_rect.center = self.rect.center
         self.rect.center = self.pos
-
-class Floor(pg.sprite.Sprite): # Floor
-    def __init__(self, game, x, y):
-        self.groups = game.allSprites
-        pg.sprite.Sprite.__init__(self, self.groups)
-        self.game = game
-        self.image = game.floorImage
-        self.rect = self.image.get_rect()
-        self.x = x
-        self.y = y
-        self.rect.x = x * settings.TILESIZE
-        self.rect.y = y * settings.TILESIZE
 
 
 class StationaryMob(pg.sprite.Sprite):

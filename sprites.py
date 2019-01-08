@@ -59,10 +59,6 @@ class Player(pg.sprite.Sprite):
         self.vel = vec(0, 0)
         keys = pg.key.get_pressed()
         # Directional controls
-#        if keys[pg.K_LEFT] or keys[pg.K_a]:
-#            self.vel = vec(-PLAYER_SPEED, self.vel[1])
-#        if keys[pg.K_RIGHT] or keys[pg.K_d]:
-#            self.vel = vec(PLAYER_SPEED, self.vel[1])
         if keys[pg.K_UP] or keys[pg.K_w]:
             self.vel = vec(PLAYER_SPEED, 0).rotate(-self.rot)
         if keys[pg.K_DOWN] or keys [pg.K_s]:

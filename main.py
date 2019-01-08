@@ -48,6 +48,8 @@ class Game:
     def loadData(self):
         self.gameFolder = path.dirname("__file__")
         img_folder = path.join(self.gameFolder, 'img')
+        snd_folder = path.join(self.gameFolder, 'snd')
+        music_folder = path.join(self.gameFolder, 'music')
         self.map = Map(path.join(self.gameFolder, 'map.txt'))
         self.player_img = pg.image.load(path.join(img_folder, PLAYER_IMG)).convert_alpha()
         self.bullet_img = pg.image.load(path.join(img_folder, BULLET_IMG)).convert_alpha()

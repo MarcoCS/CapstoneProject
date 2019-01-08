@@ -203,7 +203,7 @@ class Game:
         # This displays frame rate.
         pg.display.set_caption(TITLE)
         self.screen.fill(BLACK)
-        self.drawGrid()
+        #self.drawGrid()      #Removed the grid
         for sprite in self.allSprites:
             if isinstance(sprite, StationaryMob):
                 sprite.drawShooterHealth()

@@ -47,6 +47,8 @@ class Game:
     def loadData(self):
         self.gameFolder = path.dirname("__file__")
         img_folder = path.join(self.gameFolder, 'img')
+        msc_folder = path.join(self.gameFolder, 'msc')
+        snd_folder = path.join(self.gameFolder, 'snd')
         self.map = Map(path.join(self.gameFolder, 'map.txt'))
         self.player_img = pg.image.load(path.join(img_folder, PLAYER_IMG)).convert_alpha()
         self.bullet_img = pg.image.load(path.join(img_folder, BULLET_IMG)).convert_alpha()
@@ -66,6 +68,8 @@ class Game:
                 self.highscore = int(f.read())
             except:
                 self.highscore = 0
+         #sound loading
+        pg.mixer.music.load(path.join(msc_folder, 'espionage.ogg'))
 
     def new(self):
         # Start a new game
@@ -111,6 +115,7 @@ class Game:
     def run(self):
         # Run the game loop
         self.playing = True
+        pg.mixer.music.play(loops=-1)
         while self.playing:
             self.dt = self.clock.tick(FPS) / 1000
             self.events()

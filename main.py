@@ -36,6 +36,7 @@ class Game:
     def __init__(self):
         # Initialize pygame
         pg.init()
+        pg.mixer.init()
         self.screen = pg.display.set_mode((WIDTH,HEIGHT))
         pg.display.set_caption(TITLE)
         self.clock = pg.time.Clock()

@@ -69,6 +69,15 @@ class Player(pg.sprite.Sprite):
             now = pg.time.get_ticks()
             if now - self.last_shot > settings.BULLET_RATE:
                 self.last_shot = now
+                if settings.CURRENT_GUN == "pistol":
+                    self.game.pistolshot.play()
+                if settings.CURRENT_GUN == "sniper":
+                    self.game.snipershot.play()
+                if settings.CURRENT_GUN == "shotgun":
+                    self.game.shotgunshot.play()
+                if settings.CURRENT_GUN == "assault rifle":
+                    self.game.assaultrifleshot.play()
+                    
                 for x in range(settings.PELLETS): # This is for things like shotguns and stuff
                     dir = vec(1, 0).rotate(-self.rot)
                     pos = self.pos + settings.BARREL_OFFSET.rotate(-self.rot)
@@ -114,13 +123,14 @@ class Weapons:
 
 
         def change_var():# Gun Characteristics:
-            settings.BULLET_RATE = 500      # Rate of fire, delay between bullets
+            settings.BULLET_RATE = 1000     # Rate of fire, delay between bullets
             settings.BULLET_LIFETIME = 850 # When the bullet kills itself in "milliseconds"
             settings.BULLET_SPEED = 500     # How fast the bullet travels
             settings.KICKBACK = 600         # Recoil; how much shooting sends the player back.  This may be changed
             settings.GUN_SPREAD = 20         # How much the bullets deviates
             settings.BULLET_DAMAGE = 45     # Self explanatory
             settings.PELLETS = 5            # Controls how many bullets will spawn
+            settings.CURRENT_GUN = "shotgun"
 
     class Starting_pistol(pg.sprite.Sprite):
         def __init__(self,game, x, y):
@@ -136,13 +146,14 @@ class Weapons:
 
         def change_var():
             # Gun Characteristics:
-            settings.BULLET_RATE = 250      # Rate of fire; delay between bullets
+            settings.BULLET_RATE = 350      # Rate of fire; delay between bullets
             settings.BULLET_LIFETIME = 1000 # When the bullet kills itself in "milliseconds"
             settings.BULLET_SPEED = 500     # How fast the bullet travels
             settings.KICKBACK = 200         # Recoil; how much shooting sends the player back.  This may be changed
             settings.GUN_SPREAD = 8         # How much the bullets deviates
             settings.BULLET_DAMAGE = 10     # Self explanatory
             PELLETS = 1            # Controlls How many bullets will spawn per trigger pull
+            settings.CURRENT_GUN = "pistol"
 
     class Sniper_rifle(pg.sprite.Sprite):
         def __init__(self,game, x, y):
@@ -165,6 +176,7 @@ class Weapons:
             settings.GUN_SPREAD = 1         # How much the bullets deviates
             settings.BULLET_DAMAGE = 100     # Self explanatory
             settings.PELLETS = 1            # Controlls How many bullets will spawn per trigger pull
+            settings.CURRENT_GUN = "sniper"
 
     class Assault_rifle(pg.sprite.Sprite):
         def __init__(self,game, x, y):
@@ -180,13 +192,14 @@ class Weapons:
 
         def change_var():
             # Gun Characteristics:
-            settings.BULLET_RATE = 150       # Rate of fire; delay between bullets
+            settings.BULLET_RATE = 250       # Rate of fire; delay between bullets
             settings.BULLET_LIFETIME = 1500 # When the bullet kills itself in "milliseconds"
             settings.BULLET_SPEED = 900    # How fast the bullet travels
             settings.KICKBACK = 250          # Recoil; how much shooting sends the player back.  This may be changed
             settings.GUN_SPREAD = 10         # How much the bullets deviates
             settings.BULLET_DAMAGE = 25     # Self explanatory
             settings.PELLETS = 1            # Controlls How many bullets will spawn per trigger pull
+            settings.CURRENT_GUN = "assault rifle"
 
 
 class Bullet(pg.sprite.Sprite):
@@ -327,6 +340,7 @@ class StationaryMob(pg.sprite.Sprite):
         now = pg.time.get_ticks()
         if now - self.last_shot > 4500:
             self.last_shot = now
+            self.game.enemysnipershot.play()
             dir = vec(1, 0).rotate(-self.rot)
             pos = self.pos + settings.BARREL_OFFSET.rotate(-self.rot)
             ShooterBullet(self.game, pos, dir)

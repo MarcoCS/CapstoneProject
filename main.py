@@ -74,6 +74,10 @@ class Game:
         pg.mixer.music.load(path.join(msc_folder, 'espionage.ogg'))
         self.pickupgun = pg.mixer.Sound(path.join(snd_folder, 'Cocking Gun-SoundBible.com-327068561.wav'))
         self.healthpickup = pg.mixer.Sound(path.join(snd_folder, 'Healing Full.wav'))
+        self.assaultrifleshot = pg.mixer.Sound(path.join(snd_folder, 'M4A1_Single-Kibblesbob-8540445.wav'))
+        self.snipershot = pg.mixer.Sound(path.join(snd_folder, 'Sniper_Fire_Reload-Mike_Koenig-1309646991.wav'))
+        self.shotgunshot = pg.mixer.Sound(path.join(snd_folder, 'normal_shotgun_-Soundeffects-1522730314.wav'))
+        self.pistolshot = pg.mixer.Sound(path.join(snd_folder, '380_gunshot_single-mike-koenig.wav'))
         
 
     def new(self):

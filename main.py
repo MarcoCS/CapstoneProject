@@ -73,6 +73,7 @@ class Game:
          #sound loading
         pg.mixer.music.load(path.join(msc_folder, 'espionage.ogg'))
         pg.mixer.music.load(path.join(msc_folder, 'battleThemeA.mp3'))
+        pg.mixer.music.load(path.join(msc_folder, 'Retro_No hope.ogg'))
         self.pickupgun = pg.mixer.Sound(path.join(snd_folder, 'Cocking Gun-SoundBible.com-327068561.wav'))
         self.healthpickup = pg.mixer.Sound(path.join(snd_folder, 'Healing Full.wav'))
         self.healthpickup.set_volume(0.2)

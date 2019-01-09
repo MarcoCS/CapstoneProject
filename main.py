@@ -87,7 +87,7 @@ class Game:
         self.zombiehurt = pg.mixer.Sound(path.join(snd_folder, 'Zombie Gets Attacked-SoundBible.com-20348330.wav'))
         self.shooterhit = pg.mixer.Sound(path.join(snd_folder, 'Large Metal Pan 2-SoundBible.com-1042326277.wav'))
         self.enemysnipershot = pg.mixer.Sound(path.join(snd_folder, 'Sniper_Fire_Reload-Mike_Koenig-1309646991.wav'))
-        self.enemysnipershot.volume_set(0.2)
+        self.enemysnipershot.set_volume(0.2)
         
 
     def new(self):

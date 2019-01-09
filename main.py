@@ -72,6 +72,11 @@ class Game:
                 self.highscore = 0
          #sound loading
         pg.mixer.music.load(path.join(msc_folder, 'espionage.ogg'))
+        pickupgun = pg.mixer.Sound.load(path.join(snd_folder, 'Cocking Gun-SoundBible.com-327068561.wav'))
+        #pickupgun = pg.mixer.Sound(path.join(snd_folder, 'Cocking Gun-SoundBible.com-327068561.wav'))
+        #pg.mixer.Sound.load(path.join(snd_folder, 'Cocking Gun-SoundBible.com-327068561.wav'))
+        #pg.mixer.Sound(path.join(snd_folder, 'Cocking Gun-SoundBible.com-327068561.wav'))
+        
 
     def new(self):
         # Start a new game
@@ -183,18 +188,22 @@ class Game:
         hits = pg.sprite.spritecollide(self.player, self.shotgun, True, False)
         if hits:
             Weapons.Shotgun.change_var()
+            pickupgun.play()
 
         hits = pg.sprite.spritecollide(self.player, self.pistol, True, False)
         if hits:
             Weapons.Starting_pistol.change_var()
+            pickupgun.play()
 
         hits = pg.sprite.spritecollide(self.player, self.sniper, True, False)
         if hits:
             Weapons.Sniper_rifle.change_var()
+            pickupgun.play()
 
         hits = pg.sprite.spritecollide(self.player, self.ar, True, False)
         if hits:
             Weapons.Assault_rifle.change_var()
+            pickupgun.play()
 
 
 

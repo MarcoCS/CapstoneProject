@@ -123,7 +123,7 @@ class Weapons:
 
 
         def change_var():# Gun Characteristics:
-            settings.BULLET_RATE = 500      # Rate of fire, delay between bullets
+            settings.BULLET_RATE = 1900     # Rate of fire, delay between bullets
             settings.BULLET_LIFETIME = 850 # When the bullet kills itself in "milliseconds"
             settings.BULLET_SPEED = 500     # How fast the bullet travels
             settings.KICKBACK = 600         # Recoil; how much shooting sends the player back.  This may be changed
@@ -146,7 +146,7 @@ class Weapons:
 
         def change_var():
             # Gun Characteristics:
-            settings.BULLET_RATE = 250      # Rate of fire; delay between bullets
+            settings.BULLET_RATE = 1900      # Rate of fire; delay between bullets
             settings.BULLET_LIFETIME = 1000 # When the bullet kills itself in "milliseconds"
             settings.BULLET_SPEED = 500     # How fast the bullet travels
             settings.KICKBACK = 200         # Recoil; how much shooting sends the player back.  This may be changed
@@ -169,7 +169,7 @@ class Weapons:
 
         def change_var():
             # Gun Characteristics:
-            settings.BULLET_RATE = 1000       # Rate of fire; delay between bullets
+            settings.BULLET_RATE = 3000       # Rate of fire; delay between bullets
             settings.BULLET_LIFETIME = 2000 # When the bullet kills itself in "milliseconds"
             settings.BULLET_SPEED = 2000    # How fast the bullet travels
             settings.KICKBACK = 350          # Recoil; how much shooting sends the player back.  This may be changed
@@ -192,7 +192,7 @@ class Weapons:
 
         def change_var():
             # Gun Characteristics:
-            settings.BULLET_RATE = 150       # Rate of fire; delay between bullets
+            settings.BULLET_RATE = 900       # Rate of fire; delay between bullets
             settings.BULLET_LIFETIME = 1500 # When the bullet kills itself in "milliseconds"
             settings.BULLET_SPEED = 900    # How fast the bullet travels
             settings.KICKBACK = 250          # Recoil; how much shooting sends the player back.  This may be changed

@@ -340,6 +340,7 @@ class StationaryMob(pg.sprite.Sprite):
         now = pg.time.get_ticks()
         if now - self.last_shot > 4500:
             self.last_shot = now
+            self.game.enemysnipershot.play()
             dir = vec(1, 0).rotate(-self.rot)
             pos = self.pos + settings.BARREL_OFFSET.rotate(-self.rot)
             ShooterBullet(self.game, pos, dir)

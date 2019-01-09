@@ -72,8 +72,8 @@ class Game:
                 self.highscore = 0
          #sound loading
         pg.mixer.music.load(path.join(msc_folder, 'espionage.ogg'))
-        pickupgun = pg.mixer.Sound(path.join(snd_folder, 'Cocking Gun-SoundBible.com-327068561.wav'))
-        #pg.mixer.Sound(path.join(snd_folder, 'Cocking Gun-SoundBible.com-327068561.wav'))
+        self.pickupgun = pg.mixer.Sound(path.join(snd_folder, 'Cocking Gun-SoundBible.com-327068561.wav'))
+        self.healthpickup = pg.mixer.Sound(path.join(snd_folder, 'Healing Full.wav'))
         
 
     def new(self):
@@ -178,30 +178,32 @@ class Game:
 
         hits = pg.sprite.spritecollide(self.player, self.hpups, True, False)
         if hits:
+            self.healthpickup.play()
             if self.player.health + 10 > 100:
                 self.player.health = 100
             else:
                 self.player.health += 10
+                
 
         hits = pg.sprite.spritecollide(self.player, self.shotgun, True, False)
         if hits:
             Weapons.Shotgun.change_var()
-            pickupgun.play()
+            self.pickupgun.play()
 
         hits = pg.sprite.spritecollide(self.player, self.pistol, True, False)
         if hits:
             Weapons.Starting_pistol.change_var()
-            pickupgun.play()
+            self.pickupgun.play()
 
         hits = pg.sprite.spritecollide(self.player, self.sniper, True, False)
         if hits:
             Weapons.Sniper_rifle.change_var()
-            pickupgun.play()
+            self.pickupgun.play()
 
         hits = pg.sprite.spritecollide(self.player, self.ar, True, False)
         if hits:
             Weapons.Assault_rifle.change_var()
-            pickupgun.play()
+            self.pickupgun.play()
 
 
 

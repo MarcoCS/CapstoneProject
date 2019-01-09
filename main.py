@@ -72,9 +72,7 @@ class Game:
                 self.highscore = 0
          #sound loading
         pg.mixer.music.load(path.join(msc_folder, 'espionage.ogg'))
-        pickupgun = pg.mixer.Sound.load(path.join(snd_folder, 'Cocking Gun-SoundBible.com-327068561.wav'))
-        #pickupgun = pg.mixer.Sound(path.join(snd_folder, 'Cocking Gun-SoundBible.com-327068561.wav'))
-        #pg.mixer.Sound.load(path.join(snd_folder, 'Cocking Gun-SoundBible.com-327068561.wav'))
+        pickupgun = pg.mixer.Sound(path.join(snd_folder, 'Cocking Gun-SoundBible.com-327068561.wav'))
         #pg.mixer.Sound(path.join(snd_folder, 'Cocking Gun-SoundBible.com-327068561.wav'))
         
 

@@ -146,7 +146,7 @@ class Weapons:
 
         def change_var():
             # Gun Characteristics:
-            settings.BULLET_RATE = 1900      # Rate of fire; delay between bullets
+            settings.BULLET_RATE = 1000      # Rate of fire; delay between bullets
             settings.BULLET_LIFETIME = 1000 # When the bullet kills itself in "milliseconds"
             settings.BULLET_SPEED = 500     # How fast the bullet travels
             settings.KICKBACK = 200         # Recoil; how much shooting sends the player back.  This may be changed

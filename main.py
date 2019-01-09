@@ -75,14 +75,19 @@ class Game:
         self.pickupgun = pg.mixer.Sound(path.join(snd_folder, 'Cocking Gun-SoundBible.com-327068561.wav'))
         self.healthpickup = pg.mixer.Sound(path.join(snd_folder, 'Healing Full.wav'))
         self.assaultrifleshot = pg.mixer.Sound(path.join(snd_folder, 'M4A1_Single-Kibblesbob-8540445.wav'))
+        self.assaultrifleshot.set_volume(0.4)
         self.snipershot = pg.mixer.Sound(path.join(snd_folder, 'Sniper_Fire_Reload-Mike_Koenig-1309646991.wav'))
+        self.snipershot.set_volume(0.4)
         self.shotgunshot = pg.mixer.Sound(path.join(snd_folder, 'ie_shot_gun-luminalace-770179786.wav'))
+        self.shotgunshot.set_volume(0.4)
         self.pistolshot = pg.mixer.Sound(path.join(snd_folder, '380_gunshot_single-mike-koenig.wav'))
+        self.pistolshot.set_volume(0.4)
         self.playerhitsnd = pg.mixer.Sound(path.join(snd_folder, 'Jab-SoundBible.com-1806727891.wav'))
         self.zombiehitsnd = pg.mixer.Sound(path.join(snd_folder, 'Squish 1-SoundBible.com-662226724.wav'))
         self.zombiehurt = pg.mixer.Sound(path.join(snd_folder, 'Zombie Gets Attacked-SoundBible.com-20348330.wav'))
         self.shooterhit = pg.mixer.Sound(path.join(snd_folder, 'Large Metal Pan 2-SoundBible.com-1042326277.wav'))
         self.enemysnipershot = pg.mixer.Sound(path.join(snd_folder, 'Sniper_Fire_Reload-Mike_Koenig-1309646991.wav'))
+        self.enemysnipershot.volume_set(0.2)
         
 
     def new(self):

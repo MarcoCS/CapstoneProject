@@ -69,6 +69,15 @@ class Player(pg.sprite.Sprite):
             now = pg.time.get_ticks()
             if now - self.last_shot > settings.BULLET_RATE:
                 self.last_shot = now
+                if settings.CURRENT_GUN == "pistol":
+                    self.game.pistolshot.play()
+                if settings.CURRENT_GUN == "sniper":
+                    self.game.snipershot.play()
+                if settings.CURRENT_GUN == "shotgun":
+                    self.game.shotgunshot.play()
+                if settings.CURRENT_GUN == "assault rifle":
+                    self.game.assaultrifleshot.play()
+                    
                 for x in range(settings.PELLETS): # This is for things like shotguns and stuff
                     dir = vec(1, 0).rotate(-self.rot)
                     pos = self.pos + settings.BARREL_OFFSET.rotate(-self.rot)
@@ -121,6 +130,7 @@ class Weapons:
             settings.GUN_SPREAD = 20         # How much the bullets deviates
             settings.BULLET_DAMAGE = 45     # Self explanatory
             settings.PELLETS = 5            # Controls how many bullets will spawn
+            settings.CURRENT_GUN = "shotgun"
 
     class Starting_pistol(pg.sprite.Sprite):
         def __init__(self,game, x, y):
@@ -143,6 +153,7 @@ class Weapons:
             settings.GUN_SPREAD = 8         # How much the bullets deviates
             settings.BULLET_DAMAGE = 10     # Self explanatory
             PELLETS = 1            # Controlls How many bullets will spawn per trigger pull
+            settings.CURRENT_GUN = "pistol"
 
     class Sniper_rifle(pg.sprite.Sprite):
         def __init__(self,game, x, y):
@@ -165,6 +176,7 @@ class Weapons:
             settings.GUN_SPREAD = 1         # How much the bullets deviates
             settings.BULLET_DAMAGE = 100     # Self explanatory
             settings.PELLETS = 1            # Controlls How many bullets will spawn per trigger pull
+            settings.CURRENT_GUN = "sniper"
 
     class Assault_rifle(pg.sprite.Sprite):
         def __init__(self,game, x, y):
@@ -187,6 +199,7 @@ class Weapons:
             settings.GUN_SPREAD = 10         # How much the bullets deviates
             settings.BULLET_DAMAGE = 25     # Self explanatory
             settings.PELLETS = 1            # Controlls How many bullets will spawn per trigger pull
+            settings.CURRENT_GUN = "assault rifle"
 
 
 class Bullet(pg.sprite.Sprite):

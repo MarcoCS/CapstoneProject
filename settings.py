@@ -39,6 +39,7 @@ KICKBACK = 200         # Recoil; how much shooting sends the player back.  This 
 GUN_SPREAD = 8         # How much the bullets deviates
 BULLET_DAMAGE = 10     # Self explanatory
 PELLETS = 1
+CURRENT_GUN = "pistol"
 
 # Player settings
 PLAYER_HEALTH = 100

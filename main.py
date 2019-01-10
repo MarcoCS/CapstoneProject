@@ -172,6 +172,13 @@ class Game:
                 self.playing = False
             if hits:
                 self.player.pos += vec(MOB_KNOCKBACK, 0).rotate(-hits[0].rot)
+                
+        #bullets hit BOSS
+        hits = pg.sprite.groupcollide(self.bosses, self.bullets, False, True)
+        for hit in hits:
+            hit.health -= settings.BULLET_DAMAGE
+            hit.vel = vec(0,0)
+            self.score += 20
 
         #bullets hit mobs
         hits = pg.sprite.groupcollide(self.mobs, self.bullets, False, True)

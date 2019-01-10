@@ -30,6 +30,24 @@ def drawPlayerHealth(surf, x, y, pct): # Surf short for surface
         col = RED
     pg.draw.rect(surf, col, fill_rect)
     pg.draw.rect(surf, WHITE, outline_rect, 2)
+    
+def drawBossHealth(surf, x, y, pct): # Surf short for surface
+        if pct < 0: # Pct short for percentage of healthbar
+            pct = 0
+        BAR_LENGTH = 2500
+        BAR_HEIGHT = 15
+        fill = pct * BAR_LENGTH
+        outline_rect = pg.Rect(WIDTH / 2, HEIGHT + 25, BAR_LENGTH, BAR_HEIGHT)
+        fill_rect = pg.Rect(x % 100, y, fill, BAR_HEIGHT)
+        if pct > 0.6:
+            col = GREEN
+        elif pct > 0.3:   
+            col = YELLOW
+        else:
+            col = RED
+        pg.draw.rect(surf, col, fill_rect)
+        pg.draw.rect(surf, WHITE, outline_rect, 2)
+
 
 
 class Game:
@@ -266,6 +284,7 @@ class Game:
             #pg.draw.rect(self.screen, WHITE, self.player.hit_rect, 2)
         #Drawing the player's health bar
         drawPlayerHealth(self.screen, 10, 10, self.player.health / PLAYER_HEALTH)
+        drawBossHealth(self.screen, WIDTH / 2, HEIGHT + 25, self.boss.health / BOSS_HEALTH)
         if self.paused:
             self.showPauseScreen()
         self.drawText(str(round(self.clock.get_fps(),2)), self.font, 20, WHITE, WIDTH - 50, 20)

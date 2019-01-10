@@ -303,7 +303,7 @@ class Boss(pg.sprite.Sprite):
         pg.sprite.Sprite.__init__(self, self.groups)
         self.game = game
         self.image = game.bossImage
-        self.image.set_colorkey(WHITE)
+        self.image.set_colorkey(BLACK)
         self.rect = self.image.get_rect()
         self.hit_rect = settings.MOB_HIT_RECT.copy()
         self.hit_rect.center = self.rect.center
@@ -311,7 +311,7 @@ class Boss(pg.sprite.Sprite):
         self.vel = vec(0, 0)
         self.rect.center = self.pos
         self.rot = 0
-        self.speed = choice(settings.MOB_SPEEDS)
+        self.speed = 50
         self.health = settings.BOSS_HEALTH
 
     def update(self):

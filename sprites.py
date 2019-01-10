@@ -345,7 +345,7 @@ class Boss(pg.sprite.Sprite):
         width = int(self.rect.width * self.health / settings.BOSS_HEALTH)
         self.health_bar = pg.Rect(0, 0, width, 7)
         if self.health < settings.BOSS_HEALTH:
-            pg.draw.rect(self.image, col, self.health_bar)
+            pg.draw.rect(self.game.screen, col, self.health_bar)
 
     
             

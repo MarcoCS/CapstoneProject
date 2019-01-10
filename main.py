@@ -57,7 +57,7 @@ class Game:
         self.shooterImage = pg.image.load(path.join(img_folder, SHOOTER_IMG)).convert_alpha()
         self.hpupImage = pg.image.load(path.join(img_folder, "heart.png")).convert_alpha()
         self.floorImage = pg.image.load(path.join(img_folder, "floor.png")).convert_alpha()
-        self.bossImage = pg.image.load(path.join(img_folder, "BOSS_IMG")).convert_alpha()
+        self.bossImage = pg.image.load(path.join(img_folder, BOSS_IMG)).convert_alpha()
         # Weapon sprites:
         self.shotgun_img = pg.image.load(path.join(img_folder, "Shotgun.png")).convert_alpha()
         self.pistol_img = pg.image.load(path.join(img_folder, "ColtPixel.png")).convert_alpha()
@@ -96,6 +96,7 @@ class Game:
         self.score = 0
         self.paused = False
         self.allSprites = pg.sprite.Group()
+        self.bosses = pg.sprite.Group()
         self.walls = pg.sprite.Group()
         self.bullets = pg.sprite.Group()
         self.mobs = pg.sprite.Group()

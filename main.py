@@ -192,14 +192,14 @@ class Game:
         for hit in hits:
             self.playerhitsnd.play()
             self.player.health -= BULLET_DAMAGE
-            hit.vel = vec(0, 0)
+            hit.vel = vec(0, 0) # Resets velocity of hit object
             if self.player.health <= 0:
                 self.playing = False
 
-        # Detection of weapon pickup
+        # Detection of weapon pickup/ power up pickup
 
         hits = pg.sprite.spritecollide(self.player, self.hpups, True, False)
-        if hits:
+        if hits: 
             self.healthpickup.play()
             if self.player.health + 10 > 100:
                 self.player.health = 100
@@ -286,6 +286,8 @@ class Game:
         self.drawText("Space to fire, p to pause", self.font, 20, WHITE, WIDTH / 2, HEIGHT / 2 + 150)
         self.drawText("Press any key to play", self.font, 20, WHITE, WIDTH / 2, HEIGHT / 2 + 200)
         self.drawText("High Score: " + str(self.highscore), self.font, 22, WHITE, WIDTH / 2, 15)
+        self.drawText("Control method Press 'N' for WASD or 'M' for Classic Controls", self.font, 22, WHITE, WIDTH / 2, HEIGHT / 2 + 250)
+
         pg.display.flip()
         self.waitForKey()
 

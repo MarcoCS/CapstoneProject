@@ -335,17 +335,22 @@ class Boss(pg.sprite.Sprite):
                 HPUP(self.game, self.pos)
             self.kill()
             
-    def bossHealth(self):
-        if self.health > 1800:
-            col = settings.GREEN
-        elif self.health > 800:
-            col = settings.YELLOW
+    def drawBossHealth(surf, x, y, pct): # Surf short for surface
+        if pct < 0: # Pct short for percentage of healthbar
+            pct = 0
+        BAR_LENGTH = 2500
+        BAR_HEIGHT = 15
+        fill = pct * BAR_LENGTH
+        outline_rect = pg.Rect(WIDTH / 2, HEIGHT + 25, BAR_LENGTH, BAR_HEIGHT)
+        fill_rect = pg.Rect(x % 100, y, fill, BAR_HEIGHT)
+        if pct > 0.6:
+            col = GREEN
+        elif pct > 0.3:   
+            col = YELLOW
         else:
-            col = settings.RED
-        width = int(self.rect.width * self.health / settings.BOSS_HEALTH)
-        self.health_bar = pg.Rect(0, 0, width, 7)
-        if self.health < settings.BOSS_HEALTH:
-            pg.draw.rect(self.game.screen, col, self.health_bar)
+            col = RED
+        pg.draw.rect(surf, col, fill_rect)
+        pg.draw.rect(surf, WHITE, outline_rect, 2)
 
     
             

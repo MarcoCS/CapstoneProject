@@ -153,7 +153,7 @@ class Weapons:
             settings.KICKBACK = 200         # Recoil; how much shooting sends the player back.  This may be changed
             settings.GUN_SPREAD = 8         # How much the bullets deviates
             settings.BULLET_DAMAGE = 10     # Self explanatory
-            PELLETS = 1            # Controlls How many bullets will spawn per trigger pull
+            settings.PELLETS = 1            # Controlls How many bullets will spawn per trigger pull
             settings.CURRENT_GUN = "pistol"
 
     class Sniper_rifle(pg.sprite.Sprite):

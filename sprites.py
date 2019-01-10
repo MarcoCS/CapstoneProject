@@ -284,7 +284,7 @@ class Mob(pg.sprite.Sprite):
             if randint(1,5) == 1:
                 HPUP(self.game, self.pos)
             self.kill()
-
+            
     def drawHealth(self):
         if self.health > 60:
             col = settings.GREEN
@@ -297,7 +297,67 @@ class Mob(pg.sprite.Sprite):
         if self.health < settings.MOB_HEALTH:
             pg.draw.rect(self.image, col, self.health_bar)
 
+class BOSS(pg.sprite.Sprite):
+    def __init__(self, game, x, y):
+        self.groups = game.allSprites, game.bosses
+        pg.sprite.Sprite.__init__(self, self.groups)
+        self.game = game
+        self.image = game.
+        self.rect = self.image.get_rect()
+        self.hit_rect = settings.MOB_HIT_RECT.copy()
+        self.hit_rect.center = self.rect.center
+        self.pos = vec(x, y) * settings.TILESIZE
+        self.vel = vec(0, 0)
+        self.rect.center = self.pos
+        self.rot = 0
+        self.speed = choice(settings.MOB_SPEEDS)
+        self.health = settings.MOB_HEALTH
 
+    def avoidMobs(self):
+        # This function keeps mobs spread out
+        for mob in self.game.mobs:
+            if mob != self:
+                distance = self.pos - mob.pos
+                if 0 < distance.length() < settings.AVOID_RADIUS:
+                    self.acc += distance.normalize()
+
+    def update(self):
+        # Rotate mobs and update the images. They track the player.
+        self.rot = (self.game.player.pos - self.pos).angle_to(vec(1,0))
+        self.image = pg.transform.rotate(self.game.mobImage, self.rot)
+        self.rect = self.image.get_rect()
+        self.rect.center = self.pos
+        self.acc = vec(1, 0).rotate(-self.rot)
+        self.avoidMobs()
+        # This self.acc.scale_to_length adjusting to speed simulates friction.
+        self.acc.scale_to_length(self.speed)
+        self.acc += self.vel * -1
+        self.vel += self.acc * self.game.dt
+        self.pos += self.vel * self.game.dt + 0.5 * self.acc * self.game.dt ** 2
+        self.hit_rect.centerx = self.pos.x
+        collide_with_walls(self, self.game.walls, 'x')
+        self.hit_rect.centery = self.pos.y
+        collide_with_walls(self, self.game.walls, 'y')
+        self.rect.center = self.hit_rect.center
+        if self.health <= 0:
+            if randint(1,5) == 1:
+                HPUP(self.game, self.pos)
+            self.kill()
+            
+    def drawHealth(self):
+        if self.health > 60:
+            col = settings.GREEN
+        elif self.health > 30:
+            col = settings.YELLOW
+        else:
+            col = settings.RED
+        width = int(self.rect.width * self.health / settings.MOB_HEALTH)
+        self.health_bar = pg.Rect(0, 0, width, 7)
+        if self.health < settings.MOB_HEALTH:
+            pg.draw.rect(self.image, col, self.health_bar)
+
+    
+            
 class HPUP(pg.sprite.Sprite): # Health up
     def __init__(self, game, pos):
         self.groups = game.allSprites, game.hpups

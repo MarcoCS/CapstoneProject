@@ -12,6 +12,7 @@ import settings
 from tilemap import collide_hit_rect
 vec = pg.math.Vector2
 from random import choice
+from random import randint
 
 def collide_with_walls(sprite, group, dir):
     # Handles each direction separately. This function is used for both
@@ -267,7 +268,8 @@ class Mob(pg.sprite.Sprite):
         collide_with_walls(self, self.game.walls, 'y')
         self.rect.center = self.hit_rect.center
         if self.health <= 0:
-            HPUP(self.game, self.pos)
+            if randint(1,5) == 1:
+                HPUP(self.game, self.pos)
             self.kill()
 
     def drawHealth(self):

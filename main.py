@@ -71,9 +71,7 @@ class Game:
             except:
                 self.highscore = 0
          #sound loading
-        self.gamemsc = pg.mixer.music.load(path.join(msc_folder, 'espionage.ogg'))
-        self.startscreenmsc = pg.mixer.music.load(path.join(msc_folder, 'battleThemeA.mp3'))
-        self.gameovermsc = pg.mixer.music.load(path.join(msc_folder, 'Retro_No hope.ogg'))
+        pg.mixer.music.load(path.join(msc_folder, 'espionage.ogg'))
         self.pickupgun = pg.mixer.Sound(path.join(snd_folder, 'Cocking Gun-SoundBible.com-327068561.wav'))
         self.healthpickup = pg.mixer.Sound(path.join(snd_folder, 'Healing Full.wav'))
         self.healthpickup.set_volume(0.2)
@@ -280,7 +278,8 @@ class Game:
     def showStartScreen(self):
         # Draws the start screen with a colour, and displays the controls.
         # It will wait for the user to press a key, then start the game.
-        self.startscreenmsc.play()
+        pg.mixer.music.load(path.join(msc_folder, 'battleThemeA.mp3'))
+        pg.mixer.play(loops=-1)
         self.screen.fill(BGCOLOR)
         self.drawText("Shooter Game", self.font, 72, WHITE, WIDTH / 2, HEIGHT / 2)
         self.drawText("Up/Down or W/S to move. Left/Right or A/D to rotate.", self.font, 20, WHITE, WIDTH / 2, HEIGHT / 2 + 100)
@@ -289,6 +288,7 @@ class Game:
         self.drawText("High Score: " + str(self.highscore), self.font, 22, WHITE, WIDTH / 2, 15)
         pg.display.flip()
         self.waitForKey()
+        pg.mixer.music.fadeout(500)
 
     def showPauseScreen(self):
         self.drawText("Paused", self.font, 48, WHITE, WIDTH / 2, HEIGHT / 4)
@@ -299,7 +299,8 @@ class Game:
         # Draw the game over screen and wait for a key input to start new
         if not self.running:
             return
-        self.gameovermsc.play()
+        pg.mixer.music.load(path.join(msc_folder, 'Retro_No hope.ogg'))
+        pg.mixer.music.play(loops=-1)
         self.screen.fill(BGCOLOR)
         self.drawText("Game Over", self.font, 72, WHITE, WIDTH / 2, HEIGHT / 2)
         self.drawText("Press any key to play again", self.font, 20, WHITE, WIDTH / 2, HEIGHT / 2 + 100)

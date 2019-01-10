@@ -297,12 +297,12 @@ class Mob(pg.sprite.Sprite):
         if self.health < settings.MOB_HEALTH:
             pg.draw.rect(self.image, col, self.health_bar)
 
-class BOSS(pg.sprite.Sprite):
+class Boss(pg.sprite.Sprite):
     def __init__(self, game, x, y):
         self.groups = game.allSprites, game.bosses
         pg.sprite.Sprite.__init__(self, self.groups)
         self.game = game
-        self.image = game.
+        self.image = game.bossImage
         self.rect = self.image.get_rect()
         self.hit_rect = settings.MOB_HIT_RECT.copy()
         self.hit_rect.center = self.rect.center
@@ -311,7 +311,7 @@ class BOSS(pg.sprite.Sprite):
         self.rect.center = self.pos
         self.rot = 0
         self.speed = choice(settings.MOB_SPEEDS)
-        self.health = settings.MOB_HEALTH
+        self.health = settings.BOSS_HEALTH
 
     def avoidMobs(self):
         # This function keeps mobs spread out

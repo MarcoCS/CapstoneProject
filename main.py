@@ -50,7 +50,7 @@ class Game:
         img_folder = path.join(self.gameFolder, 'img')
         self.msc_folder = path.join(self.gameFolder, 'msc')
         snd_folder = path.join(self.gameFolder, 'snd')
-        self.map = Map(path.join(self.gameFolder, 'map.txt'))
+        self.map = Map(path.join(self.gameFolder, 'BossTestMap.txt'))
         self.player_img = pg.image.load(path.join(img_folder, PLAYER_IMG)).convert_alpha()
         self.bullet_img = pg.image.load(path.join(img_folder, BULLET_IMG)).convert_alpha()
         self.mobImage = pg.image.load(path.join(img_folder, MOB_IMG)).convert_alpha()
@@ -123,6 +123,8 @@ class Game:
                     Wall(self, col, row)
                 if tile == 'M':
                     Mob(self, col, row)
+                if tile == 'D':
+                    Boss(self, col, row)
                 if tile == 'S':
                     StationaryMob(self, col, row)
                 if tile == 'W':

@@ -64,4 +64,5 @@ SHOOTER_HEALTH = 200
 SHOOTER_SCORE = 15
 
 #BOSS settings
-BOSS_IMG = 
+BOSS_IMG = 'Dragongreenhealth.png'
+BOSS_HEALTH = 2500

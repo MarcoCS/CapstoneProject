@@ -72,6 +72,26 @@ class Game:
                 self.highscore = 0
          #sound loading
         pg.mixer.music.load(path.join(msc_folder, 'espionage.ogg'))
+        self.startscreenmsc = pg.mixer.music.load(path.join(msc_folder, 'battleThemeA.mp3'))
+        pg.mixer.music.load(path.join(msc_folder, 'Retro_No hope.ogg'))
+        self.pickupgun = pg.mixer.Sound(path.join(snd_folder, 'Cocking Gun-SoundBible.com-327068561.wav'))
+        self.healthpickup = pg.mixer.Sound(path.join(snd_folder, 'Healing Full.wav'))
+        self.healthpickup.set_volume(0.2)
+        self.assaultrifleshot = pg.mixer.Sound(path.join(snd_folder, 'M4A1_Single-Kibblesbob-8540445.wav'))
+        self.assaultrifleshot.set_volume(0.2)
+        self.snipershot = pg.mixer.Sound(path.join(snd_folder, 'Sniper_Fire_Reload-Mike_Koenig-1309646991.wav'))
+        self.snipershot.set_volume(0.2)
+        self.shotgunshot = pg.mixer.Sound(path.join(snd_folder, 'ie_shot_gun-luminalace-770179786.wav'))
+        self.shotgunshot.set_volume(0.2)
+        self.pistolshot = pg.mixer.Sound(path.join(snd_folder, '380_gunshot_single-mike-koenig.wav'))
+        self.pistolshot.set_volume(0.2)
+        self.playerhitsnd = pg.mixer.Sound(path.join(snd_folder, 'Jab-SoundBible.com-1806727891.wav'))
+        self.zombiehitsnd = pg.mixer.Sound(path.join(snd_folder, 'Squish 1-SoundBible.com-662226724.wav'))
+        self.zombiehurt = pg.mixer.Sound(path.join(snd_folder, 'Zombie Gets Attacked-SoundBible.com-20348330.wav'))
+        self.shooterhit = pg.mixer.Sound(path.join(snd_folder, 'Large Metal Pan 2-SoundBible.com-1042326277.wav'))
+        self.enemysnipershot = pg.mixer.Sound(path.join(snd_folder, 'Sniper_Fire_Reload-Mike_Koenig-1309646991.wav'))
+        self.enemysnipershot.set_volume(0.1)
+        
 
     def new(self):
         # Start a new game
@@ -143,6 +163,7 @@ class Game:
         #mobs hit player
         hits = pg.sprite.spritecollide(self.player, self.mobs, False, collide_hit_rect)
         for hit in hits:
+            self.playerhitsnd.play()
             self.player.health -= MOB_DAMAGE
             hit.vel = vec(0, 0)
             if self.player.health <= 0:
@@ -153,6 +174,8 @@ class Game:
         #bullets hit mobs
         hits = pg.sprite.groupcollide(self.mobs, self.bullets, False, True)
         for hit in hits:
+            self.zombiehitsnd.play()
+            self.zombiehurt.play()
             hit.health -= settings.BULLET_DAMAGE
             hit.vel = vec(0, 0)
             self.score += 5
@@ -160,12 +183,14 @@ class Game:
         # Bullet/shooter collision
         hits = pg.sprite.groupcollide(self.shooters, self.bullets, False, True)
         for hit in hits:
+            self.shooterhit.play()
             hit.health -= settings.BULLET_DAMAGE
             self.score += 5
 
         # Player/shooter collisions
         hits = pg.sprite.spritecollide(self.player, self.shooterBullets, True, False)
         for hit in hits:
+            self.playerhitsnd.play()
             self.player.health -= BULLET_DAMAGE
             hit.vel = vec(0, 0)
             if self.player.health <= 0:
@@ -175,26 +200,32 @@ class Game:
 
         hits = pg.sprite.spritecollide(self.player, self.hpups, True, False)
         if hits:
+            self.healthpickup.play()
             if self.player.health + 10 > 100:
                 self.player.health = 100
             else:
                 self.player.health += 10
+                
 
         hits = pg.sprite.spritecollide(self.player, self.shotgun, True, False)
         if hits:
             Weapons.Shotgun.change_var()
+            self.pickupgun.play()
 
         hits = pg.sprite.spritecollide(self.player, self.pistol, True, False)
         if hits:
             Weapons.Starting_pistol.change_var()
+            self.pickupgun.play()
 
         hits = pg.sprite.spritecollide(self.player, self.sniper, True, False)
         if hits:
             Weapons.Sniper_rifle.change_var()
+            self.pickupgun.play()
 
         hits = pg.sprite.spritecollide(self.player, self.ar, True, False)
         if hits:
             Weapons.Assault_rifle.change_var()
+            self.pickupgun.play()
 
 
 

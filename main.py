@@ -48,7 +48,7 @@ class Game:
     def loadData(self):
         self.gameFolder = path.dirname("__file__")
         img_folder = path.join(self.gameFolder, 'img')
-        msc_folder = path.join(self.gameFolder, 'msc')
+        self.msc_folder = path.join(self.gameFolder, 'msc')
         snd_folder = path.join(self.gameFolder, 'snd')
         self.map = Map(path.join(self.gameFolder, 'map.txt'))
         self.player_img = pg.image.load(path.join(img_folder, PLAYER_IMG)).convert_alpha()
@@ -71,7 +71,7 @@ class Game:
             except:
                 self.highscore = 0
          #sound loading
-        pg.mixer.music.load(path.join(msc_folder, 'espionage.ogg'))
+       
         self.pickupgun = pg.mixer.Sound(path.join(snd_folder, 'Cocking Gun-SoundBible.com-327068561.wav'))
         self.healthpickup = pg.mixer.Sound(path.join(snd_folder, 'Healing Full.wav'))
         self.healthpickup.set_volume(0.2)
@@ -143,7 +143,8 @@ class Game:
     def run(self):
         # Run the game loop
         self.playing = True
-        self.gamemsc.play(loops=-1)
+        pg.mixer.music.load(path.join(self.msc_folder, 'espionage.ogg'))
+        pg.mixer.music.play(loops=-1)
         while self.playing:
             self.dt = self.clock.tick(FPS) / 1000
             self.events()
@@ -278,8 +279,8 @@ class Game:
     def showStartScreen(self):
         # Draws the start screen with a colour, and displays the controls.
         # It will wait for the user to press a key, then start the game.
-        pg.mixer.music.load(path.join(msc_folder, 'battleThemeA.mp3'))
-        pg.mixer.play(loops=-1)
+        pg.mixer.music.load(path.join(self.msc_folder, 'battleThemeA.mp3'))
+        pg.mixer.music.play(loops=-1)
         self.screen.fill(BGCOLOR)
         self.drawText("Shooter Game", self.font, 72, WHITE, WIDTH / 2, HEIGHT / 2)
         self.drawText("Up/Down or W/S to move. Left/Right or A/D to rotate.", self.font, 20, WHITE, WIDTH / 2, HEIGHT / 2 + 100)
@@ -299,7 +300,7 @@ class Game:
         # Draw the game over screen and wait for a key input to start new
         if not self.running:
             return
-        pg.mixer.music.load(path.join(msc_folder, 'Retro_No hope.ogg'))
+        pg.mixer.music.load(path.join(self.msc_folder, 'Retro_No hope.ogg'))
         pg.mixer.music.play(loops=-1)
         self.screen.fill(BGCOLOR)
         self.drawText("Game Over", self.font, 72, WHITE, WIDTH / 2, HEIGHT / 2)

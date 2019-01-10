@@ -313,14 +313,6 @@ class Boss(pg.sprite.Sprite):
         self.speed = choice(settings.MOB_SPEEDS)
         self.health = settings.BOSS_HEALTH
 
-    def avoidMobs(self):
-        # This function keeps mobs spread out
-        for mob in self.game.mobs:
-            if mob != self:
-                distance = self.pos - mob.pos
-                if 0 < distance.length() < settings.AVOID_RADIUS:
-                    self.acc += distance.normalize()
-
     def update(self):
         # Rotate mobs and update the images. They track the player.
         self.rot = (self.game.player.pos - self.pos).angle_to(vec(1,0))
@@ -328,7 +320,6 @@ class Boss(pg.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.center = self.pos
         self.acc = vec(1, 0).rotate(-self.rot)
-        self.avoidMobs()
         # This self.acc.scale_to_length adjusting to speed simulates friction.
         self.acc.scale_to_length(self.speed)
         self.acc += self.vel * -1
@@ -344,7 +335,7 @@ class Boss(pg.sprite.Sprite):
                 HPUP(self.game, self.pos)
             self.kill()
             
-    def drawHealth(self):
+    def bossHealth(self):
         if self.health > 1800:
             col = settings.GREEN
         elif self.health > 800:

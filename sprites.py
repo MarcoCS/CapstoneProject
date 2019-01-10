@@ -324,7 +324,7 @@ class Boss(pg.sprite.Sprite):
     def update(self):
         # Rotate mobs and update the images. They track the player.
         self.rot = (self.game.player.pos - self.pos).angle_to(vec(1,0))
-        self.image = pg.transform.rotate(self.game.mobImage, self.rot)
+        self.image = pg.transform.rotate(self.game.bossImage, self.rot)
         self.rect = self.image.get_rect()
         self.rect.center = self.pos
         self.acc = vec(1, 0).rotate(-self.rot)
@@ -345,15 +345,15 @@ class Boss(pg.sprite.Sprite):
             self.kill()
             
     def drawHealth(self):
-        if self.health > 60:
+        if self.health > 1800:
             col = settings.GREEN
-        elif self.health > 30:
+        elif self.health > 800:
             col = settings.YELLOW
         else:
             col = settings.RED
-        width = int(self.rect.width * self.health / settings.MOB_HEALTH)
+        width = int(self.rect.width * self.health / settings.BOSS_HEALTH)
         self.health_bar = pg.Rect(0, 0, width, 7)
-        if self.health < settings.MOB_HEALTH:
+        if self.health < settings.BOSS_HEALTH:
             pg.draw.rect(self.image, col, self.health_bar)
 
     

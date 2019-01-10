@@ -303,6 +303,7 @@ class Boss(pg.sprite.Sprite):
         pg.sprite.Sprite.__init__(self, self.groups)
         self.game = game
         self.image = game.bossImage
+        self.image.set_colorkey(WHITE)
         self.rect = self.image.get_rect()
         self.hit_rect = settings.MOB_HIT_RECT.copy()
         self.hit_rect.center = self.rect.center

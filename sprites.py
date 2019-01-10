@@ -311,7 +311,7 @@ class Boss(pg.sprite.Sprite):
         self.rect.center = self.pos
         self.rot = 0
         self.speed = 50
-        self.health = settings.BOSS_HEALTH
+        self.health = BOSS_HEALTH
 
     def update(self):
         # Rotate mobs and update the images. They track the player.
@@ -334,25 +334,7 @@ class Boss(pg.sprite.Sprite):
             if randint(1,5) == 1:
                 HPUP(self.game, self.pos)
             self.kill()
-            
-    def drawBossHealth(surf, x, y, pct): # Surf short for surface
-        if pct < 0: # Pct short for percentage of healthbar
-            pct = 0
-        BAR_LENGTH = 2500
-        BAR_HEIGHT = 15
-        fill = pct * BAR_LENGTH
-        outline_rect = pg.Rect(WIDTH / 2, HEIGHT + 25, BAR_LENGTH, BAR_HEIGHT)
-        fill_rect = pg.Rect(x % 100, y, fill, BAR_HEIGHT)
-        if pct > 0.6:
-            col = GREEN
-        elif pct > 0.3:   
-            col = YELLOW
-        else:
-            col = RED
-        pg.draw.rect(surf, col, fill_rect)
-        pg.draw.rect(surf, WHITE, outline_rect, 2)
 
-    
             
 class HPUP(pg.sprite.Sprite): # Health up
     def __init__(self, game, pos):

@@ -304,7 +304,7 @@ class Boss(pg.sprite.Sprite):
         self.game = game
         self.image = game.bossImage
         self.rect = self.image.get_rect()
-        self.hit_rect = settings.MOB_HIT_RECT.copy()
+        self.hit_rect = settings.BOSS_HIT_RECT.copy()
         self.hit_rect.center = self.rect.center
         self.pos = vec(x, y) * settings.TILESIZE
         self.vel = vec(0, 0)

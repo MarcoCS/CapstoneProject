@@ -280,12 +280,11 @@ class Game:
             if isinstance(sprite, Mob):
                 sprite.drawHealth()
             self.screen.blit(sprite.image, self.camera.apply(sprite))
-        #testing rectangle for collisions
-            
-            pg.draw.rect(self.boss, WHITE, self.boss.hit_rect, 2)
+        #testing rectangle for collisions  
+        pg.draw.rect(self.boss, WHITE, self.boss.hit_rect, 2)
         #Drawing the player's health bar
         drawPlayerHealth(self.screen, 10, 10, self.player.health / PLAYER_HEALTH)
-        drawBossHealth(self.screen, WIDTH / 2, HEIGHT + 25, self.boss.health / BOSS_HEALTH)
+        drawBossHealth(self.screen, WIDTH / 2, HEIGHT -20, self.boss.health / BOSS_HEALTH)
         if self.paused:
             self.showPauseScreen()
         self.drawText(str(round(self.clock.get_fps(),2)), self.font, 20, WHITE, WIDTH - 50, 20)

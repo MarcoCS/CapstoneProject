@@ -315,7 +315,7 @@ class Boss(pg.sprite.Sprite):
 
     def update(self):
         # Rotate mobs and update the images. They track the player.
-        self.rot = (self.game.player.pos - self.pos).angle_to(vec(1,0))
+        self.rot = 0.5*(self.game.player.pos - self.pos).angle_to(vec(1,0))
         self.image = pg.transform.rotate(self.game.bossImage, self.rot)
         self.rect = self.image.get_rect()
         self.rect.center = self.pos

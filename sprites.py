@@ -330,7 +330,6 @@ class Boss(pg.sprite.Sprite):
         self.hit_rect.centery = self.pos.y
         collide_with_walls(self, self.game.walls, 'y')
         self.rect.center = self.hit_rect.center
-        pg.draw.rect(self.game.screen, WHITE, self.hit_rect, 3)
         if self.health <= 0:
             if randint(1,5) == 1:
                 HPUP(self.game, self.pos)

@@ -34,7 +34,7 @@ def drawPlayerHealth(surf, x, y, pct): # Surf short for surface
 def drawBossHealth(surf, x, y, pct): # Surf short for surface
         if pct < 0: # Pct short for percentage of healthbar
             pct = 0
-        BAR_LENGTH = 2500
+        BAR_LENGTH = 1000
         BAR_HEIGHT = 15
         fill = pct * BAR_LENGTH
         outline_rect = pg.Rect(WIDTH / 2, HEIGHT + 25, BAR_LENGTH, BAR_HEIGHT)

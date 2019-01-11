@@ -281,7 +281,8 @@ class Game:
                 sprite.drawHealth()
             self.screen.blit(sprite.image, self.camera.apply(sprite))
         #testing rectangle for collisions
-            pg.draw.rect(self.screen, WHITE, self.boss.hit_rect, 2)
+            
+            pg.draw.rect(self.boss, WHITE, self.boss.hit_rect, 2)
         #Drawing the player's health bar
         drawPlayerHealth(self.screen, 10, 10, self.player.health / PLAYER_HEALTH)
         drawBossHealth(self.screen, WIDTH / 2, HEIGHT + 25, self.boss.health / BOSS_HEALTH)

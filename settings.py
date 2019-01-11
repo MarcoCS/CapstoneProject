@@ -64,5 +64,5 @@ SHOOTER_HEALTH = 200
 SHOOTER_SCORE = 15
 
 #BOSS settings
-BOSS_IMG = 'pink dragon.png'
+BOSS_IMG = 'Dragon50percent.png'
 BOSS_HEALTH = 2500

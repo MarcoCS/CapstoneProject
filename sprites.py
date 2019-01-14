@@ -302,6 +302,8 @@ class Boss(pg.sprite.Sprite):
         self.groups = game.allSprites, game.bosses
         pg.sprite.Sprite.__init__(self, self.groups)
         self.game = game
+        self.current_frame = 0
+        self.last_update = 0
         self.image = game.bossImage
         self.rect = self.image.get_rect()
         self.hit_rect = settings.BOSS_HIT_RECT.copy()
@@ -323,8 +325,42 @@ class Boss(pg.sprite.Sprite):
             if randint(1,5) == 1:
                 HPUP(self.game, self.pos)
             self.kill()
-
-            
+ 
+class Fireball(pg.sprite.Sprite):
+    def __init__(self, game, pos, dir):
+        self.groups = game.allSprites, game.fireball
+        pg.sprite.Sprite.__init__(self, self.groups)
+        self.game = game
+        self.image = FIREBALL_IMG[0]
+        self.shootingfire = False
+        self.current_frame = 0
+        self.last_update = 0
+        self.load_images() 
+        self.rect = self.image.get_rect()
+        self.pos = vec(pos)
+        self.rect.center = pos
+        
+    def load_images(self):
+        self.fireballFrames = FIREBALL_IMG
+        
+    
+    def update(self):
+        self.animate()
+        if pg.sprite.spritecollideany(self, self.game.walls):
+            self.kill()
+        if pg.time.get_ticks() - self.spawn_time > settings.BULLET_LIFETIME:
+            self.kill()
+    
+    def animate(self):
+        now = pg.time.get_ticks()
+        if not self.shootingfire:
+            if now - self.last_update > 200:
+                self.last_update = now
+                self.current_frame = (self.current_frame + 1) % len(self.fireballFrames)
+                self.image = self. self.fireballFrames[self.current_frame]
+        
+        
+        
 class HPUP(pg.sprite.Sprite): # Health up
     def __init__(self, game, pos):
         self.groups = game.allSprites, game.hpups

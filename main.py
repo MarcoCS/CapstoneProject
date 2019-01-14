@@ -114,6 +114,7 @@ class Game:
         self.score = 0
         self.paused = False
         self.allSprites = pg.sprite.Group()
+        self.fireballs = pg.sprite.Group()
         self.bosses = pg.sprite.Group()
         self.walls = pg.sprite.Group()
         self.bullets = pg.sprite.Group()
@@ -190,6 +191,15 @@ class Game:
                 self.playing = False
             if hits:
                 self.player.pos += vec(MOB_KNOCKBACK, 0).rotate(-hits[0].rot)
+                
+        #FIREBALL hits player
+        hits = pg.sprite.spritecollide(self.player, self.fireballs, False, collide_hit_rect)
+        for hit in hits:
+            self.playerhitsnd.play()
+            self.player.health -= FIREBALL_DAMAGE
+            if self.player.health <= 0:
+                self.playing= False
+            if
                 
         #bullets hit BOSS
         hits = pg.sprite.groupcollide(self.bosses, self.bullets, False, True)

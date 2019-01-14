@@ -319,17 +319,6 @@ class Boss(pg.sprite.Sprite):
         self.image = pg.transform.rotate(self.game.bossImage, self.rot)
         self.rect = self.image.get_rect()
         self.rect.center = self.pos
-        self.acc = vec(1, 0).rotate(-self.rot)
-        # This self.acc.scale_to_length adjusting to speed simulates friction.
-        self.acc.scale_to_length(self.speed)
-        self.acc += self.vel * -1
-        self.vel += self.acc * self.game.dt
-        self.pos += self.vel * self.game.dt + 0.5 * self.acc * self.game.dt ** 2
-        self.hit_rect.centerx = self.pos.x
-        collide_with_walls(self, self.game.walls, 'x')
-        self.hit_rect.centery = self.pos.y
-        collide_with_walls(self, self.game.walls, 'y')
-        self.rect.center = self.hit_rect.center
         if self.health <= 0:
             if randint(1,5) == 1:
                 HPUP(self.game, self.pos)

@@ -67,3 +67,4 @@ SHOOTER_SCORE = 15
 BOSS_IMG = 'Dragon50percent.png'
 BOSS_HEALTH = 2500
 BOSS_HIT_RECT = pg.Rect(0, 0, 125, 125)
+FIREBALL_IMG = ['1.png', '2.png', '3.png', '4.png', '5.png', '6.png']

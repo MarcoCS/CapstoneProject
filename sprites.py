@@ -313,6 +313,7 @@ class Boss(pg.sprite.Sprite):
         self.rect.center = self.pos
         self.rot = 0
         self.speed = 50
+        self.last_fire = 0
         self.health = BOSS_HEALTH
 
     def update(self):
@@ -321,6 +322,11 @@ class Boss(pg.sprite.Sprite):
         self.image = pg.transform.rotate(self.game.bossImage, self.rot)
         self.rect = self.image.get_rect()
         self.rect.center = self.pos
+        now = pg.time.get_ticks()
+        if now - self.last_fire > 1500:
+            self.last_fire = now
+            dir = vec(1, 0).rotate(-self.rot)
+            Fireball(self.game, pos, dir)
         if self.health <= 0:
             if randint(1,5) == 1:
                 HPUP(self.game, self.pos)

@@ -27,7 +27,12 @@ FONT = 'Arial'
 
 TILESIZE = 64
 GRIDWIDTH = WIDTH / TILESIZE
-GRIDHEIGHT = HEIGHT / TILESIZE 
+GRIDHEIGHT = HEIGHT / TILESIZE
+
+PLAYER_LAYER = 1
+MOB_LAYER = 1
+POWERUP_LAYER = 1
+FIREBALL_LAYER = 2
 
 #Gun Settings
 BULLET_IMG = 'tile_187.png'
@@ -68,3 +73,6 @@ BOSS_IMG = 'Dragon50percent.png'
 BOSS_HEALTH = 2500
 BOSS_HIT_RECT = pg.Rect(0, 0, 125, 125)
 FIREBALL_IMG = ['1.png', '2.png', '3.png', '4.png', '5.png', '6.png']
+FIRE_IMG = '1.png'
+EXPLOSION_KNOCKBACK = 50
+FIREBALL_OFFSET = vec(50, 0) #controls where fireball spawns

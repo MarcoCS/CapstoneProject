@@ -40,7 +40,7 @@ def collide_with_walls(sprite, group, dir):
 
 class Player(pg.sprite.Sprite):
     def __init__(self, game, x, y):
-
+        self._layer = PLAYER_LAYER
         self.groups = game.allSprites
         pg.sprite.Sprite.__init__(self, self.groups)
         self.game = game
@@ -240,6 +240,7 @@ class Wall(pg.sprite.Sprite):
 
 class Mob(pg.sprite.Sprite):
     def __init__(self, game, x, y):
+        self._layer = MOB_LAYER
         self.groups = game.allSprites, game.mobs
         pg.sprite.Sprite.__init__(self, self.groups)
         self.game = game
@@ -299,6 +300,7 @@ class Mob(pg.sprite.Sprite):
 
 class Boss(pg.sprite.Sprite):
     def __init__(self, game, x, y):
+        self._layer = MOB_LAYER
         self.groups = game.allSprites, game.bosses
         pg.sprite.Sprite.__init__(self, self.groups)
         self.game = game
@@ -325,6 +327,7 @@ class Boss(pg.sprite.Sprite):
         now = pg.time.get_ticks()
         if now - self.last_fire > 1500:
             self.last_fire = now
+            pos = self.pos + settings.FIREBALL_OFFSET.rotate(-self.rot)
             dir = vec(1, 0).rotate(-self.rot)
             Fireball(self.game, pos, dir)
         if self.health <= 0:
@@ -334,24 +337,28 @@ class Boss(pg.sprite.Sprite):
  
 class Fireball(pg.sprite.Sprite):
     def __init__(self, game, pos, dir):
-        self.groups = game.allSprites, game.fireball
+        self._layer = FIREBALL_LAYER
+        self.groups = game.allSprites, game.fireballs
         pg.sprite.Sprite.__init__(self, self.groups)
         self.game = game
-        self.image = FIREBALL_IMG[0]
+        self.image = self.game.fireImage
         self.shootingfire = False
         self.current_frame = 0
         self.last_update = 0
-        self.load_images() 
+        #self.load_images() 
         self.rect = self.image.get_rect()
         self.pos = vec(pos)
-        self.rect.center = pos
+        self.rect.center = self.pos
+        self.spawn_time = pg.time.get_ticks()
+        self.rot = 0
         
     def load_images(self):
-        self.fireballFrames = FIREBALL_IMG
-        
-    
+        for image in FIREBALL_IMG:
+            pg.image.load(path.join(self.game.img_folder, image))
+
     def update(self):
-        self.animate()
+        #self.animate()
+        self.rot = dir
         if pg.sprite.spritecollideany(self, self.game.walls):
             self.kill()
         if pg.time.get_ticks() - self.spawn_time > settings.BULLET_LIFETIME:
@@ -369,6 +376,7 @@ class Fireball(pg.sprite.Sprite):
         
 class HPUP(pg.sprite.Sprite): # Health up
     def __init__(self, game, pos):
+        self._layer = POWERUP_LAYER
         self.groups = game.allSprites, game.hpups
         pg.sprite.Sprite.__init__(self, self.groups)
         self.game = game
@@ -382,6 +390,7 @@ class HPUP(pg.sprite.Sprite): # Health up
 
 class StationaryMob(pg.sprite.Sprite):
     def __init__(self, game, x, y):
+        self._layer = MOB_LAYER
         self.groups = game.allSprites, game.shooters
         pg.sprite.Sprite.__init__(self, self.groups)
         self.game = game

@@ -76,6 +76,8 @@ class Game:
         self.hpupImage = pg.image.load(path.join(img_folder, "heart.png")).convert_alpha()
         self.floorImage = pg.image.load(path.join(img_folder, "floor.png")).convert_alpha()
         self.bossImage = pg.image.load(path.join(img_folder, BOSS_IMG)).convert_alpha()
+        self.fireImage = pg.image.load(path.join(img_folder, FIRE_IMG)).convert_alpha()
+        self.fireImage = pg.transform.scale(self.fireImage, (128, 50))
         # Weapon sprites:
         self.shotgun_img = pg.image.load(path.join(img_folder, "Shotgun.png")).convert_alpha()
         self.pistol_img = pg.image.load(path.join(img_folder, "ColtPixel.png")).convert_alpha()
@@ -113,6 +115,7 @@ class Game:
         # Start a new game
         self.score = 0
         self.paused = False
+        self.allSprites = pg.sprite.LayeredUpdates()
         self.allSprites = pg.sprite.Group()
         self.fireballs = pg.sprite.Group()
         self.bosses = pg.sprite.Group()
@@ -193,14 +196,12 @@ class Game:
                 self.player.pos += vec(MOB_KNOCKBACK, 0).rotate(-hits[0].rot)
                 
         #FIREBALL hits player
-        hits = pg.sprite.spritecollide(self.player, self.fireballs, False, collide_hit_rect)
+        hits = pg.sprite.spritecollide(self.player, self.fireballs, True, False)
         for hit in hits:
             self.playerhitsnd.play()
-            self.player.health -= FIREBALL_DAMAGE
+            self.player.health -= BULLET_DAMAGE
             if self.player.health <= 0:
                 self.playing= False
-            if hits: 
-                self.player.pos += vec(EXPLOSION_KNOCKBACK, 0).rotate(-hits[0].rot)
                 
         #bullets hit BOSS
         hits = pg.sprite.groupcollide(self.bosses, self.bullets, False, True)
@@ -292,7 +293,7 @@ class Game:
                 sprite.drawHealth()
             self.screen.blit(sprite.image, self.camera.apply(sprite))
         #testing rectangle for collisions  
-        pg.draw.rect(self.screen, WHITE, self.boss.hit_rect, 2)
+        #pg.draw.rect(self.screen, WHITE, self.boss.hit_rect, 2)
         #Drawing the player's health bar
         drawPlayerHealth(self.screen, 10, 10, self.player.health / PLAYER_HEALTH)
         drawBossHealth(self.screen, WIDTH / 2, HEIGHT -20, self.boss.health / BOSS_HEALTH)

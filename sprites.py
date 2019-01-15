@@ -358,6 +358,7 @@ class Fireball(pg.sprite.Sprite):
 
     def update(self):
         #self.animate()
+        self.pos += self.vel * self.game.dt
         self.rot = dir
         if pg.sprite.spritecollideany(self, self.game.walls):
             self.kill()

@@ -5,7 +5,7 @@
 #Player and hostile sprites
 #################################################
 import pygame as pg
-from math import atan2, degrees, pi
+from math import atan2, degrees, pi, sqrt
 from random import uniform
 from settings import *
 import settings
@@ -60,28 +60,10 @@ class Player(pg.sprite.Sprite):
         self.vel = vec(0, 0)
         keys = pg.key.get_pressed()
         # Directional controls
-        if keys[pg.K_n]:
-            settings.CONTROLS = "WASD"
-        if keys[pg.K_m]:
-            settings.CONTROLS = "Classic"
-            
-        
-        if settings.CONTROLS == "Classic":
-            if keys[pg.K_UP] or keys[pg.K_w]:
-                self.vel = vec(PLAYER_SPEED, 0).rotate(-self.rot)
-            if keys[pg.K_DOWN] or keys [pg.K_s]:
-                self.vel = vec(-PLAYER_SPEED, 0).rotate(-self.rot)
-        if settings.CONTROLS == "WASD":
-         # Directional controls
-            if keys[pg.K_LEFT] or keys[pg.K_a]:
-                self.vel = vec(-PLAYER_SPEED, self.vel[1])
-            if keys[pg.K_RIGHT] or keys[pg.K_d]:
-                self.vel = vec(PLAYER_SPEED, self.vel[1])
-            if keys[pg.K_UP] or keys[pg.K_w]:
-                self.vel = vec(self.vel[0], -PLAYER_SPEED)
-            if keys[pg.K_DOWN] or keys [pg.K_s]:
-                self.vel = vec(self.vel[0], PLAYER_SPEED) 
-        
+        if keys[pg.K_UP] or keys[pg.K_w]:
+            self.vel = vec(PLAYER_SPEED, 0).rotate(-self.rot)
+        if keys[pg.K_DOWN] or keys [pg.K_s]:
+            self.vel = vec(-PLAYER_SPEED, 0).rotate(-self.rot)
 
 
         if pg.mouse.get_pressed()[0] == 1: # Shooting button
@@ -248,8 +230,7 @@ class Wall(pg.sprite.Sprite):
         self.groups = game.allSprites, game.walls
         pg.sprite.Sprite.__init__(self, self.groups)
         self.game = game
-        self.image = pg.Surface((TILESIZE, TILESIZE))
-        self.image.fill(GREEN)
+        self.image = game.wallImage
         self.rect = self.image.get_rect()
         self.x = x
         self.y = y
@@ -316,7 +297,6 @@ class Mob(pg.sprite.Sprite):
             pg.draw.rect(self.image, col, self.health_bar)
 
 
-
 class HPUP(pg.sprite.Sprite): # Health up
     def __init__(self, game, pos):
         self.groups = game.allSprites, game.hpups
@@ -357,7 +337,7 @@ class StationaryMob(pg.sprite.Sprite):
         self.hit_rect.centerx = self.pos.x
         self.hit_rect.centery = self.pos.y
         #uses the new rectangle instead of the rectangle of the sprite
-        self.rect.center = self.hit_rect.center
+        self.rect.center = self.hit_rect.center  
         now = pg.time.get_ticks()
         if now - self.last_shot > 4500:
             self.last_shot = now
@@ -365,7 +345,11 @@ class StationaryMob(pg.sprite.Sprite):
             dir = vec(1, 0).rotate(-self.rot)
             pos = self.pos + settings.BARREL_OFFSET.rotate(-self.rot)
             ShooterBullet(self.game, pos, dir)
-        if self.health <= 0:
+        if self.health <= 0:     
+            if randint(1,10) == 1:  # 10% chance to drop 3 health powerups
+                HPUP(self.game, self.pos)
+                HPUP(self.game, self.pos - vec(10,10))
+                HPUP(self.game, self.pos + vec(10,10))
             self.kill()
 
     def drawShooterHealth(self):
@@ -390,7 +374,7 @@ class ShooterBullet(pg.sprite.Sprite):
         self.pos = vec(pos)
         self.rect.center = pos
         spread = uniform(-settings.GUN_SPREAD, settings.GUN_SPREAD)
-        self.vel = dir.rotate(spread) * 200 #settings.BULLET_SPEED
+        self.vel = dir.rotate(spread) * settings.BULLET_SPEED
         self.spawn_time = pg.time.get_ticks()
 
     def update(self):

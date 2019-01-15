@@ -24,11 +24,12 @@ TITLE = "Top-Down Shooter"
 BGCOLOR = DARKGREY
 SCORE_FILE = "score.txt"
 FONT = 'Arial'
-CONTROLS = "Classic"
 
 TILESIZE = 64
 GRIDWIDTH = WIDTH / TILESIZE
-GRIDHEIGHT = HEIGHT / TILESIZE 
+GRIDHEIGHT = HEIGHT / TILESIZE
+
+WALL_IMG = 'wall.png'
 
 #Gun Settings
 BULLET_IMG = 'tile_187.png'

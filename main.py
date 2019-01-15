@@ -1,9 +1,9 @@
-##-------------------------------------------------------------------
-## Top Down Shooter - Main program
-## Dallas Spendelow
-## November 28, 2018
-## This program contains the game class, that runs the game.
-##-------------------------------------------------------------------
+#################################################
+#CS30 Final Capstone Project
+#Developers: Kale, Dallas, Marco
+#
+#Main file. Runs the game. 
+#################################################
 
 import pygame as pg
 from sprites import *
@@ -58,6 +58,8 @@ class Game:
         self.shooterImage = pg.image.load(path.join(img_folder, SHOOTER_IMG)).convert_alpha()
         self.hpupImage = pg.image.load(path.join(img_folder, "heart.png")).convert_alpha()
         self.floorImage = pg.image.load(path.join(img_folder, "floor.png")).convert_alpha()
+        self.wallImage = pg.image.load(path.join(img_folder, WALL_IMG)).convert_alpha()
+        self.wallImage = pg.transform.scale(self.wallImage, (TILESIZE, TILESIZE)).convert_alpha()
         
         # Weapon sprites:
         self.shotgun_img = pg.image.load(path.join(img_folder, "Shotgun.png")).convert_alpha()
@@ -192,14 +194,14 @@ class Game:
         for hit in hits:
             self.playerhitsnd.play()
             self.player.health -= BULLET_DAMAGE
-            hit.vel = vec(0, 0) # Resets velocity of hit object
+            hit.vel = vec(0, 0)
             if self.player.health <= 0:
                 self.playing = False
 
-        # Detection of weapon pickup/ power up pickup
+        # Detection of weapon pickup
 
         hits = pg.sprite.spritecollide(self.player, self.hpups, True, False)
-        if hits: 
+        if hits:
             self.healthpickup.play()
             if self.player.health + 10 > 100:
                 self.player.health = 100
@@ -226,7 +228,6 @@ class Game:
         if hits:
             Weapons.Assault_rifle.change_var()
             self.pickupgun.play()
-
 
 
     def events(self):
@@ -288,8 +289,6 @@ class Game:
         self.drawText("Space to fire, p to pause", self.font, 20, WHITE, WIDTH / 2, HEIGHT / 2 + 150)
         self.drawText("Press any key to play", self.font, 20, WHITE, WIDTH / 2, HEIGHT / 2 + 200)
         self.drawText("High Score: " + str(self.highscore), self.font, 22, WHITE, WIDTH / 2, 15)
-        self.drawText("Control method Press 'N' for WASD or 'M' for Classic Controls", self.font, 22, WHITE, WIDTH / 2, HEIGHT / 2 + 250)
-
         pg.display.flip()
         self.waitForKey()
         pg.mixer.music.fadeout(500)

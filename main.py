@@ -199,7 +199,8 @@ class Game:
             self.player.health -= FIREBALL_DAMAGE
             if self.player.health <= 0:
                 self.playing= False
-            if
+            if hits: 
+                self.player.pos += vec(EXPLOSION_KNOCKBACK, 0).rotate(-hits[0].rot)
                 
         #bullets hit BOSS
         hits = pg.sprite.groupcollide(self.bosses, self.bullets, False, True)

@@ -30,24 +30,6 @@ def drawPlayerHealth(surf, x, y, pct): # Surf short for surface
         col = RED
     pg.draw.rect(surf, col, fill_rect)
     pg.draw.rect(surf, WHITE, outline_rect, 2)
-    
-def drawBossHealth(surf, x, y, pct): # Surf short for surface
-        if pct < 0: # Pct short for percentage of healthbar
-            pct = 0
-        BAR_LENGTH = 1000
-        BAR_HEIGHT = 15
-        fill = pct * BAR_LENGTH
-        outline_rect = pg.Rect(WIDTH / 2, HEIGHT + 25, BAR_LENGTH, BAR_HEIGHT)
-        fill_rect = pg.Rect(x % 100, y, fill, BAR_HEIGHT)
-        if pct > 0.6:
-            col = GREEN
-        elif pct > 0.3:   
-            col = YELLOW
-        else:
-            col = RED
-        pg.draw.rect(surf, col, fill_rect)
-        pg.draw.rect(surf, WHITE, outline_rect, 2)
-
 
 
 class Game:
@@ -68,16 +50,15 @@ class Game:
         img_folder = path.join(self.gameFolder, 'img')
         self.msc_folder = path.join(self.gameFolder, 'msc')
         snd_folder = path.join(self.gameFolder, 'snd')
-        self.map = Map(path.join(self.gameFolder, 'BossTestMap.txt'))
+        self.map = Map(path.join(self.gameFolder, 'map.txt'))
+        # Base map is 48 x 32 tiles. 
         self.player_img = pg.image.load(path.join(img_folder, PLAYER_IMG)).convert_alpha()
         self.bullet_img = pg.image.load(path.join(img_folder, BULLET_IMG)).convert_alpha()
         self.mobImage = pg.image.load(path.join(img_folder, MOB_IMG)).convert_alpha()
         self.shooterImage = pg.image.load(path.join(img_folder, SHOOTER_IMG)).convert_alpha()
         self.hpupImage = pg.image.load(path.join(img_folder, "heart.png")).convert_alpha()
         self.floorImage = pg.image.load(path.join(img_folder, "floor.png")).convert_alpha()
-        self.bossImage = pg.image.load(path.join(img_folder, BOSS_IMG)).convert_alpha()
-        self.fireImage = pg.image.load(path.join(img_folder, FIRE_IMG)).convert_alpha()
-        self.fireImage = pg.transform.scale(self.fireImage, (128, 50))
+        
         # Weapon sprites:
         self.shotgun_img = pg.image.load(path.join(img_folder, "Shotgun.png")).convert_alpha()
         self.pistol_img = pg.image.load(path.join(img_folder, "ColtPixel.png")).convert_alpha()
@@ -115,10 +96,7 @@ class Game:
         # Start a new game
         self.score = 0
         self.paused = False
-        self.allSprites = pg.sprite.LayeredUpdates()
         self.allSprites = pg.sprite.Group()
-        self.fireballs = pg.sprite.Group()
-        self.bosses = pg.sprite.Group()
         self.walls = pg.sprite.Group()
         self.bullets = pg.sprite.Group()
         self.mobs = pg.sprite.Group()
@@ -146,8 +124,6 @@ class Game:
                     Wall(self, col, row)
                 if tile == 'M':
                     Mob(self, col, row)
-                if tile == 'D':
-                    self.boss = Boss(self, col, row)
                 if tile == 'S':
                     StationaryMob(self, col, row)
                 if tile == 'W':
@@ -194,21 +170,6 @@ class Game:
                 self.playing = False
             if hits:
                 self.player.pos += vec(MOB_KNOCKBACK, 0).rotate(-hits[0].rot)
-                
-        #FIREBALL hits player
-        hits = pg.sprite.spritecollide(self.player, self.fireballs, True, False)
-        for hit in hits:
-            self.playerhitsnd.play()
-            self.player.health -= BULLET_DAMAGE
-            if self.player.health <= 0:
-                self.playing= False
-                
-        #bullets hit BOSS
-        hits = pg.sprite.groupcollide(self.bosses, self.bullets, False, True)
-        for hit in hits:
-            hit.health -= settings.BULLET_DAMAGE
-            hit.vel = vec(0,0)
-            self.score += 20
 
         #bullets hit mobs
         hits = pg.sprite.groupcollide(self.mobs, self.bullets, False, True)
@@ -231,14 +192,14 @@ class Game:
         for hit in hits:
             self.playerhitsnd.play()
             self.player.health -= BULLET_DAMAGE
-            hit.vel = vec(0, 0)
+            hit.vel = vec(0, 0) # Resets velocity of hit object
             if self.player.health <= 0:
                 self.playing = False
 
-        # Detection of weapon pickup
+        # Detection of weapon pickup/ power up pickup
 
         hits = pg.sprite.spritecollide(self.player, self.hpups, True, False)
-        if hits:
+        if hits: 
             self.healthpickup.play()
             if self.player.health + 10 > 100:
                 self.player.health = 100
@@ -292,11 +253,10 @@ class Game:
             if isinstance(sprite, Mob):
                 sprite.drawHealth()
             self.screen.blit(sprite.image, self.camera.apply(sprite))
-        #testing rectangle for collisions  
-        #pg.draw.rect(self.screen, WHITE, self.boss.hit_rect, 2)
+        #testing rectangle for collisions
+            #pg.draw.rect(self.screen, WHITE, self.player.hit_rect, 2)
         #Drawing the player's health bar
         drawPlayerHealth(self.screen, 10, 10, self.player.health / PLAYER_HEALTH)
-        drawBossHealth(self.screen, WIDTH / 2, HEIGHT -20, self.boss.health / BOSS_HEALTH)
         if self.paused:
             self.showPauseScreen()
         self.drawText(str(round(self.clock.get_fps(),2)), self.font, 20, WHITE, WIDTH - 50, 20)
@@ -328,6 +288,8 @@ class Game:
         self.drawText("Space to fire, p to pause", self.font, 20, WHITE, WIDTH / 2, HEIGHT / 2 + 150)
         self.drawText("Press any key to play", self.font, 20, WHITE, WIDTH / 2, HEIGHT / 2 + 200)
         self.drawText("High Score: " + str(self.highscore), self.font, 22, WHITE, WIDTH / 2, 15)
+        self.drawText("Control method Press 'N' for WASD or 'M' for Classic Controls", self.font, 22, WHITE, WIDTH / 2, HEIGHT / 2 + 250)
+
         pg.display.flip()
         self.waitForKey()
         pg.mixer.music.fadeout(500)

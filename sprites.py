@@ -40,7 +40,7 @@ def collide_with_walls(sprite, group, dir):
 
 class Player(pg.sprite.Sprite):
     def __init__(self, game, x, y):
-        self._layer = PLAYER_LAYER
+
         self.groups = game.allSprites
         pg.sprite.Sprite.__init__(self, self.groups)
         self.game = game
@@ -60,10 +60,28 @@ class Player(pg.sprite.Sprite):
         self.vel = vec(0, 0)
         keys = pg.key.get_pressed()
         # Directional controls
-        if keys[pg.K_UP] or keys[pg.K_w]:
-            self.vel = vec(PLAYER_SPEED, 0).rotate(-self.rot)
-        if keys[pg.K_DOWN] or keys [pg.K_s]:
-            self.vel = vec(-PLAYER_SPEED, 0).rotate(-self.rot)
+        if keys[pg.K_n]:
+            settings.CONTROLS = "WASD"
+        if keys[pg.K_m]:
+            settings.CONTROLS = "Classic"
+            
+        
+        if settings.CONTROLS == "Classic":
+            if keys[pg.K_UP] or keys[pg.K_w]:
+                self.vel = vec(PLAYER_SPEED, 0).rotate(-self.rot)
+            if keys[pg.K_DOWN] or keys [pg.K_s]:
+                self.vel = vec(-PLAYER_SPEED, 0).rotate(-self.rot)
+        if settings.CONTROLS == "WASD":
+         # Directional controls
+            if keys[pg.K_LEFT] or keys[pg.K_a]:
+                self.vel = vec(-PLAYER_SPEED, self.vel[1])
+            if keys[pg.K_RIGHT] or keys[pg.K_d]:
+                self.vel = vec(PLAYER_SPEED, self.vel[1])
+            if keys[pg.K_UP] or keys[pg.K_w]:
+                self.vel = vec(self.vel[0], -PLAYER_SPEED)
+            if keys[pg.K_DOWN] or keys [pg.K_s]:
+                self.vel = vec(self.vel[0], PLAYER_SPEED) 
+        
 
 
         if pg.mouse.get_pressed()[0] == 1: # Shooting button
@@ -231,7 +249,7 @@ class Wall(pg.sprite.Sprite):
         pg.sprite.Sprite.__init__(self, self.groups)
         self.game = game
         self.image = pg.Surface((TILESIZE, TILESIZE))
-        self.image.fill(LIGHTGREY)
+        self.image.fill(GREEN)
         self.rect = self.image.get_rect()
         self.x = x
         self.y = y
@@ -240,7 +258,6 @@ class Wall(pg.sprite.Sprite):
 
 class Mob(pg.sprite.Sprite):
     def __init__(self, game, x, y):
-        self._layer = MOB_LAYER
         self.groups = game.allSprites, game.mobs
         pg.sprite.Sprite.__init__(self, self.groups)
         self.game = game
@@ -285,7 +302,7 @@ class Mob(pg.sprite.Sprite):
             if randint(1,5) == 1:
                 HPUP(self.game, self.pos)
             self.kill()
-            
+
     def drawHealth(self):
         if self.health > 60:
             col = settings.GREEN
@@ -298,85 +315,10 @@ class Mob(pg.sprite.Sprite):
         if self.health < settings.MOB_HEALTH:
             pg.draw.rect(self.image, col, self.health_bar)
 
-class Boss(pg.sprite.Sprite):
-    def __init__(self, game, x, y):
-        self._layer = MOB_LAYER
-        self.groups = game.allSprites, game.bosses
-        pg.sprite.Sprite.__init__(self, self.groups)
-        self.game = game
-        self.current_frame = 0
-        self.last_update = 0
-        self.image = game.bossImage
-        self.rect = self.image.get_rect()
-        self.hit_rect = settings.BOSS_HIT_RECT.copy()
-        self.hit_rect.center = self.rect.center
-        self.pos = vec(x, y) * settings.TILESIZE
-        self.vel = vec(0, 0)
-        self.rect.center = self.pos
-        self.rot = 0
-        self.speed = 50
-        self.last_fire = 0
-        self.health = BOSS_HEALTH
 
-    def update(self):
-        # Rotate mobs and update the images. They track the player.
-        self.rot = (self.game.player.pos - self.pos).angle_to(vec(1,0))
-        self.image = pg.transform.rotate(self.game.bossImage, self.rot)
-        self.rect = self.image.get_rect()
-        self.rect.center = self.pos
-        now = pg.time.get_ticks()
-        if now - self.last_fire > 1500:
-            self.last_fire = now
-            pos = self.pos + settings.FIREBALL_OFFSET.rotate(-self.rot)
-            dir = vec(1, 0).rotate(-self.rot)
-            Fireball(self.game, pos, dir)
-        if self.health <= 0:
-            if randint(1,5) == 1:
-                HPUP(self.game, self.pos)
-            self.kill()
- 
-class Fireball(pg.sprite.Sprite):
-    def __init__(self, game, pos, dir):
-        self._layer = FIREBALL_LAYER
-        self.groups = game.allSprites, game.fireballs
-        pg.sprite.Sprite.__init__(self, self.groups)
-        self.game = game
-        self.image = self.game.fireImage
-        self.shootingfire = False
-        self.current_frame = 0
-        self.last_update = 0
-        #self.load_images() 
-        self.rect = self.image.get_rect()
-        self.pos = vec(pos)
-        self.rect.center = self.pos
-        self.spawn_time = pg.time.get_ticks()
-        self.rot = 0
-        
-    def load_images(self):
-        for image in FIREBALL_IMG:
-            pg.image.load(path.join(self.game.img_folder, image))
 
-    def update(self):
-        #self.animate()
-        self.rot = dir
-        if pg.sprite.spritecollideany(self, self.game.walls):
-            self.kill()
-        if pg.time.get_ticks() - self.spawn_time > settings.BULLET_LIFETIME:
-            self.kill()
-    
-    def animate(self):
-        now = pg.time.get_ticks()
-        if not self.shootingfire:
-            if now - self.last_update > 200:
-                self.last_update = now
-                self.current_frame = (self.current_frame + 1) % len(self.fireballFrames)
-                self.image = self. self.fireballFrames[self.current_frame]
-        
-        
-        
 class HPUP(pg.sprite.Sprite): # Health up
     def __init__(self, game, pos):
-        self._layer = POWERUP_LAYER
         self.groups = game.allSprites, game.hpups
         pg.sprite.Sprite.__init__(self, self.groups)
         self.game = game
@@ -390,7 +332,6 @@ class HPUP(pg.sprite.Sprite): # Health up
 
 class StationaryMob(pg.sprite.Sprite):
     def __init__(self, game, x, y):
-        self._layer = MOB_LAYER
         self.groups = game.allSprites, game.shooters
         pg.sprite.Sprite.__init__(self, self.groups)
         self.game = game
@@ -449,7 +390,7 @@ class ShooterBullet(pg.sprite.Sprite):
         self.pos = vec(pos)
         self.rect.center = pos
         spread = uniform(-settings.GUN_SPREAD, settings.GUN_SPREAD)
-        self.vel = dir.rotate(spread) * settings.BULLET_SPEED
+        self.vel = dir.rotate(spread) * 200 #settings.BULLET_SPEED
         self.spawn_time = pg.time.get_ticks()
 
     def update(self):

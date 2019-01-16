@@ -326,10 +326,17 @@ class Boss(pg.sprite.Sprite):
         self.rect.center = self.pos
         now = pg.time.get_ticks()
         if now - self.last_fire > 2000:
-            self.last_fire = now
-            pos = self.pos + settings.FIREBALL_OFFSET.rotate(-self.rot)
-            dir = vec(1, 0).rotate(-self.rot)
-            Fireball(self.game, pos, dir)
+            if self.health <= self.health / 2:
+                for x in range(settings.PELLETS): # This is for things like shotguns and stuff
+                    dir = vec(1, 0).rotate(-self.rot)
+                    pos = self.pos + settings.FIREBALL_OFFSET.rotate(-self.rot)
+                    Fireball(self.game, pos, dir)
+                    self.vel = vec(-settings.KICKBACK, 0).rotate(-self.rot)
+            else:
+                self.last_fire = now
+                pos = self.pos + settings.FIREBALL_OFFSET.rotate(-self.rot)
+                dir = vec(1, 0).rotate(-self.rot)
+                Fireball(self.game, pos, dir)
         if self.health <= 0:
             if randint(1,5) == 1:
                 HPUP(self.game, self.pos)

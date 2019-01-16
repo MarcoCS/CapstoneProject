@@ -77,7 +77,7 @@ class Game:
         self.floorImage = pg.image.load(path.join(img_folder, "floor.png")).convert_alpha()
         self.bossImage = pg.image.load(path.join(img_folder, BOSS_IMG)).convert_alpha()
         self.fireImage = pg.image.load(path.join(img_folder, FIRE_IMG)).convert_alpha()
-        #self.fireImage = pg.transform.scale(self.fireImage, (128, 50))
+        self.fireImage = pg.transform.scale(self.fireImage, (50, 50))
         # Weapon sprites:
         self.shotgun_img = pg.image.load(path.join(img_folder, "Shotgun.png")).convert_alpha()
         self.pistol_img = pg.image.load(path.join(img_folder, "ColtPixel.png")).convert_alpha()

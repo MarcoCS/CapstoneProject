@@ -109,6 +109,8 @@ class Game:
         self.shooterhit = pg.mixer.Sound(path.join(snd_folder, 'Large Metal Pan 2-SoundBible.com-1042326277.wav'))
         self.enemysnipershot = pg.mixer.Sound(path.join(snd_folder, 'Sniper_Fire_Reload-Mike_Koenig-1309646991.wav'))
         self.enemysnipershot.set_volume(0.1)
+        self.dragongrow1 = pg.mixer.Sound(path.join(snd_folder, 'Dragon_Growl_01.wav'))
+        self.fireballsound =pg.mixer.Sound(path.join(snd_folder, 'Spell_02.wav'))
         
 
     def new(self):
@@ -206,6 +208,7 @@ class Game:
         #bullets hit BOSS
         hits = pg.sprite.groupcollide(self.bosses, self.bullets, False, True)
         for hit in hits:
+            self.dragongrowl.play()
             hit.health -= settings.BULLET_DAMAGE
             hit.vel = vec(0,0)
             self.score += 20

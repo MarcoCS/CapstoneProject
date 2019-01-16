@@ -325,7 +325,7 @@ class Boss(pg.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.center = self.pos
         now = pg.time.get_ticks()
-        if now - self.last_fire > 1500:
+        if now - self.last_fire > 2000:
             self.last_fire = now
             pos = self.pos + settings.FIREBALL_OFFSET.rotate(-self.rot)
             dir = vec(1, 0).rotate(-self.rot)
@@ -342,6 +342,7 @@ class Fireball(pg.sprite.Sprite):
         pg.sprite.Sprite.__init__(self, self.groups)
         self.game = game
         self.image = self.game.fireImage
+        self.image = pg.transform.rotate(self.game.fireImage, 45)
         self.shootingfire = False
         self.current_frame = 0
         self.last_update = 0

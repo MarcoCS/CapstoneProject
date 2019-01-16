@@ -60,12 +60,27 @@ class Player(pg.sprite.Sprite):
         self.vel = vec(0, 0)
         keys = pg.key.get_pressed()
         # Directional controls
-        if keys[pg.K_UP] or keys[pg.K_w]:
-            self.vel = vec(PLAYER_SPEED, 0).rotate(-self.rot)
-        if keys[pg.K_DOWN] or keys [pg.K_s]:
-            self.vel = vec(-PLAYER_SPEED, 0).rotate(-self.rot)
-
-
+        if keys[pg.K_n]:
+            settings.CONTROLS = "WASD"
+        if keys[pg.K_m]:
+            settings.CONTROLS = "Classic"
+            
+        
+        if settings.CONTROLS == "Classic":
+            if keys[pg.K_UP] or keys[pg.K_w]:
+                self.vel = vec(PLAYER_SPEED, 0).rotate(-self.rot)
+            if keys[pg.K_DOWN] or keys [pg.K_s]:
+                self.vel = vec(-PLAYER_SPEED, 0).rotate(-self.rot)
+        if settings.CONTROLS == "WASD":
+         # Directional controls
+            if keys[pg.K_LEFT] or keys[pg.K_a]:
+                self.vel = vec(-PLAYER_SPEED, self.vel[1])
+            if keys[pg.K_RIGHT] or keys[pg.K_d]:
+                self.vel = vec(PLAYER_SPEED, self.vel[1])
+            if keys[pg.K_UP] or keys[pg.K_w]:
+                self.vel = vec(self.vel[0], -PLAYER_SPEED)
+            if keys[pg.K_DOWN] or keys [pg.K_s]:
+                self.vel = vec(self.vel[0], PLAYER_SPEED) 
         if pg.mouse.get_pressed()[0] == 1: # Shooting button
             now = pg.time.get_ticks()
             if now - self.last_shot > settings.BULLET_RATE:

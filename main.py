@@ -289,6 +289,7 @@ class Game:
         self.drawText("Space to fire, p to pause", self.font, 20, WHITE, WIDTH / 2, HEIGHT / 2 + 150)
         self.drawText("Press any key to play", self.font, 20, WHITE, WIDTH / 2, HEIGHT / 2 + 200)
         self.drawText("High Score: " + str(self.highscore), self.font, 22, WHITE, WIDTH / 2, 15)
+        self.drawText("Control method Press 'N' for WASD or 'M' for Classic Controls", self.font, 22, WHITE, WIDTH / 2, HEIGHT / 2 + 250)
         pg.display.flip()
         self.waitForKey()
         pg.mixer.music.fadeout(500)

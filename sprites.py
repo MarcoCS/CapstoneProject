@@ -343,8 +343,6 @@ class Fireball(pg.sprite.Sprite):
         self.game = game
         self.image = self.game.fireImage
         self.shootingfire = False
-        self.current_frame = 0
-        self.last_update = 0
         #self.load_images() 
         self.rect = self.image.get_rect()
         self.pos = vec(pos)

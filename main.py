@@ -199,7 +199,7 @@ class Game:
         hits = pg.sprite.spritecollide(self.player, self.fireballs, True, False)
         for hit in hits:
             self.playerhitsnd.play()
-            self.player.health -= BULLET_DAMAGE
+            self.player.health -= FIREBALL_DAMAGE
             if self.player.health <= 0:
                 self.playing= False
                 
@@ -297,6 +297,7 @@ class Game:
         #Drawing the player's health bar
         drawPlayerHealth(self.screen, 10, 10, self.player.health / PLAYER_HEALTH)
         drawBossHealth(self.screen, WIDTH / 2, HEIGHT -20, self.boss.health / BOSS_HEALTH)
+        self.drawText("Walter", self.font, 35, WHITE, WIDTH / 2, HEIGHT -35)
         if self.paused:
             self.showPauseScreen()
         self.drawText(str(round(self.clock.get_fps(),2)), self.font, 20, WHITE, WIDTH - 50, 20)

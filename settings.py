@@ -42,7 +42,7 @@ BULLET_RATE = 150      # Delay between shots
 BARREL_OFFSET = vec(30, 10) # Don't change this, this controls where the bullet spawn relative to player
 KICKBACK = 200         # Recoil; how much shooting sends the player back.  This may be changed
 GUN_SPREAD = 8         # How much the bullets deviates
-BULLET_DAMAGE = 10     # Self explanatory
+BULLET_DAMAGE = 100     # Self explanatory
 PELLETS = 1
 CURRENT_GUN = "pistol"
 
@@ -75,3 +75,5 @@ BOSS_HIT_RECT = pg.Rect(0, 0, 125, 125)
 FIRE_IMG = 'fireball.png'
 EXPLOSION_KNOCKBACK = 50
 FIREBALL_OFFSET = vec(50, 0) #controls where fireball spawns
+FIREBALL_DAMAGE = 30
+FIREBALL_SPREAD = 2

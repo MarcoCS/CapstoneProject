@@ -326,12 +326,15 @@ class Boss(pg.sprite.Sprite):
         self.rect.center = self.pos
         now = pg.time.get_ticks()
         if now - self.last_fire > 2000:
-            if self.health <= self.health / 2:
-                for x in range(settings.PELLETS): # This is for things like shotguns and stuff
-                    dir = vec(1, 0).rotate(-self.rot)
-                    pos = self.pos + settings.FIREBALL_OFFSET.rotate(-self.rot)
-                    Fireball(self.game, pos, dir)
-                    self.vel = vec(-settings.KICKBACK, 0).rotate(-self.rot)
+            self.last_fire = now
+            if self.health <= 1250:
+                settings.FIREBALL_SPREAD = 20
+                for x in range(20):
+                    for x in range(5): # This is for things like shotguns and stuff
+                        dir = vec(1, 0).rotate(-self.rot)
+                        pos = self.pos + settings.FIREBALL_OFFSET.rotate(-self.rot)
+                        Fireball(self.game, pos, dir)
+                        self.vel = vec(-settings.KICKBACK, 0).rotate(-self.rot)
             else:
                 self.last_fire = now
                 pos = self.pos + settings.FIREBALL_OFFSET.rotate(-self.rot)
@@ -354,7 +357,7 @@ class Fireball(pg.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.pos = vec(pos)
         self.rect.center = self.pos
-        spread = uniform(-settings.GUN_SPREAD, settings.GUN_SPREAD)
+        spread = uniform(-settings.FIREBALL_SPREAD, settings.FIREBALL_SPREAD)
         self.vel = dir.rotate(spread) * settings.BULLET_SPEED
         self.spawn_time = pg.time.get_ticks()
         self.rot = 0

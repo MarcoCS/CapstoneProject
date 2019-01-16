@@ -342,7 +342,6 @@ class Fireball(pg.sprite.Sprite):
         pg.sprite.Sprite.__init__(self, self.groups)
         self.game = game
         self.image = self.game.fireImage
-        self.image = pg.transform.rotate(self.game.fireImage, 45)
         self.shootingfire = False
         self.current_frame = 0
         self.last_update = 0
@@ -350,32 +349,21 @@ class Fireball(pg.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.pos = vec(pos)
         self.rect.center = self.pos
+        spread = uniform(-settings.GUN_SPREAD, settings.GUN_SPREAD)
+        self.vel = dir.rotate(spread) * settings.BULLET_SPEED
         self.spawn_time = pg.time.get_ticks()
         self.rot = 0
-        
-    def load_images(self):
-        for image in FIREBALL_IMG:
-            pg.image.load(path.join(self.game.img_folder, image))
 
     def update(self):
         #self.animate()
         self.pos += self.vel * self.game.dt
+        self.rect.center = self.pos
         self.rot = dir
         if pg.sprite.spritecollideany(self, self.game.walls):
             self.kill()
         if pg.time.get_ticks() - self.spawn_time > settings.BULLET_LIFETIME:
             self.kill()
-    
-    def animate(self):
-        now = pg.time.get_ticks()
-        if not self.shootingfire:
-            if now - self.last_update > 200:
-                self.last_update = now
-                self.current_frame = (self.current_frame + 1) % len(self.fireballFrames)
-                self.image = self. self.fireballFrames[self.current_frame]
-        
-        
-        
+       
 class HPUP(pg.sprite.Sprite): # Health up
     def __init__(self, game, pos):
         self._layer = POWERUP_LAYER

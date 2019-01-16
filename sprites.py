@@ -327,6 +327,7 @@ class Boss(pg.sprite.Sprite):
         now = pg.time.get_ticks()
         if now - self.last_fire > 2000:
             self.last_fire = now
+            self.game.fireballsound.play()
             if self.health <= 1250:
                 settings.FIREBALL_SPREAD = 20
                 for x in range(20):
@@ -337,6 +338,7 @@ class Boss(pg.sprite.Sprite):
                         self.vel = vec(-settings.KICKBACK, 0).rotate(-self.rot)
             else:
                 self.last_fire = now
+                self.game.fireballsound.play()
                 pos = self.pos + settings.FIREBALL_OFFSET.rotate(-self.rot)
                 dir = vec(1, 0).rotate(-self.rot)
                 Fireball(self.game, pos, dir)

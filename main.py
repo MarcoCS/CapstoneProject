@@ -152,11 +152,13 @@ class Game:
                 if tile == '1':
                     Wall(self, col, row)
                 if tile == 'M':
-                    Mob(self, col, row)
-                if tile == 'D':
-                    self.boss = Boss(self, col, row)
-                if tile == 'S':
-                    StationaryMob(self, col, row)
+                    roll = randint(1,4)
+                    if roll < 3:
+                        Mob(self, col, row)
+                    if roll == 4:
+                        StationaryMob(self, col, row)                 
+                if tile == 'B':
+                    self.boss = Boss(self, col, row))
                 if tile == 'W':
                     roll = randint(1,4)
                     if roll == 1:

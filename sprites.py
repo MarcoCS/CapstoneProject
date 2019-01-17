@@ -5,7 +5,7 @@
 #Player and hostile sprites
 #################################################
 import pygame as pg
-from math import atan2, degrees, pi
+from math import atan2, degrees, pi, sqrt
 from random import uniform
 from settings import *
 import settings
@@ -40,7 +40,6 @@ def collide_with_walls(sprite, group, dir):
 
 class Player(pg.sprite.Sprite):
     def __init__(self, game, x, y):
-        self._layer = PLAYER_LAYER
         self.groups = game.allSprites
         pg.sprite.Sprite.__init__(self, self.groups)
         self.game = game
@@ -60,12 +59,28 @@ class Player(pg.sprite.Sprite):
         self.vel = vec(0, 0)
         keys = pg.key.get_pressed()
         # Directional controls
-        if keys[pg.K_UP] or keys[pg.K_w]:
-            self.vel = vec(PLAYER_SPEED, 0).rotate(-self.rot)
-        if keys[pg.K_DOWN] or keys [pg.K_s]:
-            self.vel = vec(-PLAYER_SPEED, 0).rotate(-self.rot)
 
-
+        if keys[pg.K_n]:
+            settings.CONTROLS = "WASD"
+        if keys[pg.K_m]:
+            settings.CONTROLS = "Classic"
+                    
+        if settings.CONTROLS == "Classic":
+            if keys[pg.K_UP] or keys[pg.K_w]:
+                self.vel = vec(PLAYER_SPEED, 0).rotate(-self.rot)
+            if keys[pg.K_DOWN] or keys [pg.K_s]:
+                self.vel = vec(-PLAYER_SPEED, 0).rotate(-self.rot)
+        if settings.CONTROLS == "WASD":
+         # Directional controls
+            if keys[pg.K_LEFT] or keys[pg.K_a]:
+                self.vel = vec(-PLAYER_SPEED, self.vel[1])
+            if keys[pg.K_RIGHT] or keys[pg.K_d]:
+                self.vel = vec(PLAYER_SPEED, self.vel[1])
+            if keys[pg.K_UP] or keys[pg.K_w]:
+                self.vel = vec(self.vel[0], -PLAYER_SPEED)
+            if keys[pg.K_DOWN] or keys [pg.K_s]:
+                self.vel = vec(self.vel[0], PLAYER_SPEED) 
+                
         if pg.mouse.get_pressed()[0] == 1: # Shooting button
             now = pg.time.get_ticks()
             if now - self.last_shot > settings.BULLET_RATE:
@@ -230,8 +245,7 @@ class Wall(pg.sprite.Sprite):
         self.groups = game.allSprites, game.walls
         pg.sprite.Sprite.__init__(self, self.groups)
         self.game = game
-        self.image = pg.Surface((TILESIZE, TILESIZE))
-        self.image.fill(LIGHTGREY)
+        self.image = game.wallImage
         self.rect = self.image.get_rect()
         self.x = x
         self.y = y
@@ -240,7 +254,6 @@ class Wall(pg.sprite.Sprite):
 
 class Mob(pg.sprite.Sprite):
     def __init__(self, game, x, y):
-        self._layer = MOB_LAYER
         self.groups = game.allSprites, game.mobs
         pg.sprite.Sprite.__init__(self, self.groups)
         self.game = game
@@ -285,7 +298,7 @@ class Mob(pg.sprite.Sprite):
             if randint(1,5) == 1:
                 HPUP(self.game, self.pos)
             self.kill()
-            
+
     def drawHealth(self):
         if self.health > 60:
             col = settings.GREEN
@@ -374,9 +387,9 @@ class Fireball(pg.sprite.Sprite):
         if pg.time.get_ticks() - self.spawn_time > settings.BULLET_LIFETIME:
             self.kill()
        
+
 class HPUP(pg.sprite.Sprite): # Health up
     def __init__(self, game, pos):
-        self._layer = POWERUP_LAYER
         self.groups = game.allSprites, game.hpups
         pg.sprite.Sprite.__init__(self, self.groups)
         self.game = game
@@ -390,7 +403,6 @@ class HPUP(pg.sprite.Sprite): # Health up
 
 class StationaryMob(pg.sprite.Sprite):
     def __init__(self, game, x, y):
-        self._layer = MOB_LAYER
         self.groups = game.allSprites, game.shooters
         pg.sprite.Sprite.__init__(self, self.groups)
         self.game = game
@@ -417,6 +429,7 @@ class StationaryMob(pg.sprite.Sprite):
         self.hit_rect.centery = self.pos.y
         #uses the new rectangle instead of the rectangle of the sprite
         self.rect.center = self.hit_rect.center
+
         now = pg.time.get_ticks()
         if now - self.last_shot > 4500:
             self.last_shot = now
@@ -424,7 +437,11 @@ class StationaryMob(pg.sprite.Sprite):
             dir = vec(1, 0).rotate(-self.rot)
             pos = self.pos + settings.BARREL_OFFSET.rotate(-self.rot)
             ShooterBullet(self.game, pos, dir)
-        if self.health <= 0:
+        if self.health <= 0:     
+            if randint(1,10) == 1:  # 10% chance to drop 3 health powerups
+                HPUP(self.game, self.pos)
+                HPUP(self.game, self.pos - vec(10,10))
+                HPUP(self.game, self.pos + vec(10,10))
             self.kill()
 
     def drawShooterHealth(self):

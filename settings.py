@@ -25,14 +25,14 @@ BGCOLOR = DARKGREY
 SCORE_FILE = "score.txt"
 FONT = 'Arial'
 
+CONTROLS = "Classic"
+
+
 TILESIZE = 64
 GRIDWIDTH = WIDTH / TILESIZE
 GRIDHEIGHT = HEIGHT / TILESIZE
+WALL_IMG = 'wall.png'
 
-PLAYER_LAYER = 1
-MOB_LAYER = 1
-POWERUP_LAYER = 1
-FIREBALL_LAYER = 2
 
 #Gun Settings
 BULLET_IMG = 'tile_187.png'
@@ -42,7 +42,7 @@ BULLET_RATE = 150      # Delay between shots
 BARREL_OFFSET = vec(30, 10) # Don't change this, this controls where the bullet spawn relative to player
 KICKBACK = 200         # Recoil; how much shooting sends the player back.  This may be changed
 GUN_SPREAD = 8         # How much the bullets deviates
-BULLET_DAMAGE = 100     # Self explanatory
+BULLET_DAMAGE = 10     # Self explanatory
 PELLETS = 1
 CURRENT_GUN = "pistol"
 
@@ -77,3 +77,4 @@ EXPLOSION_KNOCKBACK = 50
 FIREBALL_OFFSET = vec(50, 0) #controls where fireball spawns
 FIREBALL_DAMAGE = 30
 FIREBALL_SPREAD = 2
+

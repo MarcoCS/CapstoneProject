@@ -109,8 +109,8 @@ class Game:
         self.shooterhit = pg.mixer.Sound(path.join(snd_folder, 'Large Metal Pan 2-SoundBible.com-1042326277.wav'))
         self.enemysnipershot = pg.mixer.Sound(path.join(snd_folder, 'Sniper_Fire_Reload-Mike_Koenig-1309646991.wav'))
         self.enemysnipershot.set_volume(0.1)
-        self.dragongrowl = pg.mixer.Sound(path.join(snd_folder, ''))
-        self.fireballsound =pg.mixer.Sound(path.join(snd_folder, ''))
+        self.dragongrowl = pg.mixer.Sound(path.join(snd_folder, 'Skeleton Roar.mp3'))
+        self.fireballsound =pg.mixer.Sound(path.join(snd_folder, 'foom_0.wav'))
         
 
     def new(self):

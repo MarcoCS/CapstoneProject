@@ -1,4 +1,3 @@
-
 #################################################
 #CS30 Final Capstone Project
 #Developers: Kale, Dallas, Marco

@@ -77,6 +77,7 @@ class Game:
         self.shooterImage = pg.image.load(path.join(img_folder, SHOOTER_IMG)).convert_alpha()
         self.hpupImage = pg.image.load(path.join(img_folder, "heart.png")).convert_alpha()
         self.floorImage = pg.image.load(path.join(img_folder, "floor.png")).convert_alpha()
+        self.floorImage = pg.transform.scale(self.floorImage, (TILESIZE, TILESIZE)).convert_alpha()
         self.bossImage = pg.image.load(path.join(img_folder, BOSS_IMG)).convert_alpha()
         self.fireImage = pg.image.load(path.join(img_folder, FIRE_IMG)).convert_alpha()
         self.fireImage = pg.transform.scale(self.fireImage, (50, 50))

@@ -125,9 +125,11 @@ class Game:
                 if tile == '1':
                     Wall(self, col, row)
                 if tile == 'M':
-                    Mob(self, col, row)
-                if tile == 'S':
-                    StationaryMob(self, col, row)
+                    roll = randint(1,4)
+                    if roll < 4:
+                        Mob(self, col, row)
+                    else roll == 4:
+                        StationaryMob(self, col, row)            
                 if tile == 'W':
                     roll = randint(1,4)
                     if roll == 1:
@@ -138,6 +140,8 @@ class Game:
                         Weapons.Sniper_rifle(self, col, row)
                     if roll == 4:
                         Weapons.Assault_rifle(self, col, row)
+                if tile == 'B':
+                    Boss(self, col, row)
                     
                     
 

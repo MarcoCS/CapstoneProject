@@ -30,6 +30,24 @@ def drawPlayerHealth(surf, x, y, pct): # Surf short for surface
         col = RED
     pg.draw.rect(surf, col, fill_rect)
     pg.draw.rect(surf, WHITE, outline_rect, 2)
+    
+def drawBossHealth(surf, x, y, pct): # Surf short for surface
+        if pct < 0: # Pct short for percentage of healthbar
+            pct = 0
+        BAR_LENGTH = 1000
+        BAR_HEIGHT = 15
+        fill = pct * BAR_LENGTH
+        outline_rect = pg.Rect(WIDTH / 2, HEIGHT + 25, BAR_LENGTH, BAR_HEIGHT)
+        fill_rect = pg.Rect(x % 100, y, fill, BAR_HEIGHT)
+        if pct > 0.6:
+            col = GREEN
+        elif pct > 0.3:   
+            col = YELLOW
+        else:
+            col = RED
+        pg.draw.rect(surf, col, fill_rect)
+        pg.draw.rect(surf, WHITE, outline_rect, 4)
+
 
 
 class Game:
@@ -58,6 +76,10 @@ class Game:
         self.shooterImage = pg.image.load(path.join(img_folder, SHOOTER_IMG)).convert_alpha()
         self.hpupImage = pg.image.load(path.join(img_folder, "heart.png")).convert_alpha()
         self.floorImage = pg.image.load(path.join(img_folder, "floor.png")).convert_alpha()
+        self.floorImage = pg.transform.scale(self.floorImage, (TILESIZE, TILESIZE)).convert_alpha()
+        self.bossImage = pg.image.load(path.join(img_folder, BOSS_IMG)).convert_alpha()
+        self.fireImage = pg.image.load(path.join(img_folder, FIRE_IMG)).convert_alpha()
+        self.fireImage = pg.transform.scale(self.fireImage, (50, 50))
         self.wallImage = pg.image.load(path.join(img_folder, WALL_IMG)).convert_alpha()
         self.wallImage = pg.transform.scale(self.wallImage, (TILESIZE, TILESIZE)).convert_alpha()
         
@@ -92,19 +114,26 @@ class Game:
         self.shooterhit = pg.mixer.Sound(path.join(snd_folder, 'Large Metal Pan 2-SoundBible.com-1042326277.wav'))
         self.enemysnipershot = pg.mixer.Sound(path.join(snd_folder, 'Sniper_Fire_Reload-Mike_Koenig-1309646991.wav'))
         self.enemysnipershot.set_volume(0.1)
+        self.dragongrowl = pg.mixer.Sound(path.join(snd_folder, 'Dragon Roaring-SoundBible.com-213390944.wav'))
+        self.fireballsound =pg.mixer.Sound(path.join(snd_folder, 'Small Fireball-SoundBible.com-1381880822.wav'))
         
 
     def new(self):
         # Start a new game
         self.score = 0
         self.paused = False
+        self.bossPresent = False
+        self.allSprites = pg.sprite.LayeredUpdates()
         self.allSprites = pg.sprite.Group()
+        self.fireballs = pg.sprite.Group()
+        self.bosses = pg.sprite.Group()
         self.walls = pg.sprite.Group()
         self.bullets = pg.sprite.Group()
         self.mobs = pg.sprite.Group()
         self.shooters = pg.sprite.Group()
         self.shooterBullets = pg.sprite.Group()
         self.hpups = pg.sprite.Group()
+        self.floorTiles = pg.sprite.Group()
         # Weapon sprites
         self.shotgun = pg.sprite.Group()
         self.sniper = pg.sprite.Group()
@@ -112,12 +141,12 @@ class Game:
         self.ar = pg.sprite.Group()
         # -------
         
-        # Experimental
-        #for row, tiles in enumerate(self.map.data):
-         #   for col, tile, in enumerate(tiles):
-          #      if tile != '1':
-           #         Floor(self, col, row)
-        # Experimental
+        # Floor tiles
+        for row, tiles in enumerate(self.map.data):
+            for col, tile, in enumerate(tiles):
+                if tile != '1':
+                    Floor(self, col, row)
+
         for row, tiles in enumerate(self.map.data):
             for col, tile, in enumerate(tiles):
                 if tile == 'P':
@@ -126,10 +155,13 @@ class Game:
                     Wall(self, col, row)
                 if tile == 'M':
                     roll = randint(1,4)
-                    if roll < 4:
+                    if roll < 3:
                         Mob(self, col, row)
-                    else roll == 4:
-                        StationaryMob(self, col, row)            
+                    if roll == 4:
+                        StationaryMob(self, col, row)
+                        
+                if tile == 'B':
+                    self.boss = Boss(self, col, row)
                 if tile == 'W':
                     roll = randint(1,4)
                     if roll == 1:
@@ -140,8 +172,6 @@ class Game:
                         Weapons.Sniper_rifle(self, col, row)
                     if roll == 4:
                         Weapons.Assault_rifle(self, col, row)
-                if tile == 'B':
-                    Boss(self, col, row)
                     
                     
 
@@ -176,6 +206,22 @@ class Game:
                 self.playing = False
             if hits:
                 self.player.pos += vec(MOB_KNOCKBACK, 0).rotate(-hits[0].rot)
+                
+        #FIREBALL hits player
+        hits = pg.sprite.spritecollide(self.player, self.fireballs, True, False)
+        for hit in hits:
+            self.playerhitsnd.play()
+            self.player.health -= FIREBALL_DAMAGE
+            if self.player.health <= 0:
+                self.playing= False
+                
+        #bullets hit BOSS
+        hits = pg.sprite.groupcollide(self.bosses, self.bullets, False, True)
+        for hit in hits:
+            self.dragongrowl.play()
+            hit.health -= settings.BULLET_DAMAGE
+            hit.vel = vec(0,0)
+            self.score += 20
 
         #bullets hit mobs
         hits = pg.sprite.groupcollide(self.mobs, self.bullets, False, True)
@@ -232,6 +278,14 @@ class Game:
         if hits:
             Weapons.Assault_rifle.change_var()
             self.pickupgun.play()
+            
+        
+#        if not bool(self.mobs) and not bool(self.shooters) and len(self.bosses) == 1:
+#            for row, tiles in enumerate(self.map.data):
+#                for col, tile, in enumerate(tiles):
+#                    if tile == 'B':
+#                        self.boss = Boss(self, col, row)
+#                        self.bossPresent = True
 
 
     def events(self):
@@ -246,6 +300,7 @@ class Game:
                 if event.key == pg.K_p:
                     self.paused = not self.paused
 
+
     def draw(self):
         # Draw the loop
         # This displays frame rate.
@@ -258,10 +313,13 @@ class Game:
             if isinstance(sprite, Mob):
                 sprite.drawHealth()
             self.screen.blit(sprite.image, self.camera.apply(sprite))
-        #testing rectangle for collisions
-            #pg.draw.rect(self.screen, WHITE, self.player.hit_rect, 2)
+        #testing rectangle for collisions  
+        #pg.draw.rect(self.screen, WHITE, self.boss.hit_rect, 2)
         #Drawing the player's health bar
         drawPlayerHealth(self.screen, 10, 10, self.player.health / PLAYER_HEALTH)
+        if self.bossPresent:
+            drawBossHealth(self.screen, WIDTH / 2, HEIGHT -20, self.boss.health / BOSS_HEALTH)
+            self.drawText("Walter", self.font, 35, WHITE, WIDTH / 2, HEIGHT -35)
         if self.paused:
             self.showPauseScreen()
         self.drawText(str(round(self.clock.get_fps(),2)), self.font, 20, WHITE, WIDTH - 50, 20)

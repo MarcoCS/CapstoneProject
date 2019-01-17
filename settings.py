@@ -24,13 +24,15 @@ TITLE = "Top-Down Shooter"
 BGCOLOR = DARKGREY
 SCORE_FILE = "score.txt"
 FONT = 'Arial'
+
 CONTROLS = "Classic"
+
 
 TILESIZE = 64
 GRIDWIDTH = WIDTH / TILESIZE
 GRIDHEIGHT = HEIGHT / TILESIZE
-
 WALL_IMG = 'wall.png'
+
 
 #Gun Settings
 BULLET_IMG = 'tile_187.png'
@@ -65,3 +67,14 @@ SHOOTER_IMG = 'robot1_gun.png'
 SHOOTER_ROT_SPEED = 5
 SHOOTER_HEALTH = 200
 SHOOTER_SCORE = 15
+
+#BOSS settings
+BOSS_IMG = 'Dragon50percent.png'
+BOSS_HEALTH = 2500
+BOSS_HIT_RECT = pg.Rect(0, 0, 125, 125)
+FIRE_IMG = 'fireball.png'
+EXPLOSION_KNOCKBACK = 50
+FIREBALL_OFFSET = vec(50, 0) #controls where fireball spawns
+FIREBALL_DAMAGE = 30
+FIREBALL_SPREAD = 2
+

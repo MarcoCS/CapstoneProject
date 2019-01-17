@@ -40,7 +40,6 @@ def collide_with_walls(sprite, group, dir):
 
 class Player(pg.sprite.Sprite):
     def __init__(self, game, x, y):
-
         self.groups = game.allSprites
         pg.sprite.Sprite.__init__(self, self.groups)
         self.game = game
@@ -60,12 +59,12 @@ class Player(pg.sprite.Sprite):
         self.vel = vec(0, 0)
         keys = pg.key.get_pressed()
         # Directional controls
+
         if keys[pg.K_n]:
             settings.CONTROLS = "WASD"
         if keys[pg.K_m]:
             settings.CONTROLS = "Classic"
-            
-        
+                    
         if settings.CONTROLS == "Classic":
             if keys[pg.K_UP] or keys[pg.K_w]:
                 self.vel = vec(PLAYER_SPEED, 0).rotate(-self.rot)
@@ -81,6 +80,7 @@ class Player(pg.sprite.Sprite):
                 self.vel = vec(self.vel[0], -PLAYER_SPEED)
             if keys[pg.K_DOWN] or keys [pg.K_s]:
                 self.vel = vec(self.vel[0], PLAYER_SPEED) 
+                
         if pg.mouse.get_pressed()[0] == 1: # Shooting button
             now = pg.time.get_ticks()
             if now - self.last_shot > settings.BULLET_RATE:
@@ -311,6 +311,82 @@ class Mob(pg.sprite.Sprite):
         if self.health < settings.MOB_HEALTH:
             pg.draw.rect(self.image, col, self.health_bar)
 
+class Boss(pg.sprite.Sprite):
+    def __init__(self, game, x, y):
+        self._layer = MOB_LAYER
+        self.groups = game.allSprites, game.bosses
+        pg.sprite.Sprite.__init__(self, self.groups)
+        self.game = game
+        self.current_frame = 0
+        self.last_update = 0
+        self.image = game.bossImage
+        self.rect = self.image.get_rect()
+        self.hit_rect = settings.BOSS_HIT_RECT.copy()
+        self.hit_rect.center = self.rect.center
+        self.pos = vec(x, y) * settings.TILESIZE
+        self.vel = vec(0, 0)
+        self.rect.center = self.pos
+        self.rot = 0
+        self.speed = 50
+        self.last_fire = 0
+        self.health = BOSS_HEALTH
+
+    def update(self):
+        # Rotate mobs and update the images. They track the player.
+        self.rot = (self.game.player.pos - self.pos).angle_to(vec(1,0))
+        self.image = pg.transform.rotate(self.game.bossImage, self.rot)
+        self.rect = self.image.get_rect()
+        self.rect.center = self.pos
+        now = pg.time.get_ticks()
+        if now - self.last_fire > 2000:
+            self.last_fire = now
+            self.game.fireballsound.play()
+            if self.health <= 1250:
+                settings.FIREBALL_SPREAD = 20
+                for x in range(20):
+                    for x in range(5): # This is for things like shotguns and stuff
+                        dir = vec(1, 0).rotate(-self.rot)
+                        pos = self.pos + settings.FIREBALL_OFFSET.rotate(-self.rot)
+                        Fireball(self.game, pos, dir)
+                        self.vel = vec(-settings.KICKBACK, 0).rotate(-self.rot)
+            else:
+                self.last_fire = now
+                self.game.fireballsound.play()
+                pos = self.pos + settings.FIREBALL_OFFSET.rotate(-self.rot)
+                dir = vec(1, 0).rotate(-self.rot)
+                Fireball(self.game, pos, dir)
+        if self.health <= 0:
+            if randint(1,5) == 1:
+                HPUP(self.game, self.pos)
+            self.kill()
+ 
+class Fireball(pg.sprite.Sprite):
+    def __init__(self, game, pos, dir):
+        self._layer = FIREBALL_LAYER
+        self.groups = game.allSprites, game.fireballs
+        pg.sprite.Sprite.__init__(self, self.groups)
+        self.game = game
+        self.image = self.game.fireImage
+        self.shootingfire = False
+        #self.load_images() 
+        self.rect = self.image.get_rect()
+        self.pos = vec(pos)
+        self.rect.center = self.pos
+        spread = uniform(-settings.FIREBALL_SPREAD, settings.FIREBALL_SPREAD)
+        self.vel = dir.rotate(spread) * settings.BULLET_SPEED
+        self.spawn_time = pg.time.get_ticks()
+        self.rot = 0
+
+    def update(self):
+        #self.animate()
+        self.pos += self.vel * self.game.dt
+        self.rect.center = self.pos
+        self.rot = dir
+        if pg.sprite.spritecollideany(self, self.game.walls):
+            self.kill()
+        if pg.time.get_ticks() - self.spawn_time > settings.BULLET_LIFETIME:
+            self.kill()
+       
 
 class HPUP(pg.sprite.Sprite): # Health up
     def __init__(self, game, pos):
@@ -352,7 +428,8 @@ class StationaryMob(pg.sprite.Sprite):
         self.hit_rect.centerx = self.pos.x
         self.hit_rect.centery = self.pos.y
         #uses the new rectangle instead of the rectangle of the sprite
-        self.rect.center = self.hit_rect.center  
+        self.rect.center = self.hit_rect.center
+
         now = pg.time.get_ticks()
         if now - self.last_shot > 4500:
             self.last_shot = now

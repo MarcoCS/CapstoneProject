@@ -28,7 +28,7 @@ def print_lst(lst): # Prints the list
 
 
 # Templates of rooms:
-base_room = [['1', '1', '1', '1', '1', '1', '1', '1', '1', '1'],  # This cuts down render time
+base_room = [['1', '1', '1', '1', '.', '.', '1', '1', '1', '1'],  # This cuts down render time
                 ['1', '.', '.', '.', '.', '.', '.', '.', '.', '1'],   # Before, a function was located in "Rooms_tools" which carved out an area
                 ['1', '.', '.', '.', '.', '.', '.', '.', '.', '1'],   # We do this anyways, so it simply saves compute power to have a pre-made map.
                 ['1', '.', '.', '.', '.', '.', '.', '.', '.', '1'],
@@ -215,8 +215,9 @@ omega_map = [] # This will be the final once everything is processed
 for z in range(len(game_map)):                # First layer of list
     for x in range(len(game_map[0])):         # Secondary layer of nested list
         roll = rand.randint(1,6)
-        type_of_room = base_room
-        if roll == 1:
+        if x > 0 and x < 3 and z > 0  and z < 3:
+            type_of_room = base_room
+        else:
             if x == 0:
                 type_of_room = base_room_left
             else:
@@ -232,24 +233,9 @@ for z in range(len(game_map)):                # First layer of list
                     type_of_room = base_room_bottom_left
                 else:
                     type_of_room = base_room_bottom    
+        if roll == 1:
             game_map[z][x] = Loot_room(type_of_room).room
         else:
-            type_of_room = base_room
-            if x == 0:
-                type_of_room = base_room_left
-            if x == 3:
-                type_of_room = base_room_right
-            
-            if z == 0:
-                if x == 3:
-                    type_of_room = base_room_top_right
-                else:
-                    type_of_room = base_room_top
-            if z == 3:
-                if x == 0:
-                    type_of_room = base_room_bottom_left
-                else:
-                    type_of_room = base_room_bottom   
             game_map[z][x] = Enemy_room(1,type_of_room).room
 
         
@@ -278,24 +264,28 @@ for x in map_list:
     y = str(x)
     y = y.translate({ord(i): None for i in "[]()', "})
     map_file.write(y)
+    print(y)
     map_file.write("\n")
 
 for x in map_list1:
     y = str(x)
     y = y.translate({ord(i): None for i in "[]()', "})
     map_file.write(y)
+    print(y)
     map_file.write("\n")
 
 for x in map_list2:
     y = str(x)
     y = y.translate({ord(i): None for i in "[]()', "})
     map_file.write(y)
+    print(y)
     map_file.write("\n")
 
 for x in map_list3:
     y = str(x)
     y = y.translate({ord(i): None for i in "[]()', "})
     map_file.write(y)
+    print(y)
     map_file.write("\n")
 
 map_file.close()

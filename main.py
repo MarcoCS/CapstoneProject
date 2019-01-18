@@ -128,6 +128,7 @@ class Game:
         self.allSprites = pg.sprite.Group()
         self.fireballs = pg.sprite.Group()
         self.bosses = pg.sprite.Group()
+        self.bossitem = pg.sprite.Group()
         self.walls = pg.sprite.Group()
         self.bullets = pg.sprite.Group()
         self.mobs = pg.sprite.Group()
@@ -255,6 +256,14 @@ class Game:
                 self.player.health = 100
             else:
                 self.player.health += 10
+        
+        hits = pg.sprite.spritecollide(self.player, self.bossitem, True, False)
+        if hits:
+            self.healthpickup.play()
+            if self.player.health + 90 > 100:
+                self.player.health = 100
+            else:
+                self.player.health += 90
                 
 
         hits = pg.sprite.spritecollide(self.player, self.shotgun, True, False)

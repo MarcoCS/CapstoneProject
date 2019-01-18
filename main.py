@@ -260,10 +260,10 @@ class Game:
         hits = pg.sprite.spritecollide(self.player, self.bossitem, True, False)
         if hits:
             self.healthpickup.play()
-            if self.player.health + 90 > 100:
+            if self.player.health + 100 > 100:
                 self.player.health = 100
             else:
-                self.player.health += 90
+                self.player.health += 100
                 
 
         hits = pg.sprite.spritecollide(self.player, self.shotgun, True, False)

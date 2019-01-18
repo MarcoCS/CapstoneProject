@@ -251,7 +251,7 @@ class Wall(pg.sprite.Sprite):
         self.y = y
         self.rect.x = x * settings.TILESIZE
         self.rect.y = y * settings.TILESIZE
-        
+
 class Floor(pg.sprite.Sprite):
     def __init__(self, game, x, y):
         self.groups = game.allSprites, game.floorTiles

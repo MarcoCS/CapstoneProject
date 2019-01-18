@@ -75,7 +75,7 @@ class Game:
         self.mobImage = pg.image.load(path.join(img_folder, MOB_IMG)).convert_alpha()
         self.shooterImage = pg.image.load(path.join(img_folder, SHOOTER_IMG)).convert_alpha()
         self.hpupImage = pg.image.load(path.join(img_folder, "heart.png")).convert_alpha()
-        self.floorImage = pg.image.load(path.join(img_folder, "floor.png")).convert_alpha()
+        self.floorImage = pg.image.load(path.join(img_folder, "floor2.png")).convert_alpha()
         self.floorImage = pg.transform.scale(self.floorImage, (TILESIZE, TILESIZE)).convert_alpha()
         self.bossImage = pg.image.load(path.join(img_folder, BOSS_IMG)).convert_alpha()
         self.fireImage = pg.image.load(path.join(img_folder, FIRE_IMG)).convert_alpha()
@@ -121,8 +121,9 @@ class Game:
     def new(self):
         # Start a new game
         self.score = 0
+        self.win = False
         self.paused = False
-        self.bossPresent = False
+        self.fightingBoss = False
         self.allSprites = pg.sprite.LayeredUpdates()
         self.allSprites = pg.sprite.Group()
         self.fireballs = pg.sprite.Group()
@@ -158,10 +159,7 @@ class Game:
                     if roll < 3:
                         Mob(self, col, row)
                     if roll == 4:
-                        StationaryMob(self, col, row)
-                        
-                if tile == 'B':
-                    self.boss = Boss(self, col, row)
+                        StationaryMob(self, col, row)                 
                 if tile == 'W':
                     roll = randint(1,4)
                     if roll == 1:
@@ -278,14 +276,17 @@ class Game:
         if hits:
             Weapons.Assault_rifle.change_var()
             self.pickupgun.play()
-            
         
-#        if not bool(self.mobs) and not bool(self.shooters) and len(self.bosses) == 1:
-#            for row, tiles in enumerate(self.map.data):
-#                for col, tile, in enumerate(tiles):
-#                    if tile == 'B':
-#                        self.boss = Boss(self, col, row)
-#                        self.bossPresent = True
+        if not bool(self.mobs) and not bool(self.shooters) and len(self.bosses) < 1:
+            for row, tiles in enumerate(self.map.data):
+                for col, tile, in enumerate(tiles):
+                    if tile == 'B':
+                        self.boss = Boss(self, col, row)
+                        self.fightingBoss = True
+        
+        if not bool(self.bosses) and self.fightingBoss:
+            self.playing = False
+            self.won = True
 
 
     def events(self):
@@ -299,7 +300,13 @@ class Game:
             if event.type == pg.KEYDOWN:
                 if event.key == pg.K_p:
                     self.paused = not self.paused
+#                if event.key == pg.K_x:
+#                    for row, tiles in enumerate(self.map.data):
+#                        for col, tile, in enumerate(tiles):
+#                            if tile == 'B':
+#                                self.boss = Boss(self, 20, 20)
 
+            
 
     def draw(self):
         # Draw the loop
@@ -317,12 +324,13 @@ class Game:
         #pg.draw.rect(self.screen, WHITE, self.boss.hit_rect, 2)
         #Drawing the player's health bar
         drawPlayerHealth(self.screen, 10, 10, self.player.health / PLAYER_HEALTH)
-        if self.bossPresent:
+        if len(self.bosses) != 0:
             drawBossHealth(self.screen, WIDTH / 2, HEIGHT -20, self.boss.health / BOSS_HEALTH)
             self.drawText("Walter", self.font, 35, WHITE, WIDTH / 2, HEIGHT -35)
         if self.paused:
             self.showPauseScreen()
         self.drawText(str(round(self.clock.get_fps(),2)), self.font, 20, WHITE, WIDTH - 50, 20)
+        self.drawText("Mobs: {}".format(len(self.mobs) + len(self.shooters)), self.font, 20, WHITE, 50, 50) 
         pg.display.flip()
 
     def drawText(self, text, fontName, size, color, x, y):
@@ -368,8 +376,11 @@ class Game:
         pg.mixer.music.load(path.join(self.msc_folder, 'Retro_No hope.ogg'))
         pg.mixer.music.play(loops=-1)
         self.screen.fill(BGCOLOR)
-        self.drawText("Game Over", self.font, 72, WHITE, WIDTH / 2, HEIGHT / 2)
-        self.drawText("Press any key to play again", self.font, 20, WHITE, WIDTH / 2, HEIGHT / 2 + 100)
+        if self.win:
+            self.drawText("YOU WIN!", self.font, 72, WHITE, WIDTH / 2, HEIGHT / 2)
+        else:
+            self.drawText("Game Over", self.font, 72, WHITE, WIDTH / 2, HEIGHT / 2)
+        self.drawText("Press any key to play again", self.font, 20, WHITE, WIDTH / 2, HEIGHT / 2 + 120)
         if self.score > self.highscore:
            self.highscore = self.score
            self.drawText("New High Score! " + str(self.highscore), self.font, 22, WHITE, WIDTH / 2, HEIGHT / 2 + 40)
@@ -378,11 +389,13 @@ class Game:
                f.close()
         else:
            self.drawText("High Score: " + str(self.highscore), self.font, 22, WHITE, WIDTH / 2, HEIGHT / 2 + 40)
+           self.drawText("Your Score: " + str(self.score), self.font, 22, WHITE, WIDTH / 2, HEIGHT / 2 + 80)
         pg.display.flip()
         self.waitForKey()
 
     def waitForKey(self):
         # Keeps time ticking until a key is pressed. Then returns.
+        pg.event.wait()
         waiting = True
         while waiting:
             self.clock.tick(FPS)

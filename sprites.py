@@ -369,7 +369,7 @@ class Boss(pg.sprite.Sprite):
                 Fireball(self.game, pos, dir)
         if self.health <= 0:
                 Bossitem(self.game, self.pos)
-            self.kill()
+                self.kill()
  
 class Bossitem(pg.sprite.Sprite): #boss drops an item to completely refill your health
     def __init__(self, game, pos):

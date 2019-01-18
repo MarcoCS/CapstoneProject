@@ -300,12 +300,6 @@ class Game:
             if event.type == pg.KEYDOWN:
                 if event.key == pg.K_p:
                     self.paused = not self.paused
-#                if event.key == pg.K_x:
-#                    for row, tiles in enumerate(self.map.data):
-#                        for col, tile, in enumerate(tiles):
-#                            if tile == 'B':
-#                                self.boss = Boss(self, 20, 20)
-
             
 
     def draw(self):

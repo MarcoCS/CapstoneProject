@@ -368,22 +368,13 @@ class Boss(pg.sprite.Sprite):
                 dir = vec(1, 0).rotate(-self.rot)
                 Fireball(self.game, pos, dir)
         if self.health <= 0:
-                Bossitem(self.game, self.pos)
-                self.kill()
+            if randint(1,5) == 1:
+                HPUP(self.game, self.pos)
+            self.game.playing = False
+            self.game.win = True
+            self.kill()
  
-class Bossitem(pg.sprite.Sprite): #boss drops an item to completely refill your health
-    def __init__(self, game, pos):
-        self.groups = game.allSprites, game.bossitem
-        pg.sprite.Sprite.__init__(self, self.groups)
-        self.game = game
-        self.pos = vec(pos)
-        self.image = game.hpupImage
-        self.rect = self.image.get_rect()
-        self.hit_rect = settings.MOB_HIT_RECT.copy()
-        self.hit_rect.center = self.rect.center
-        self.rect.center = self.pos
- 
-class Fireball(pg.sprite.Sprite): #boss shoots fireballs
+class Fireball(pg.sprite.Sprite):
     def __init__(self, game, pos, dir):
         self._layer = FIREBALL_LAYER
         self.groups = game.allSprites, game.fireballs
@@ -401,6 +392,7 @@ class Fireball(pg.sprite.Sprite): #boss shoots fireballs
         self.rot = 0
 
     def update(self):
+        #self.animate()
         self.pos += self.vel * self.game.dt
         self.rect.center = self.pos
         self.rot = dir

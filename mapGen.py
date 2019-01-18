@@ -5,7 +5,7 @@
 import random as rand
 import copy
 
-map_file = open("map.txt","w+")
+map_file = open("map_file.txt","w+")
 
 # "." should represent walkable floor
 # "1" should represent an impassable wall

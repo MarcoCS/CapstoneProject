@@ -373,7 +373,7 @@ class Boss(pg.sprite.Sprite):
  
 class Bossitem(pg.sprite.Sprite): #boss drops an item to completely refill your health
     def __init__(self, game, pos):
-        self.groups = game.allSprites, game.hpups
+        self.groups = game.allSprites, game.bossitem
         pg.sprite.Sprite.__init__(self, self.groups)
         self.game = game
         self.pos = vec(pos)
@@ -383,7 +383,7 @@ class Bossitem(pg.sprite.Sprite): #boss drops an item to completely refill your 
         self.hit_rect.center = self.rect.center
         self.rect.center = self.pos
  
-class Fireball(pg.sprite.Sprite):
+class Fireball(pg.sprite.Sprite): #boss shoots fireballs
     def __init__(self, game, pos, dir):
         self._layer = FIREBALL_LAYER
         self.groups = game.allSprites, game.fireballs

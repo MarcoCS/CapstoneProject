@@ -252,6 +252,18 @@ class Wall(pg.sprite.Sprite):
         self.rect.x = x * settings.TILESIZE
         self.rect.y = y * settings.TILESIZE
 
+class Floor(pg.sprite.Sprite):
+    def __init__(self, game, x, y):
+        self.groups = game.allSprites, game.floorTiles
+        pg.sprite.Sprite.__init__(self, self.groups)
+        self.game = game
+        self.image = game.floorImage
+        self.rect = self.image.get_rect()
+        self.x = x
+        self.y = y
+        self.rect.x = x * settings.TILESIZE
+        self.rect.y = y * settings.TILESIZE
+
 class Mob(pg.sprite.Sprite):
     def __init__(self, game, x, y):
         self.groups = game.allSprites, game.mobs

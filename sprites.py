@@ -350,7 +350,7 @@ class Boss(pg.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.center = self.pos
         now = pg.time.get_ticks()
-        if now - self.last_fire > 2000:
+        if now - self.last_fire > 2500:
             self.last_fire = now
             self.game.fireballsound.play()
             if self.health <= 1250:
@@ -385,7 +385,7 @@ class Fireball(pg.sprite.Sprite):
         self.pos = vec(pos)
         self.rect.center = self.pos
         spread = uniform(-settings.FIREBALL_SPREAD, settings.FIREBALL_SPREAD)
-        self.vel = dir.rotate(spread) * settings.BULLET_SPEED
+        self.vel = dir.rotate(spread) * settings.FIREBALL_SPEED
         self.spawn_time = pg.time.get_ticks()
         self.rot = 0
 

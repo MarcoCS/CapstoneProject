@@ -68,7 +68,7 @@ class Game:
         img_folder = path.join(self.gameFolder, 'img')
         self.msc_folder = path.join(self.gameFolder, 'msc')
         snd_folder = path.join(self.gameFolder, 'snd')
-        self.map = Map(path.join(self.gameFolder, 'map2.txt'))
+        self.map = Map(path.join(self.gameFolder, 'map.txt'))
         # Base map is 48 x 32 tiles. 
         self.player_img = pg.image.load(path.join(img_folder, PLAYER_IMG)).convert_alpha()
         self.bullet_img = pg.image.load(path.join(img_folder, BULLET_IMG)).convert_alpha()
@@ -279,15 +279,11 @@ class Game:
         
         if not bool(self.mobs) and not bool(self.shooters) and self.spawnedboss == False and not bool(self.bosses) and self.playing == True: 
             self.loadBoss()
-            print("Load boss")
-
-   
-               
+         
  
      
     def loadBoss(self):
         self.spawnedboss = True
-        print("Spawning boss")
         for row, tiles in enumerate(self.map.data):
                 for col, tile, in enumerate(tiles):
                     if tile == 'B':

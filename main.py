@@ -75,7 +75,7 @@ class Game:
         self.mobImage = pg.image.load(path.join(img_folder, MOB_IMG)).convert_alpha()
         self.shooterImage = pg.image.load(path.join(img_folder, SHOOTER_IMG)).convert_alpha()
         self.hpupImage = pg.image.load(path.join(img_folder, "heart.png")).convert_alpha()
-        self.floorImage = pg.image.load(path.join(img_folder, "floor2.png")).convert_alpha()
+        self.floorImage = pg.image.load(path.join(img_folder, "floor.png")).convert_alpha()
         self.floorImage = pg.transform.scale(self.floorImage, (TILESIZE, TILESIZE)).convert_alpha()
         self.bossImage = pg.image.load(path.join(img_folder, BOSS_IMG)).convert_alpha()
         self.fireImage = pg.image.load(path.join(img_folder, FIRE_IMG)).convert_alpha()
@@ -299,14 +299,7 @@ class Game:
 
             if event.type == pg.KEYDOWN:
                 if event.key == pg.K_p:
-                    self.paused = not self.paused
-#                if event.key == pg.K_x:
-#                    for row, tiles in enumerate(self.map.data):
-#                        for col, tile, in enumerate(tiles):
-#                            if tile == 'B':
-#                                self.boss = Boss(self, 20, 20)
-
-            
+                    self.paused = not self.paused           
 
     def draw(self):
         # Draw the loop

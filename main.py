@@ -68,7 +68,7 @@ class Game:
         img_folder = path.join(self.gameFolder, 'img')
         self.msc_folder = path.join(self.gameFolder, 'msc')
         snd_folder = path.join(self.gameFolder, 'snd')
-        self.map = Map(path.join(self.gameFolder, 'map.txt'))
+        self.map = Map(path.join(self.gameFolder, 'bosstestmap.txt'))
         # Base map is 48 x 32 tiles. 
         self.player_img = pg.image.load(path.join(img_folder, PLAYER_IMG)).convert_alpha()
         self.bullet_img = pg.image.load(path.join(img_folder, BULLET_IMG)).convert_alpha()

@@ -338,7 +338,7 @@ class Boss(pg.sprite.Sprite):
         self.last_update = 0
         self.image = game.bossImage
         self.rect = self.image.get_rect()
-        self.hit_rect = settings.BOSS_HIT_RECT.copy()
+        self.hit_rect = pg.Rect(0, 0, 150, 150)
         self.hit_rect.center = self.rect.center
         self.pos = vec(x, y) * settings.TILESIZE
         self.vel = vec(0, 0)
@@ -388,7 +388,7 @@ class Fireball(pg.sprite.Sprite):
         self.image = self.game.fireImage
         self.shootingfire = False
         #self.load_images() 
-        self.rect = self.image.get_rect()
+        self.rect = pg.Rect(0, 0, 40, 70)
         self.pos = vec(pos)
         self.rect.center = self.pos
         spread = uniform(-settings.FIREBALL_SPREAD, settings.FIREBALL_SPREAD)

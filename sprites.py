@@ -374,6 +374,8 @@ class Boss(pg.sprite.Sprite):
         if self.health <= 0:
             if randint(1,5) == 1:
                 HPUP(self.game, self.pos)
+            self.game.playing = False
+            self.game.win = True
             self.kill()
  
 class Fireball(pg.sprite.Sprite):

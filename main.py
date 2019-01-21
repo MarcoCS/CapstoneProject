@@ -123,7 +123,7 @@ class Game:
         self.score = 0
         self.win = False
         self.paused = False
-        self.fightingBoss = False
+        self.spawnedboss = False
         self.allSprites = pg.sprite.LayeredUpdates()
         self.allSprites = pg.sprite.Group()
         self.fireballs = pg.sprite.Group()
@@ -176,8 +176,8 @@ class Game:
         self.camera = Camera(self.map.width, self.map.height)
 
     def run(self):
-        # Run the game loop
         self.playing = True
+        # Run the game loop
         pg.mixer.music.load(path.join(self.msc_folder, 'espionage.ogg'))
         pg.mixer.music.play(loops=-1)
         while self.playing:
@@ -277,16 +277,17 @@ class Game:
             Weapons.Assault_rifle.change_var()
             self.pickupgun.play()
         
-        if not bool(self.mobs) and not bool(self.shooters) and len(self.bosses) < 1:
-            for row, tiles in enumerate(self.map.data):
+        if not bool(self.mobs) and not bool(self.shooters) and self.spawnedboss == False and not bool(self.bosses) and self.playing == True: 
+            self.loadBoss()
+         
+ 
+     
+    def loadBoss(self):
+        self.spawnedboss = True
+        for row, tiles in enumerate(self.map.data):
                 for col, tile, in enumerate(tiles):
                     if tile == 'B':
                         self.boss = Boss(self, col, row)
-                        self.fightingBoss = True
-        
-        if not bool(self.bosses) and self.fightingBoss:
-            self.playing = False
-            self.won = True
 
 
     def events(self):
@@ -344,6 +345,7 @@ class Game:
     def showStartScreen(self):
         # Draws the start screen with a colour, and displays the controls.
         # It will wait for the user to press a key, then start the game.
+        pg.event.wait()
         pg.mixer.music.load(path.join(self.msc_folder, 'battleThemeA.mp3'))
         pg.mixer.music.play(loops=-1)
         self.screen.fill(BGCOLOR)
@@ -393,17 +395,17 @@ class Game:
         while waiting:
             self.clock.tick(FPS)
             for event in pg.event.get():
-                if event.type == pg.KEYDOWN:
-                    keyPressed = True
                 if event.type == pg.QUIT:
                     waiting = False
                     self.running = False
                 if event.type == pg.KEYUP:
                     waiting = False
-
+                    self.running = True
+        
+        
+import mapGen
 g = Game()
 g.showStartScreen()
-g.running = True
 
 while g.running:
     g.new()

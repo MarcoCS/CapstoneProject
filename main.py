@@ -12,7 +12,7 @@ from os import path
 import settings
 from random import *
 from settings import *
-
+import mapGen
 # HUD functions
 def drawPlayerHealth(surf, x, y, pct): # Surf short for surface
     if pct < 0: # Pct short for percentage of healthbar
@@ -68,6 +68,7 @@ class Game:
         img_folder = path.join(self.gameFolder, 'img')
         self.msc_folder = path.join(self.gameFolder, 'msc')
         snd_folder = path.join(self.gameFolder, 'snd')
+        mapGen.main()
         self.map = Map(path.join(self.gameFolder, 'map_file.txt'))
         # Base map is 48 x 32 tiles. 
         self.player_img = pg.image.load(path.join(img_folder, PLAYER_IMG)).convert_alpha()

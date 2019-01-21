@@ -227,7 +227,8 @@ class Bullet(pg.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.pos = vec(pos)
         self.rect.center = pos
-
+        self.hit_rect = pg.Rect(0, 0, 10, 10)
+        self.hit_rect.center = self.rect.center
         spread = uniform(-settings.GUN_SPREAD, settings.GUN_SPREAD)
         self.vel = dir.rotate(spread) * settings.BULLET_SPEED
         self.spawn_time = pg.time.get_ticks()

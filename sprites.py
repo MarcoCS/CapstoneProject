@@ -297,11 +297,15 @@ class Mob(pg.sprite.Sprite):
         self.acc = vec(1, 0).rotate(-self.rot)
         self.avoidMobs()
         # This self.acc.scale_to_length adjusting to speed simulates friction.
-        self.acc.scale_to_length(self.speed)
-        self.acc += self.vel * -1
-        self.vel += self.acc * self.game.dt
-        self.pos += self.vel * self.game.dt + 0.5 * self.acc * self.game.dt ** 2
-        self.hit_rect.centerx = self.pos.x
+        try:
+            self.acc.scale_to_length(self.speed)
+        except:
+            pass
+        if (self.game.player.pos[0] - self.pos[0]) < 600 and (self.game.player.pos[1] - self.pos[1]) < 400:
+            self.acc += self.vel * -1
+            self.vel += self.acc * self.game.dt
+            self.pos += self.vel * self.game.dt + 0.5 * self.acc * self.game.dt ** 2
+            self.hit_rect.centerx = self.pos.x
         collide_with_walls(self, self.game.walls, 'x')
         self.hit_rect.centery = self.pos.y
         collide_with_walls(self, self.game.walls, 'y')
@@ -441,14 +445,14 @@ class StationaryMob(pg.sprite.Sprite):
         self.hit_rect.centery = self.pos.y
         #uses the new rectangle instead of the rectangle of the sprite
         self.rect.center = self.hit_rect.center
-
-        now = pg.time.get_ticks()
-        if now - self.last_shot > 4500:
-            self.last_shot = now
-            self.game.enemysnipershot.play()
-            dir = vec(1, 0).rotate(-self.rot)
-            pos = self.pos + settings.BARREL_OFFSET.rotate(-self.rot)
-            ShooterBullet(self.game, pos, dir)
+        if (self.game.player.pos[0] - self.pos[0]) < 600 and (self.game.player.pos[1] - self.pos[1]) < 400:
+            now = pg.time.get_ticks()
+            if now - self.last_shot > 4500:
+                self.last_shot = now
+                self.game.enemysnipershot.play()
+                dir = vec(1, 0).rotate(-self.rot)
+                pos = self.pos + settings.BARREL_OFFSET.rotate(-self.rot)
+                ShooterBullet(self.game, pos, dir)
         if self.health <= 0:     
             if randint(1,10) == 1:  # 10% chance to drop 3 health powerups
                 HPUP(self.game, self.pos)

@@ -142,6 +142,8 @@ class Game:
         self.ar = pg.sprite.Group()
         # -------
         
+        Weapons.Starting_pistol.change_var()
+        
         # Floor tiles
         for row, tiles in enumerate(self.map.data):
             for col, tile, in enumerate(tiles):

@@ -5,7 +5,7 @@
 import random as rand
 import copy
 
-map_file = open("map_file.txt","w+")
+
 
 # "." should represent walkable floor
 # "1" should represent an impassable wall
@@ -28,6 +28,7 @@ def print_lst(lst): # Prints the list
 
 def main():
     # Templates of rooms:
+    map_file = open("map_file.txt","w+")
     base_room = [['1', '1', '1', '1', '.', '.', '1', '1', '1', '1'],  # This cuts down render time
                     ['1', '.', '.', '.', '.', '.', '.', '.', '.', '1'],   # Before, a function was located in "Rooms_tools" which carved out an area
                     ['1', '.', '.', '.', '.', '.', '.', '.', '.', '1'],   # We do this anyways, so it simply saves compute power to have a pre-made map.

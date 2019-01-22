@@ -68,8 +68,6 @@ class Game:
         img_folder = path.join(self.gameFolder, 'img')
         self.msc_folder = path.join(self.gameFolder, 'msc')
         snd_folder = path.join(self.gameFolder, 'snd')
-        mapGen.main()
-        self.map = Map(path.join(self.gameFolder, 'map_file.txt'))
         # Base map is 48 x 32 tiles. 
         self.player_img = pg.image.load(path.join(img_folder, PLAYER_IMG)).convert_alpha()
         self.bullet_img = pg.image.load(path.join(img_folder, BULLET_IMG)).convert_alpha()
@@ -121,6 +119,8 @@ class Game:
 
     def new(self):
         # Start a new game
+        mapGen.main()
+        self.map = Map(path.join(self.gameFolder, 'map_file.txt'))       
         self.score = 0
         self.win = False
         self.paused = False
@@ -405,8 +405,6 @@ class Game:
                     waiting = False
                     self.running = True
         
-        
-import mapGen
 g = Game()
 g.showStartScreen()
 
